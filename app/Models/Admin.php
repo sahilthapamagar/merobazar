@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class Admin extends Authenticatable
 {
     // /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -28,18 +28,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function carts()
-    {
-        return $this->hasMany(Cart::class);
-    }
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
-    public function deliveryAddresses()
-    {
-        return $this->hasOne(DeliveryAddress::class);
     }
 }
