@@ -934,6 +934,88 @@
 
 
           /* ─── seller / MEMBERSHIP ─── */
+          .seller-contact-section {
+              width: 100%;
+              padding: 80px 1.5rem;
+              text-align: center;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+          }
+
+          .seller-contact-inner {
+              width: 100%;
+              max-width: 42rem;
+              margin-left: auto;
+              margin-right: auto;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+          }
+
+          .seller-contact-header {
+              width: 100%;
+              text-align: center;
+              margin-bottom: 2.5rem;
+          }
+
+          .seller-contact-sub {
+              font-size: 0.875rem;
+              font-weight: 300;
+              margin-top: 0.75rem;
+              max-width: 20rem;
+              margin-left: auto;
+              margin-right: auto;
+              line-height: 1.625;
+              color: var(--secondary);
+          }
+
+          .seller-contact-form {
+              display: flex;
+              flex-direction: column;
+              gap: 1.25rem;
+          }
+
+          .seller-contact-form-row {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 1.25rem;
+          }
+
+          @media (max-width: 767px) {
+              .seller-contact-form-row {
+                  grid-template-columns: 1fr;
+              }
+          }
+
+          .seller-contact-card {
+              width: 100%;
+              padding: 2rem 1.5rem;
+              position: relative;
+              border-radius: 1rem;
+              box-shadow: 0 20px 25px -5px rgba(73, 54, 40, 0.08), 0 8px 10px -6px rgba(73, 54, 40, 0.06);
+              background: var(--cream);
+              border: 1px solid var(--accent);
+          }
+
+          .seller-contact-card-title {
+              font-size: 0.75rem;
+              font-family: 'DM Sans', sans-serif;
+              font-weight: 500;
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              text-align: center;
+              margin-bottom: 1.5rem;
+              color: var(--secondary);
+          }
+
+          .seller-contact-footer {
+              text-align: center;
+              font-size: 0.75rem;
+              margin-top: 1.5rem;
+              color: var(--secondary);
+          }
+
           .input-group {
               position: relative;
           }
@@ -2062,10 +2144,10 @@
 
 
           <!-- ─── Seller Contact Information ─── -->
-          <section class="w-full max-w-2xl mx-auto">
-              <div class="w-[65%] mx-auto animate-fade-in">
+          <section class="seller-contact-section">
+              <div class="seller-contact-inner animate-fade-in">
                   <!-- Section header -->
-                  <div class="text-center mb-10 animate-slide-up">
+                  <div class="seller-contact-header animate-slide-up">
                       <span class="badge mb-4">
                           <svg width="7" height="7" viewBox="0 0 7 7" fill="none">
                               <circle cx="3.5" cy="3.5" r="3.5" fill="#AB886D" />
@@ -2079,21 +2161,18 @@
                           <span style="color: var(--secondary); font-style: italic;">Shop</span>
                       </h2>
 
-                      <p class="text-sm font-light mt-3 max-w-xs mx-auto leading-relaxed"
-                          style="color: var(--secondary);">
+                      <p class="seller-contact-sub">
                           Join our curated community of artisan shop owners and start your journey today.
                       </p>
                   </div>
 
                   <!-- Card -->
-                  <div class="relative rounded-2xl shadow-xl animate-slide-up delay-200"
-                      style="background: var(--cream); border: 1px solid var(--accent);">
+                  <div class="seller-contact-card animate-slide-up delay-200">
 
                       <!-- Form title inside card -->
-                      <p class="text-xs font-body font-medium uppercase tracking-widest mb-6 animate-slide-up delay-300"
-                          style="color: var(--secondary);">Personal &amp; Shop Details</p>
+                      <p class="seller-contact-card-title animate-slide-up delay-300">Personal &amp; Shop Details</p>
 
-                      <form action="#" method="" novalidate class="space-y-5">
+                      <form action="#" method="" novalidate class="seller-contact-form">
                           @csrf {{-- remove if not using Laravel Blade --}}
 
                           <!-- Name -->
@@ -2129,7 +2208,7 @@
                           </div>
 
                           <!-- Two-column row: Shop Name + Contact -->
-                          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                          <div class="seller-contact-form-row">
 
                               <!-- Shop Name -->
                               <div class="input-group animate-slide-up delay-500">
@@ -2192,14 +2271,12 @@
 
                       </form>
                   </div>
-              </div>
-              <!-- Bottom caption -->
-              <p class="text-center text-xs mt-6 animate-fade-in delay-600" style="color: var(--secondary);">
-                  🔒 Your information is encrypted &amp; secure.
-              </p>
+                  <!-- Bottom caption -->
+                  <p class="seller-contact-footer animate-fade-in delay-600">
+                      🔒 Your information is encrypted &amp; secure.
+                  </p>
               </div>
           </section>
-
 
 
           <!-- ─── NEWSLETTER ─── -->
