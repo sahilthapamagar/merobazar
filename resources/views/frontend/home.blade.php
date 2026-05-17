@@ -2172,8 +2172,9 @@
                       <!-- Form title inside card -->
                       <p class="seller-contact-card-title animate-slide-up delay-300">Personal &amp; Shop Details</p>
 
-                      <form action="#" method="" novalidate class="seller-contact-form">
-                          @csrf {{-- remove if not using Laravel Blade --}}
+                      <form action="{{ route('seller.request') }}" method="POST" novalidate
+                          class="seller-contact-form">
+                          @csrf
 
                           <!-- Name -->
                           <div class="input-group animate-slide-up delay-300">
@@ -2188,6 +2189,9 @@
                      0-5.216-.584-7.5-1.632Z" />
                                   </svg>
                               </span>
+                              @error('name')
+                                  <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                              @enderror
                           </div>
 
                           <!-- Email -->
@@ -2205,6 +2209,9 @@
                      1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                                   </svg>
                               </span>
+                              @error('email')
+                                  <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                              @enderror
                           </div>
 
                           <!-- Two-column row: Shop Name + Contact -->
@@ -2232,13 +2239,16 @@
                        .414.336.75.75.75Z" />
                                       </svg>
                                   </span>
+                                  @error('shop_name')
+                                      <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                  @enderror
                               </div>
 
                               <!-- Contact -->
                               <div class="input-group animate-slide-up delay-500">
-                                  <input type="tel" name="Contact" id="Contact" placeholder="Contact Number"
+                                  <input type="tel" name="contact" id="contact" placeholder="Contact Number"
                                       autocomplete="tel" class="custom-input pr-10" required />
-                                  <label for="Contact">Contact Number</label>
+                                  <label for="contact">Contact Number</label>
                                   <span class="icon-wrap">
                                       <svg width="18" height="18" fill="none" stroke="currentColor"
                                           stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true">
@@ -2252,6 +2262,9 @@
                        2.25 4.5v2.25Z" />
                                       </svg>
                                   </span>
+                                  @error('contact')
+                                      <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                  @enderror
                               </div>
                           </div>
 

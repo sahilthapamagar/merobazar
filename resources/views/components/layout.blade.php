@@ -122,6 +122,8 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
+    
     <x-navbar />
 
     {{ $slot }}
