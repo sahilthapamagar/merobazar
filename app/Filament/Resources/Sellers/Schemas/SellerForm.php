@@ -20,7 +20,9 @@ class SellerForm
                     ->email()
                     ->required(),
                 TextInput::make('password')
-                    ->password(),
+                    ->hiddenOn('edit')
+                    ->password()
+                    ->default(null),
                 TextInput::make('shop_name')
                     ->required(),
                 TextInput::make('khalti_secrect_key'),
@@ -29,7 +31,7 @@ class SellerForm
                     ->default('pending')
                     ->required(),
                 DatePicker::make('expired_date'),
-                TextInput::make('Contact')
+                TextInput::make('contact')
                     ->required(),
             ]);
     }

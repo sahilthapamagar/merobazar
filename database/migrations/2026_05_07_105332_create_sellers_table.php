@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('shop_name');
             $table->string('khalti_secrect_key')->nullable();
-            $table->enum('status',['active','inactive','pending'])->default('pending');
+            $table->enum('status', ['active', 'inactive', 'pending'])->default('pending');
             $table->date('expired_date')->nullable();
-            $table->string('Contact');
+            $table->string('contact');
             $table->rememberToken();
             $table->timestamps();
         });
