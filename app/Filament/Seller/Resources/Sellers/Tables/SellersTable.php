@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Sellers\Tables;
+namespace App\Filament\Seller\Resources\Sellers\Tables;
 
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -18,11 +17,11 @@ class SellersTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
-                    ->copyable()
                     ->label('Email address')
                     ->searchable(),
                 TextColumn::make('shop_name')
-                    ->label('Shop Name')
+                    ->searchable(),
+                TextColumn::make('khalti_secrect_key')
                     ->searchable(),
                 TextColumn::make('status')
                     ->badge(),
@@ -30,7 +29,6 @@ class SellersTable
                     ->date()
                     ->sortable(),
                 TextColumn::make('contact')
-                    ->copyable()
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -42,11 +40,10 @@ class SellersTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-            
+                //
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

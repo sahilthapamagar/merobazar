@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Sellers\Schemas;
+namespace App\Filament\Seller\Resources\Sellers\Schemas;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -19,6 +19,8 @@ class SellerForm
                     ->label('Email address')
                     ->email()
                     ->required(),
+                TextInput::make('password')
+                    ->password(),
                 TextInput::make('shop_name')
                     ->required(),
                 TextInput::make('khalti_secrect_key'),

@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Filament\Seller\Resources\Sellers;
+
+use App\Filament\Seller\Resources\Sellers\Pages\CreateSeller;
+use App\Filament\Seller\Resources\Sellers\Pages\EditSeller;
+use App\Filament\Seller\Resources\Sellers\Pages\ListSellers;
+use App\Filament\Seller\Resources\Sellers\Schemas\SellerForm;
+use App\Filament\Seller\Resources\Sellers\Tables\SellersTable;
+use App\Models\Seller;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+
+// use Illuminate\Database\Eloquent\Builder;
+// use Override;
+
+class SellerResource extends Resource
+{
+    protected static ?string $model = Seller::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    // #[Override]
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     return parent::getEloquentQuery()->where(user_id, );
+    // }
+
+    public static function form(Schema $schema): Schema
+    {
+        return SellerForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return SellersTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListSellers::route('/'),
+            'create' => CreateSeller::route('/create'),
+            'edit' => EditSeller::route('/{record}/edit'),
+        ];
+    }
+}
