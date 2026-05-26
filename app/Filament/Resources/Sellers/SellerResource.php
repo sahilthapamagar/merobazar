@@ -18,7 +18,7 @@ class SellerResource extends Resource
 {
     protected static ?string $model = Seller::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
 
     protected static ?string $recordTitleAttribute = 'name';
 

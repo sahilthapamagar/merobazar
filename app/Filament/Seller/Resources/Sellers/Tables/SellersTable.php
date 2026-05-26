@@ -3,7 +3,7 @@
 namespace App\Filament\Seller\Resources\Sellers\Tables;
 
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+// use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -21,13 +21,11 @@ class SellersTable
                     ->searchable(),
                 TextColumn::make('shop_name')
                     ->searchable(),
-                TextColumn::make('khalti_secrect_key')
-                    ->searchable(),
                 TextColumn::make('status')
                     ->badge(),
-                TextColumn::make('expired_date')
-                    ->date()
-                    ->sortable(),
+                // TextColumn::make('expired_date')
+                //     ->date()
+                //     ->sortable(),
                 TextColumn::make('contact')
                     ->searchable(),
                 TextColumn::make('created_at')
@@ -47,7 +45,7 @@ class SellersTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    // DeleteBulkAction::make(),
                 ]),
             ]);
     }

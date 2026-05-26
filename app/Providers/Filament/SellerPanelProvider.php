@@ -29,6 +29,7 @@ class SellerPanelProvider extends PanelProvider
             ->authGuard('vendor')
             ->brandName('Welcome, Seller!')
             ->login()
+            ->profile()
             ->colors([
                 'primary' => Color::Green,
             ])
