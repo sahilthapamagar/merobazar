@@ -10,7 +10,8 @@ class Product extends Model
     {
         return $this->belongsTo(Seller::class);
     }
-    public function productVarients()
+
+    public function productVarient()
     {
         return $this->hasMany(ProductVarient::class);
     }
@@ -19,6 +20,7 @@ class Product extends Model
     {
         return $this->hasMany(Cart::class);
     }
+
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);

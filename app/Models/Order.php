@@ -9,10 +9,12 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }public function seller()
+    }
+    public function seller()
     {
         return $this->belongsTo(Seller::class);
-    }public function orderItems()
+    }
+    public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
     }

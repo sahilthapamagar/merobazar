@@ -29,6 +29,8 @@ class SellerResource extends Resource
         return parent::getEloquentQuery()->where('id', Auth::guard('vendor')->id());
     }
 
+    protected static ?int $navigationSort = 1;
+
     protected static ?string $modelLabel = 'Profile';
 
     protected static ?string $pluralModelLabel = 'Profile';
