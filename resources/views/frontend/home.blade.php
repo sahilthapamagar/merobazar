@@ -1835,7 +1835,7 @@
               </div>
 
               <div style="text-align:center;margin-top:48px" class="reveal">
-                  <a href="#" class="btn-primary"><span>View All Products</span></a>
+                  <a href="{{ route('products') }}" class="btn-primary"><span>View All Products</span></a>
               </div>
           </section>
 
