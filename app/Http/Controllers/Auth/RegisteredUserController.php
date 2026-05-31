@@ -46,6 +46,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        toast()->success('Registration successful!');
+
+        return redirect(route('home', absolute: false));
     }
 }

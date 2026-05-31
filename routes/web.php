@@ -16,3 +16,8 @@ Route::get('/product/{id}', [PageController::class, 'product'])->name('product')
 
 Route::post('/seller/shop', [SellerController::class, 'seller_request'])->name('seller.request');
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+require __DIR__.'/auth.php';

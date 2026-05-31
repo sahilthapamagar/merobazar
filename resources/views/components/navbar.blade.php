@@ -86,6 +86,94 @@
         justify-content: center;
     }
 
+    .account-dropdown {
+        position: relative;
+    }
+
+    .account-menu {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        min-width: 220px;
+        background: var(--cream);
+        border: 1px solid rgba(171, 136, 109, 0.28);
+        box-shadow: 0 12px 40px rgba(43, 31, 20, 0.12);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+        z-index: 1101;
+        pointer-events: none;
+    }
+
+    .account-dropdown.is-open .account-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .account-menu-header {
+        padding: 14px 16px 12px;
+        border-bottom: 1px solid rgba(171, 136, 109, 0.18);
+    }
+
+    .account-menu-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.05rem;
+        font-weight: 500;
+        color: var(--primary);
+        line-height: 1.3;
+        word-break: break-word;
+    }
+
+    .account-menu-email {
+        margin-top: 4px;
+        font-size: 0.72rem;
+        font-weight: 300;
+        color: rgba(73, 54, 40, 0.55);
+        letter-spacing: 0.02em;
+        word-break: break-all;
+    }
+
+    .account-menu-body {
+        padding: 6px 0;
+    }
+
+    .account-menu-item {
+        display: block;
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--primary);
+        text-decoration: none;
+        text-align: left;
+        background: none;
+        border: none;
+        cursor: none;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .account-menu-item:hover {
+        background: rgba(171, 136, 109, 0.1);
+        color: var(--secondary);
+    }
+
+    .account-menu-item--logout {
+        color: #9a4a4a;
+        border-top: 1px solid rgba(171, 136, 109, 0.15);
+        margin-top: 4px;
+        padding-top: 12px;
+    }
+
+    .account-menu-item--logout:hover {
+        background: rgba(176, 64, 64, 0.08);
+        color: #7a3535;
+    }
+
     .cart-badge {
         position: absolute;
         top: -6px;
@@ -255,7 +343,7 @@
         }
 
         .nav-links,
-        .nav-actions .nav-icon:not(.cart-wrap):not(.search-wrap):not(.mobile-menu-btn) {
+        .nav-actions .nav-icon:not(.cart-wrap):not(.search-wrap):not(.account-wrap):not(.mobile-menu-btn) {
             display: none;
         }
 
@@ -284,6 +372,26 @@
             font-size: 2rem;
         }
     }
+
+    .mobile-logout-form button {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.4rem;
+        font-weight: 300;
+        color: #9a4a4a;
+        background: none;
+        border: none;
+        border-bottom: 1px solid rgba(171, 136, 109, 0.15);
+        padding: 14px 0;
+        width: 100%;
+        text-align: left;
+        cursor: none;
+        transition: color 0.3s, padding-left 0.3s;
+    }
+
+    .mobile-logout-form button:hover {
+        color: #7a3535;
+        padding-left: 12px;
+    }
 </style>
 
 <section>
@@ -308,13 +416,46 @@
                     <path d="M16.5 16.5L22 22" />
                 </svg>
             </button>
-            <button type="button" class="nav-icon" aria-label="Account">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"
-                    viewBox="0 0 24 24">
-                    <circle cx="12" cy="7" r="4" />
-                    <path d="M20 21a8 8 0 10-16 0" />
-                </svg>
-            </button>
+            @if ($user = Auth::guard('web')->user())
+                <div class="account-dropdown" id="accountDropdown">
+                    <button type="button" class="nav-icon account-wrap" id="accountMenuBtn"
+                        aria-label="Account menu" aria-expanded="false" aria-haspopup="true"
+                        onclick="toggleAccountMenu(event)">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"
+                            viewBox="0 0 24 24">
+                            <circle cx="12" cy="7" r="4" />
+                            <path d="M5.5 21a8.38 8.38 0 0113 0" />
+                        </svg>
+                    </button>
+                    <div class="account-menu" id="accountMenu" role="menu" aria-labelledby="accountMenuBtn">
+                        <div class="account-menu-header">
+                            <p class="account-menu-name">{{ $user->name }}</p>
+                            <p class="account-menu-email">{{ $user->email }}</p>
+                        </div>
+                        <div class="account-menu-body">
+                            <a href="{{ route('profile.edit') }}" class="account-menu-item" role="menuitem">
+                                Profile
+                            </a>
+                            <form method="POST" action="{{ route('logout') }}" role="none">
+                                @csrf
+                                <button type="submit" class="account-menu-item account-menu-item--logout"
+                                    role="menuitem">
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <a href="{{ route('login') }}" class="nav-icon" aria-label="Login">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"
+                        viewBox="0 0 24 24">
+                        <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
+                        <polyline points="10 17 15 12 10 7" />
+                        <line x1="15" y1="12" x2="3" y2="12" />
+                    </svg>
+                </a>
+            @endif
             <button type="button" class="nav-icon cart-wrap" onclick="typeof openModal === 'function' && openModal()"
                 aria-label="Cart">
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"
@@ -344,6 +485,15 @@
         <a href="#" onclick="toggleMobileMenu()">Home &amp; Living</a>
         <a href="#" onclick="toggleMobileMenu()">Collections</a>
         <a href="#" onclick="toggleMobileMenu()">Sale</a>
+        @if ($user = Auth::guard('web')->user())
+            <a href="{{ route('profile.edit') }}" onclick="toggleMobileMenu()">Profile</a>
+            <form method="POST" action="{{ route('logout') }}" class="mobile-logout-form">
+                @csrf
+                <button type="submit" onclick="toggleMobileMenu()">Logout</button>
+            </form>
+        @else
+            <a href="{{ route('login') }}" onclick="toggleMobileMenu()">Sign In</a>
+        @endif
     </div>
 
     <!-- ─── SEARCH BAR ─── -->
@@ -394,6 +544,44 @@
             document.body.style.overflow = menuOpen ? 'hidden' : '';
         };
 
+        window.toggleAccountMenu = function toggleAccountMenu(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+
+            const dropdown = document.getElementById('accountDropdown');
+            const btn = document.getElementById('accountMenuBtn');
+            if (!dropdown || !btn) {
+                return;
+            }
+
+            const isOpen = dropdown.classList.toggle('is-open');
+            btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        };
+
+        window.closeAccountMenu = function closeAccountMenu() {
+            const dropdown = document.getElementById('accountDropdown');
+            const btn = document.getElementById('accountMenuBtn');
+            if (!dropdown || !btn) {
+                return;
+            }
+
+            dropdown.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
+        };
+
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('#accountDropdown')) {
+                window.closeAccountMenu();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                window.closeAccountMenu();
+            }
+        });
+
         window.toggleSearch = function toggleSearch() {
             const bar = document.getElementById('searchBar');
             const input = document.getElementById('searchInput');
@@ -421,6 +609,9 @@
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768 && menuOpen) {
                 window.toggleMobileMenu();
+            }
+            if (window.innerWidth > 768) {
+                window.closeAccountMenu();
             }
         });
     })();

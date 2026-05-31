@@ -11,14 +11,14 @@ class PageController extends Controller
 {
     public function index()
     {
-        $products = Product::whereStock(true)->limit(4)->get();
+        $products = Product::with('productVarient')->whereStock(true)->limit(4)->get();
 
         return view('frontend.home', compact('products'));
     }
 
     public function products()
     {
-        $products = Product::whereStock(true)->get();
+        $products = Product::with('productVarient')->whereStock(true)->get();
 
         return view('frontend.products', compact('products'));
     }
