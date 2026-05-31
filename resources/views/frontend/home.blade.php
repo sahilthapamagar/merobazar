@@ -1,5 +1,45 @@
   <x-layout>
       <style>
+          /* ─── HOME PAGE SHELL ─── */
+          .home-page {
+              width: 100%;
+              max-width: 100%;
+              overflow-x: hidden;
+          }
+
+          .hero-stats {
+              display: flex;
+              flex-wrap: wrap;
+              align-items: center;
+              gap: 2rem;
+              margin-top: 3rem;
+          }
+
+          .hero-stat-divider {
+              width: 1px;
+              background: var(--accent);
+              align-self: stretch;
+          }
+
+          .hero-stat-value {
+              font-family: 'Cormorant Garamond', serif;
+              font-size: 1.875rem;
+              font-weight: 500;
+              color: var(--primary);
+          }
+
+          .hero-stat-value span {
+              color: var(--secondary);
+          }
+
+          .hero-stat-label {
+              font-size: 0.72rem;
+              letter-spacing: 0.12em;
+              text-transform: uppercase;
+              color: #7a6858;
+              margin-top: 3px;
+          }
+
           /* ─── HERO ─── */
           .hero {
               min-height: 100vh;
@@ -1417,95 +1457,6 @@
           }
 
 
-          /* ─── QUICK VIEW MODAL ─── */
-          .modal-overlay {
-              position: fixed;
-              inset: 0;
-              background: rgba(43, 31, 20, 0.6);
-              backdrop-filter: blur(4px);
-              z-index: 2000;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              opacity: 0;
-              pointer-events: none;
-              transition: opacity 0.35s ease;
-          }
-
-          .modal-overlay.open {
-              opacity: 1;
-              pointer-events: all;
-          }
-
-          .modal-box {
-              background: white;
-              max-width: 800px;
-              width: 90%;
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              overflow: hidden;
-              transform: scale(0.93) translateY(20px);
-              transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-              max-height: 90vh;
-          }
-
-          .modal-overlay.open .modal-box {
-              transform: scale(1) translateY(0);
-          }
-
-          .modal-img {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-              min-height: 360px;
-          }
-
-          .modal-content {
-              padding: 40px 36px;
-              overflow-y: auto;
-          }
-
-          .modal-close {
-              position: absolute;
-              top: 16px;
-              right: 16px;
-              width: 36px;
-              height: 36px;
-              background: var(--primary);
-              border: none;
-              cursor: none;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: white;
-          }
-
-          .size-btns {
-              display: flex;
-              gap: 8px;
-              flex-wrap: wrap;
-              margin: 12px 0;
-          }
-
-          .size-btn {
-              width: 40px;
-              height: 40px;
-              border: 1px solid var(--accent);
-              background: none;
-              font-size: 0.75rem;
-              font-weight: 500;
-              color: var(--primary);
-              cursor: none;
-              transition: all 0.2s;
-          }
-
-          .size-btn.active,
-          .size-btn:hover {
-              background: var(--primary);
-              color: white;
-              border-color: var(--primary);
-          }
-
           /* ─── RESPONSIVE ─── */
           @media (max-width: 1024px) {
               .products-grid {
@@ -1531,6 +1482,7 @@
               .hero {
                   grid-template-columns: 1fr;
                   min-height: auto;
+                  padding-top: 0;
               }
 
               .hero-right {
@@ -1538,25 +1490,39 @@
               }
 
               .hero-left {
-                  padding: 60px 6% 40px;
+                  padding: 40px 5%;
+              }
+
+              .hero-headline {
+                  font-size: clamp(2.4rem, 10vw, 3.4rem);
+              }
+
+              .hero-sub {
+                  max-width: none;
+              }
+
+              .hero-cta-group {
+                  flex-wrap: wrap;
+              }
+
+              .hero-stats {
+                  justify-content: space-between;
+                  gap: 1rem;
+              }
+
+              .hero-stat-divider {
+                  display: none;
               }
 
               .hero-floating-card {
                   display: none;
               }
 
-              .nav-links,
-              .nav-actions .nav-icon:not(.cart-wrap):not(.search-wrap) {
-                  display: none;
-              }
-
-              .mobile-menu-btn {
-                  display: flex;
-              }
-
               .products-grid {
                   grid-template-columns: repeat(2, 1fr);
                   gap: 14px;
+                  max-width: none;
+                  margin: 0;
               }
 
               .categories-grid {
@@ -1604,13 +1570,58 @@
                   min-height: 240px;
                   height: 240px;
               }
+
+              .countdown-product-row {
+                  min-width: 0;
+              }
+
+              .banner-left {
+                  padding: 40px 5%;
+              }
+
+              .newsletter {
+                  padding: 60px 5%;
+              }
+
+              .newsletter-form {
+                  width: 100%;
+                  max-width: none;
+              }
+
+              .newsletter-form input,
+              .newsletter-form button {
+                  width: 100%;
+              }
+
+              .newsletter-form {
+                  flex-direction: column;
+              }
+
+              .newsletter-form input {
+                  border-right: 1px solid rgba(171, 136, 109, 0.35);
+              }
           }
 
           @media (max-width: 480px) {
               .products-grid {
                   grid-template-columns: 1fr;
-                  max-width: 320px;
-                  margin: 0 auto;
+                  width: 100%;
+                  max-width: none;
+                  margin: 0;
+              }
+
+              .hero-stats {
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 0.75rem;
+              }
+
+              .hero-stat-value {
+                  font-size: 1.35rem;
+              }
+
+              .hero-stat-label {
+                  font-size: 0.62rem;
               }
 
               .newsletter-form {
@@ -1630,10 +1641,9 @@
           }
       </style>
 
-      <Section>
-          <div class="cursor-dot" id="cursorDot"></div>
-          <div class="cursor-ring" id="cursorRing"></div>
-
+      <div class="home-page">
+          {{-- <div class="cursor-dot" id="cursorDot"></div>
+          <div class="cursor-ring" id="cursorRing"></div> --}}
           <!-- ─── HERO ─── -->
           <section class="hero" id="hero">
               <div class="hero-left">
@@ -1655,30 +1665,20 @@
                       </a>
                   </div>
 
-                  <!-- Stats -->
-                  <div class="flex gap-8 mt-12 reveal reveal-delay-3">
+                  <div class="hero-stats reveal reveal-delay-3">
                       <div>
-                          <div class="font-display text-3xl" style="color:var(--primary);font-weight:500;">4.8k<span
-                                  style="color:var(--secondary)">+</span></div>
-                          <div
-                              style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:#7a6858;margin-top:3px;">
-                              Happy Clients</div>
+                          <div class="hero-stat-value">4.8k<span>+</span></div>
+                          <div class="hero-stat-label">Happy Clients</div>
                       </div>
-                      <div style="width:1px;background:var(--accent)"></div>
+                      <div class="hero-stat-divider"></div>
                       <div>
-                          <div class="font-display text-3xl" style="color:var(--primary);font-weight:500;">360<span
-                                  style="color:var(--secondary)">+</span></div>
-                          <div
-                              style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:#7a6858;margin-top:3px;">
-                              Products</div>
+                          <div class="hero-stat-value">360<span>+</span></div>
+                          <div class="hero-stat-label">Products</div>
                       </div>
-                      <div style="width:1px;background:var(--accent)"></div>
+                      <div class="hero-stat-divider"></div>
                       <div>
-                          <div class="font-display text-3xl" style="color:var(--primary);font-weight:500;">12<span
-                                  style="color:var(--secondary)">+</span></div>
-                          <div
-                              style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:#7a6858;margin-top:3px;">
-                              Countries</div>
+                          <div class="hero-stat-value">12<span>+</span></div>
+                          <div class="hero-stat-label">Countries</div>
                       </div>
                   </div>
               </div>
@@ -1800,225 +1800,38 @@
               </div>
 
               <div class="products-grid" id="productsGrid">
-                  <!-- Product 1 -->
-                  <div class="product-card reveal" data-tag="new trending">
-                      <div class="product-img-wrap">
-                          <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=500&q=80&auto=format"
-                              alt="Silk Midi Dress" />
-                          <span class="product-badge">New</span>
-                          <div class="product-actions">
-                              <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
-                              <button class="wishlist-btn">
-                                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                      <path
-                                          d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                  </svg>
-                              </button>
+                  <!-- Product -->
+                  @foreach ($products as $product)
+                      <a href="{{ route('product', $product->id) }}">
+                          <div class="product-card reveal" data-tag="new trending">
+                              <div class="product-img-wrap">
+                                  <img src="{{ asset(Storage::url($product->productVarient()->first()->images[0])) }}"
+                                      alt="Silk Midi Dress" />
+                                  <span class="product-badge">Discount {{ $product->discount }}%</span>
+                                  <div class="product-actions">
+                                      <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                                      <button class="wishlist-btn">
+                                          <svg fill="none" stroke="currentColor" stroke-width="1.8"
+                                              viewBox="0 0 24 24">
+                                              <path
+                                                  d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                                          </svg>
+                                      </button>
+                                  </div>
+                              </div>
+                              <div class="product-info">
+                                  {{-- <div class="product-brand">Mero Bazar Studio</div> --}}
+                                  <div class="product-name">{{ $product->name }}</div>
+                                  <div class="product-price-row">
+                                      <span class="product-price">Rs.
+                                          {{ $product->productVarient()->first()->price }}</span>
+                                  </div>
+                                  <div class="product-rating"><span class="star">★★★★★</span> <span
+                                          style="font-size:0.72rem;color:#7a6858;margin-left:4px">(48)</span></div>
+                              </div>
                           </div>
-                      </div>
-                      <div class="product-info">
-                          <div class="product-brand">Big Bazar Studio</div>
-                          <div class="product-name">Silk Midi Slip Dress</div>
-                          <div class="product-price-row">
-                              <span class="product-price">$245.00</span>
-                          </div>
-                          <div class="product-rating"><span class="star">★★★★★</span> <span
-                                  style="font-size:0.72rem;color:#7a6858;margin-left:4px">(48)</span></div>
-                      </div>
-                  </div>
-
-                  <!-- Product 2 -->
-                  <div class="product-card reveal reveal-delay-1" data-tag="sale trending">
-                      <div class="product-img-wrap">
-                          <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&q=80&auto=format"
-                              alt="Linen Blazer" />
-                          <span class="product-badge sale">Sale</span>
-                          <div class="product-actions">
-                              <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
-                              <button class="wishlist-btn">
-                                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                      <path
-                                          d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                  </svg>
-                              </button>
-                          </div>
-                      </div>
-                      <div class="product-info">
-                          <div class="product-brand">Artisan Co.</div>
-                          <div class="product-name">Relaxed Linen Blazer</div>
-                          <div class="product-price-row">
-                              <span class="product-price">$178.00</span>
-                              <span class="product-price-old">$249.00</span>
-                          </div>
-                          <div class="product-rating"><span class="star">★★★★</span><span class="star"
-                                  style="color:#ddd">★</span> <span
-                                  style="font-size:0.72rem;color:#7a6858;margin-left:4px">(31)</span></div>
-                      </div>
-                  </div>
-
-                  <!-- Product 3 -->
-                  <div class="product-card reveal reveal-delay-2" data-tag="new">
-                      <div class="product-img-wrap">
-                          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&q=80&auto=format"
-                              alt="Cashmere Knit" />
-                          <span class="product-badge">New</span>
-                          <div class="product-actions">
-                              <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
-                              <button class="wishlist-btn">
-                                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                      <path
-                                          d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                  </svg>
-                              </button>
-                          </div>
-                      </div>
-                      <div class="product-info">
-                          <div class="product-brand">Pure Knit</div>
-                          <div class="product-name">Cashmere Ribbed Sweater</div>
-                          <div class="product-price-row">
-                              <span class="product-price">$320.00</span>
-                          </div>
-                          <div class="product-rating"><span class="star">★★★★★</span> <span
-                                  style="font-size:0.72rem;color:#7a6858;margin-left:4px">(22)</span></div>
-                      </div>
-                  </div>
-
-                  <!-- Product 4 -->
-                  <div class="product-card reveal reveal-delay-3" data-tag="trending sale">
-                      <div class="product-img-wrap">
-                          <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=500&q=80&auto=format"
-                              alt="Perfume" />
-                          <span class="product-badge sale">Sale</span>
-                          <div class="product-actions">
-                              <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
-                              <button class="wishlist-btn">
-                                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                      <path
-                                          d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                  </svg>
-                              </button>
-                          </div>
-                      </div>
-                      <div class="product-info">
-                          <div class="product-brand">Essence Paris</div>
-                          <div class="product-name">Amber Rose Perfume EDP</div>
-                          <div class="product-price-row">
-                              <span class="product-price">$145.00</span>
-                              <span class="product-price-old">$195.00</span>
-                          </div>
-                          <div class="product-rating"><span class="star">★★★★★</span> <span
-                                  style="font-size:0.72rem;color:#7a6858;margin-left:4px">(67)</span></div>
-                      </div>
-                  </div>
-
-                  <!-- Product 5 -->
-                  <div class="product-card reveal" data-tag="new trending">
-                      <div class="product-img-wrap">
-                          <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&q=80&auto=format"
-                              alt="Jacket" />
-                          <span class="product-badge">New</span>
-                          <div class="product-actions">
-                              <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
-                              <button class="wishlist-btn">
-                                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                      <path
-                                          d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                  </svg>
-                              </button>
-                          </div>
-                      </div>
-                      <div class="product-info">
-                          <div class="product-brand">Big Bazar Studio</div>
-                          <div class="product-name">Oversized Denim Jacket</div>
-                          <div class="product-price-row">
-                              <span class="product-price">$215.00</span>
-                          </div>
-                          <div class="product-rating"><span class="star">★★★★</span><span class="star"
-                                  style="color:#ddd">★</span> <span
-                                  style="font-size:0.72rem;color:#7a6858;margin-left:4px">(19)</span></div>
-                      </div>
-                  </div>
-
-                  <!-- Product 6 -->
-                  <div class="product-card reveal reveal-delay-1" data-tag="sale">
-                      <div class="product-img-wrap">
-                          <img src="data:image/jpeg;base64,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"
-                              alt="Bag" />
-                          <span class="product-badge sale">Sale</span>
-                          <div class="product-actions">
-                              <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
-                              <button class="wishlist-btn">
-                                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                      <path
-                                          d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                  </svg>
-                              </button>
-                          </div>
-                      </div>
-                      <div class="product-info">
-                          <div class="product-brand">Craft & Co.</div>
-                          <div class="product-name">Structured Leather Tote</div>
-                          <div class="product-price-row">
-                              <span class="product-price">$290.00</span>
-                              <span class="product-price-old">$380.00</span>
-                          </div>
-                          <div class="product-rating"><span class="star">★★★★★</span> <span
-                                  style="font-size:0.72rem;color:#7a6858;margin-left:4px">(44)</span></div>
-                      </div>
-                  </div>
-
-                  <!-- Product 7 -->
-                  <div class="product-card reveal reveal-delay-2" data-tag="trending new">
-                      <div class="product-img-wrap">
-                          <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&q=80&auto=format"
-                              alt="Sneakers" />
-                          <span class="product-badge">New</span>
-                          <div class="product-actions">
-                              <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
-                              <button class="wishlist-btn">
-                                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                      <path
-                                          d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                  </svg>
-                              </button>
-                          </div>
-                      </div>
-                      <div class="product-info">
-                          <div class="product-brand">Sole Studio</div>
-                          <div class="product-name">Classic Canvas Sneakers</div>
-                          <div class="product-price-row">
-                              <span class="product-price">$138.00</span>
-                          </div>
-                          <div class="product-rating"><span class="star">★★★★★</span> <span
-                                  style="font-size:0.72rem;color:#7a6858;margin-left:4px">(89)</span></div>
-                      </div>
-                  </div>
-
-                  <!-- Product 8 -->
-                  <div class="product-card reveal reveal-delay-3" data-tag="trending">
-                      <div class="product-img-wrap">
-                          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80&auto=format"
-                              alt="Watch" />
-                          <div class="product-actions">
-                              <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
-                              <button class="wishlist-btn">
-                                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                      <path
-                                          d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                  </svg>
-                              </button>
-                          </div>
-                      </div>
-                      <div class="product-info">
-                          <div class="product-brand">Tempo Atelier</div>
-                          <div class="product-name">Minimalist Leather Watch</div>
-                          <div class="product-price-row">
-                              <span class="product-price">$425.00</span>
-                          </div>
-                          <div class="product-rating"><span class="star">★★★★★</span> <span
-                                  style="font-size:0.72rem;color:#7a6858;margin-left:4px">(103)</span></div>
-                      </div>
-                  </div>
+                      </a>
+                  @endforeach
               </div>
 
               <div style="text-align:center;margin-top:48px" class="reveal">
@@ -2296,11 +2109,11 @@
           <section class="newsletter">
               <div class="section-label reveal" style="justify-content:center;color:var(--secondary)">Stay Connected
               </div>
-              <h2 class="newsletter-title reveal reveal-delay-1">The Big Bazar <em style="font-style:italic">Edit</em>
+              <h2 class="newsletter-title reveal reveal-delay-1">The Mero Bazar <em style="font-style:italic">Edit</em>
               </h2>
               <p class="newsletter-sub reveal reveal-delay-2">Be the first to know about new arrivals, exclusive
                   offers,<br>and
-                  stories from the world of Big Bazar.</p>
+                  stories from the world of Mero Bazar.</p>
               <div class="newsletter-form reveal reveal-delay-3">
                   <input type="email" placeholder="Enter your email address" id="emailInput" />
                   <button onclick="subscribeNewsletter()">Subscribe</button>
@@ -2308,63 +2121,6 @@
               <p style="font-size:0.68rem;color:rgba(214,192,179,0.3);margin-top:14px;letter-spacing:0.08em"
                   class="reveal reveal-delay-4">No spam, ever. Unsubscribe at any time.</p>
           </section>
-
-
-
-          <!-- ─── QUICK VIEW MODAL ─── -->
-          <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-              <div class="modal-box" style="position:relative">
-                  <button class="modal-close" onclick="closeModal()">
-                      <svg width="14" height="14" fill="none" stroke="white" stroke-width="2"
-                          viewBox="0 0 24 24">
-                          <path d="M18 6L6 18M6 6l12 12" />
-                      </svg>
-                  </button>
-                  <img class="modal-img"
-                      src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80&auto=format"
-                      alt="Product" />
-                  <div class="modal-content">
-                      <div
-                          style="font-size:0.67rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--secondary);margin-bottom:10px">
-                          Big Bazar Studio</div>
-                      <h3
-                          style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--primary);margin-bottom:10px">
-                          Silk Midi Slip Dress</h3>
-                      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
-                          <span style="font-size:1.15rem;font-weight:500;color:var(--primary)">$245.00</span>
-                          <div style="display:flex;gap:2px"><span class="star">★★★★★</span></div>
-                          <span style="font-size:0.72rem;color:#7a6858">(48 reviews)</span>
-                      </div>
-                      <p style="font-size:0.82rem;line-height:1.8;color:#6b5c4e;margin-bottom:22px">Crafted from 100%
-                          pure
-                          silk, this elegant midi dress drapes beautifully and moves with you. A versatile piece for
-                          both
-                          day
-                          and evening.</p>
-                      <div
-                          style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--primary);font-weight:500;margin-bottom:8px">
-                          Select Size</div>
-                      <div class="size-btns">
-                          <button class="size-btn" onclick="selectSize(this)">XS</button>
-                          <button class="size-btn active" onclick="selectSize(this)">S</button>
-                          <button class="size-btn" onclick="selectSize(this)">M</button>
-                          <button class="size-btn" onclick="selectSize(this)">L</button>
-                          <button class="size-btn" onclick="selectSize(this)">XL</button>
-                      </div>
-                      <div style="display:flex;gap:10px;margin-top:22px">
-                          <button class="add-cart-btn" style="flex:1;padding:14px;cursor:none"
-                              onclick="addToCart(this);closeModal()">Add to Cart</button>
-                          <button class="wishlist-btn" style="width:50px;cursor:none">
-                              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                  <path
-                                      d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                              </svg>
-                          </button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-
           <!-- ─── SCRIPTS ─── -->
           <script>
               // ── CURSOR
@@ -2373,10 +2129,17 @@
               let mx = 0,
                   my = 0,
                   rx = 0,
-                  ry = 0;
+                  ry = 0,
+                  cursorReady = false;
               document.addEventListener('mousemove', e => {
                   mx = e.clientX;
                   my = e.clientY;
+
+                  if (!cursorReady) {
+                      cursorReady = true;
+                      dot.classList.add('is-active');
+                      ring.classList.add('is-active');
+                  }
               });
 
               function animCursor() {
@@ -2488,29 +2251,29 @@
                   showToast('Added to cart ✓');
               }
 
-              // ── QUICK VIEW MODAL
-              function openModal() {
-                  document.getElementById('modalOverlay').classList.add('open');
-                  document.body.style.overflow = 'hidden';
-              }
+              //   // ── QUICK VIEW MODAL
+              //   function openModal() {
+              //       document.getElementById('modalOverlay').classList.add('open');
+              //       document.body.style.overflow = 'hidden';
+              //   }
 
-              function closeModal(e) {
-                  if (!e || e.target === document.getElementById('modalOverlay') || e.currentTarget.tagName === 'BUTTON') {
-                      document.getElementById('modalOverlay').classList.remove('open');
-                      document.body.style.overflow = '';
-                  }
-              }
+              //   function closeModal(e) {
+              //       if (!e || e.target === document.getElementById('modalOverlay') || e.currentTarget.tagName === 'BUTTON') {
+              //           document.getElementById('modalOverlay').classList.remove('open');
+              //           document.body.style.overflow = '';
+              //       }
+              //   }
 
-              function selectSize(btn) {
-                  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-                  btn.classList.add('active');
-              }
+              //   function selectSize(btn) {
+              //       document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+              //       btn.classList.add('active');
+              //   }
 
               // ── NEWSLETTER
               function subscribeNewsletter() {
                   const val = document.getElementById('emailInput').value.trim();
                   if (val && val.includes('@')) {
-                      showToast('Subscribed! Welcome to Big Bazar ✓');
+                      showToast('Subscribed! Welcome to Mero Bazar ✓');
                       document.getElementById('emailInput').value = '';
                   } else {
                       showToast('Please enter a valid email');
@@ -2570,37 +2333,6 @@
               }
               startCountdown();
 
-              // ── BEST SELLERS DRAG SCROLL
-              //   const bsTrack = document.getElementById('bsTrack');
-              //   let isDown = false,
-              //       startX, scrollLeft;
-              //   bsTrack.addEventListener('mousedown', e => {
-              //       isDown = true;
-              //       bsTrack.style.cursor = 'grabbing';
-              //       startX = e.pageX - bsTrack.offsetLeft;
-              //       scrollLeft = bsTrack.scrollLeft;
-              //   });
-              //   bsTrack.addEventListener('mouseleave', () => {
-              //       isDown = false;
-              //       bsTrack.style.cursor = 'grab';
-              //   });
-              //   bsTrack.addEventListener('mouseup', () => {
-              //       isDown = false;
-              //       bsTrack.style.cursor = 'grab';
-              //   });
-              //   bsTrack.addEventListener('mousemove', e => {
-              //       if (!isDown) return;
-              //       e.preventDefault();
-              //       const x = e.pageX - bsTrack.offsetLeft;
-              //       bsTrack.scrollLeft = scrollLeft - (x - startX) * 1.4;
-              //   });
-
-              //   function scrollBs(dir) {
-              //       bsTrack.scrollBy({
-              //           left: dir * 304,
-              //           behavior: 'smooth'
-              //       });
-              //   }
 
               // ── BAR ANIMATION ON SCROLL
               const barObs = new IntersectionObserver(entries => {
@@ -2717,5 +2449,5 @@
                   chip.addEventListener('click', () => addToCart(chip));
               });
           </script>
-      </section>
+      </div>
   </x-layout>

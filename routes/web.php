@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 
-Route::post('/seller/shop', [SellerController::class, 'seller_request'])->name('seller.request');
+Route::get('/products', [PageController::class, 'products'])->name('products');
 
-Route::get('/test-mail', function () {
-    return view('mail.seller-approval');
-});
+Route::get('/product/{id}', [PageController::class, 'product'])->name('product');
+
+Route::post('/seller/shop', [SellerController::class, 'seller_request'])->name('seller.request');

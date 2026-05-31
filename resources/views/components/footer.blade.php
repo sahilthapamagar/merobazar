@@ -118,40 +118,6 @@
         color: var(--accent);
     }
 
-    /* ─── MOBILE MENU OVERLAY ─── */
-    .mobile-menu {
-        position: fixed;
-        inset: 0;
-        background: var(--cream);
-        z-index: 999;
-        display: flex;
-        flex-direction: column;
-        padding: 80px 8% 48px;
-        transform: translateX(100%);
-        transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-    }
-
-    .mobile-menu.open {
-        transform: translateX(0);
-    }
-
-    .mobile-menu a {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 2.4rem;
-        font-weight: 300;
-        color: var(--primary);
-        text-decoration: none;
-        padding: 14px 0;
-        border-bottom: 1px solid rgba(171, 136, 109, 0.15);
-        display: block;
-        transition: color 0.3s, padding-left 0.3s;
-    }
-
-    .mobile-menu a:hover {
-        color: var(--secondary);
-        padding-left: 12px;
-    }
-
     /* ─── REVEAL ANIMATIONS ─── */
     .reveal {
         opacity: 0;
@@ -179,12 +145,56 @@
     .reveal-delay-4 {
         transition-delay: 0.4s;
     }
+
+    @media (max-width: 768px) {
+        footer {
+            padding: 48px 5% 24px;
+        }
+
+        .footer-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .footer-brand-name,
+        .footer-desc,
+        .footer-col-title,
+        .footer-links {
+            text-align: center;
+        }
+
+        .footer-desc {
+            max-width: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .social-links {
+            justify-content: center;
+        }
+
+        .footer-links {
+            align-items: center;
+        }
+
+        .footer-bottom {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .footer-legal {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem 1.25rem;
+        }
+    }
 </style>
 <!-- ─── FOOTER ─── -->
 <footer>
     <div class="footer-grid">
         <div>
-            <div class="footer-brand-name">Big Bazar</div>
+            <div class="footer-brand-name">Mero Bazar</div>
             <p class="footer-desc">Curated fashion and lifestyle for those who seek beauty in the details.
                 From
                 our
@@ -260,7 +270,7 @@
     </div>
 
     <div class="footer-bottom">
-        <p class="footer-copyright">© 2025 Big Bazar. All rights reserved.</p>
+        <p class="footer-copyright">© 2025 Mero Bazar. All rights reserved.</p>
         <div class="footer-legal">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>

@@ -35,6 +35,7 @@
 
         html {
             scroll-behavior: smooth;
+            width: 100%;
         }
 
         body {
@@ -43,6 +44,8 @@
             font-family: 'DM Sans', sans-serif;
             overflow-x: hidden;
             cursor: none;
+            width: 100%;
+            max-width: 100%;
         }
 
         /* ─── CUSTOM CURSOR ─── */
@@ -79,6 +82,16 @@
             height: 60px;
             background: rgba(171, 136, 109, 0.08);
             border-color: var(--primary);
+        }
+
+        .cursor-dot,
+        .cursor-ring {
+            opacity: 0;
+        }
+
+        .cursor-dot.is-active,
+        .cursor-ring.is-active {
+            opacity: 1;
         }
 
         /* ─── NOISE TEXTURE OVERLAY ─── */
@@ -122,13 +135,37 @@
 </head>
 
 <body>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
     @include('sweetalert::alert')
-    
+
     <x-navbar />
 
     {{ $slot }}
 
     <x-footer />
+
+    <style>
+        // Cursor
+        const dot=document.getElementById('cursorDot');
+        const ring=document.getElementById('cursorRing');
+
+        if (dot && ring) {
+            document.addEventListener('mousemove', (e)=> {
+                    dot.classList.add('is-active');
+                    ring.classList.add('is-active');
+                    dot.style.left=e.clientX + 'px';
+                    dot.style.top=e.clientY + 'px';
+                    ring.style.left=e.clientX + 'px';
+                    ring.style.top=e.clientY + 'px';
+                });
+
+            document.querySelectorAll('a, button').forEach(el=> {
+                    el.addEventListener('mouseenter', ()=> ring.classList.add('hovering'));
+                    el.addEventListener('mouseleave', ()=> ring.classList.remove('hovering'));
+                });
+        }
+    </style>
 
 </body>
 
