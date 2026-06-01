@@ -45,4 +45,40 @@ class CartController extends Controller
 
         return redirect()->route('cart.index');
     }
+
+    public function update(Request $request, Cart $cart): RedirectResponse
+    {
+        $user = Auth::guard('web')->user();
+
+        if (! $user || $cart->user_id !== $user->id) {
+            abort(403);
+        }
+
+        $cart->load(['product', 'productVarient']);
+        $variant = $cart->productVarient;
+        $product = $cart->product;
+
+        if (! $variant || ! $product) {
+            $cart->delete();
+            toast('This cart item is no longer available.', 'error');
+
+            return redirect()->route('cart.index');
+        }
+
+        $maxQty = $cart->maxQuantity();
+
+        $validated = $request->validate([
+            'quantity' => ['required', 'integer', 'min:1', 'max:'.$maxQty],
+        ]);
+
+        $quantity = (int) $validated['quantity'];
+
+        $cart->quantity = $quantity;
+        $cart->amount = Cart::lineAmountFor($product, $variant, $quantity);
+        $cart->save();
+
+        toast('Cart quantity updated.', 'success');
+
+        return redirect()->route('cart.index');
+    }
 }

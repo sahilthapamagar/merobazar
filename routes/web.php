@@ -18,6 +18,7 @@ Route::post('/cart/store', [AddToCart::class, 'addtocart'])->name('cart.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
 });
 

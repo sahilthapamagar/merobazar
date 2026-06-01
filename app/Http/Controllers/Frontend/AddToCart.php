@@ -29,11 +29,8 @@ class AddToCart extends Controller
         }
 
         $quantity = (int) $request->input('quantity', 1);
-        $unitPrice = (float) $variant->price;
-
-        if ($product->discount > 0) {
-            $unitPrice -= $unitPrice * ((float) $product->discount / 100);
-        }
+        $maxQty = isset($variant->stock) && (int) $variant->stock > 0 ? (int) $variant->stock : 99;
+        $quantity = min(max(1, $quantity), $maxQty);
 
         $cart = new Cart;
         $cart->user_id = $user->id;
@@ -41,7 +38,7 @@ class AddToCart extends Controller
         $cart->product_id = $product->id;
         $cart->product_varient_id = $variant->id;
         $cart->quantity = $quantity;
-        $cart->amount = round($unitPrice * $quantity, 2);
+        $cart->amount = Cart::lineAmountFor($product, $variant, $quantity);
         $cart->save();
 
         toast('Product added to cart successfully!', 'success');

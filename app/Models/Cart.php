@@ -15,6 +15,28 @@ class Cart extends Model
         'amount',
     ];
 
+    public static function lineAmountFor(Product $product, ProductVarient $variant, int $quantity): float
+    {
+        $unitPrice = (float) $variant->price;
+
+        if ($product->discount > 0) {
+            $unitPrice -= $unitPrice * ((float) $product->discount / 100);
+        }
+
+        return round($unitPrice * max(1, $quantity), 2);
+    }
+
+    public function maxQuantity(): int
+    {
+        $variant = $this->productVarient;
+
+        if ($variant && isset($variant->stock) && (int) $variant->stock > 0) {
+            return (int) $variant->stock;
+        }
+
+        return 99;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

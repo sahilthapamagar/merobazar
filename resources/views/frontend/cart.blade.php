@@ -1,270 +1,351 @@
 <x-layout>
     <style>
         .cart-page {
-            padding: 120px 5% 80px;
+            padding: 108px 5% 72px;
             background: var(--background);
             min-height: 100vh;
         }
 
         .cart-page-inner {
-            max-width: 1280px;
+            max-width: 1180px;
             margin: 0 auto;
         }
 
         .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(171, 136, 109, 0.2);
         }
 
         .section-label {
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             letter-spacing: 0.28em;
             text-transform: uppercase;
             color: var(--secondary);
             font-weight: 500;
-            margin-bottom: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-header-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .section-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2rem, 4vw, 3.4rem);
-            font-weight: 300;
-            line-height: 1.15;
+            font-size: clamp(2rem, 3.5vw, 2.75rem);
+            font-weight: 400;
+            line-height: 1.1;
             color: var(--primary);
         }
 
         .section-title em {
             font-style: italic;
+            color: var(--secondary);
+        }
+
+        .cart-header-meta {
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(73, 54, 40, 0.55);
+            font-weight: 500;
         }
 
         .cart-success-banner {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 14px 18px;
-            margin-bottom: 2rem;
-            background: rgba(106, 154, 91, 0.12);
-            border: 1px solid rgba(106, 154, 91, 0.35);
+            padding: 12px 16px;
+            margin-bottom: 1.5rem;
+            background: rgba(106, 154, 91, 0.1);
+            border-left: 3px solid #6a9a5b;
             color: #3d5a34;
-            font-size: 0.88rem;
-            letter-spacing: 0.02em;
-        }
-
-        .cart-success-banner svg {
-            flex-shrink: 0;
+            font-size: 0.86rem;
         }
 
         .cart-layout {
             display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 2.5rem;
+            grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+            gap: 2rem;
             align-items: start;
         }
 
-        .cart-items-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-
-        .cart-item-card {
+        /* ─── Items panel ─── */
+        .cart-items-panel {
             background: #fff;
-            border: 1px solid rgba(171, 136, 109, 0.12);
-            overflow: hidden;
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            border: 1px solid rgba(171, 136, 109, 0.18);
         }
 
-        .cart-item-card:hover {
-            box-shadow: 0 18px 40px rgba(73, 54, 40, 0.08);
-            transform: translateY(-2px);
+        .cart-list-head {
+            display: grid;
+            grid-template-columns: 100px minmax(0, 1fr) 130px 120px;
+            gap: 1.5rem;
+            padding: 14px 24px;
+            background: var(--cream);
+            border-bottom: 1px solid rgba(171, 136, 109, 0.15);
+            font-size: 0.65rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--secondary);
+            font-weight: 600;
         }
 
-        .cart-item-img-wrap {
-            position: relative;
-            aspect-ratio: 4/3;
-            overflow: hidden;
+        .cart-list-head span:nth-child(3) {
+            text-align: center;
+        }
+
+        .cart-list-head span:last-child {
+            text-align: right;
+        }
+
+        .cart-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cart-row {
+            display: grid;
+            grid-template-columns: 100px minmax(0, 1fr) 130px 120px;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 1.25rem 24px;
+            border-bottom: 1px solid rgba(171, 136, 109, 0.12);
+        }
+
+        .cart-row:last-child {
+            border-bottom: none;
+        }
+
+        .cart-row-img {
+            display: block;
+            width: 100px;
+            height: 120px;
             background: var(--background);
+            overflow: hidden;
+            flex-shrink: 0;
         }
 
-        .cart-item-img-wrap img {
+        .cart-row-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.4s ease;
         }
 
-        .cart-item-badge {
-            position: absolute;
-            top: 14px;
-            left: 14px;
-            background: var(--primary);
-            color: var(--accent);
-            padding: 0.35rem 0.65rem;
-            font-size: 0.65rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            font-weight: 500;
+        .cart-row-img:hover img {
+            transform: scale(1.04);
         }
 
-        .cart-item-body {
-            padding: 18px;
+        .cart-row-details {
+            min-width: 0;
         }
 
-        .cart-item-name {
+        .cart-row-name {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.15rem;
+            font-size: 1.35rem;
             font-weight: 500;
             color: var(--primary);
-            margin-bottom: 6px;
-            line-height: 1.3;
+            margin: 0 0 4px;
+            line-height: 1.25;
         }
 
-        .cart-item-name a {
+        .cart-row-name a {
             color: inherit;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: color 0.2s ease;
         }
 
-        .cart-item-name a:hover {
+        .cart-row-name a:hover {
             color: var(--secondary);
         }
 
-        .cart-item-variant {
-            font-size: 0.78rem;
-            color: rgba(73, 54, 40, 0.55);
-            margin-bottom: 14px;
-            letter-spacing: 0.04em;
+        .cart-row-variant {
+            font-size: 0.8rem;
+            color: rgba(73, 54, 40, 0.5);
+            margin: 0 0 10px;
         }
 
-        .cart-item-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 14px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(171, 136, 109, 0.15);
-        }
-
-        .cart-item-qty {
-            font-size: 0.75rem;
+        .cart-row-discount {
+            display: inline-block;
+            font-size: 0.62rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--secondary);
-            font-weight: 500;
-        }
-
-        .cart-item-price {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--primary);
-        }
-
-        .cart-item-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .cart-item-link {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            font-size: 0.72rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-weight: 500;
-            text-decoration: none;
-            border: 1px solid var(--accent);
-            color: var(--primary);
-            transition: all 0.3s ease;
-            cursor: none;
-        }
-
-        .cart-item-link:hover {
             background: var(--primary);
             color: var(--accent);
-            border-color: var(--primary);
-        }
-
-        .cart-remove-btn {
-            padding: 10px 14px;
-            font-size: 0.72rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
+            padding: 0.2rem 0.45rem;
+            margin-bottom: 8px;
             font-weight: 500;
-            background: transparent;
-            border: 1px solid rgba(176, 64, 64, 0.35);
-            color: #9a4a4a;
+        }
+
+        .cart-row-remove {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0;
+            border: none;
+            background: none;
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            color: rgba(154, 74, 74, 0.85);
             cursor: none;
-            transition: all 0.3s ease;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            transition: color 0.2s ease;
         }
 
-        .cart-remove-btn:hover {
-            background: rgba(176, 64, 64, 0.08);
-            border-color: #9a4a4a;
+        .cart-row-remove:hover {
+            color: #7a3535;
         }
 
+        .cart-row-qty-cell {
+            display: flex;
+            justify-content: center;
+        }
+
+        .cart-row-price-cell {
+            text-align: right;
+        }
+
+        .cart-qty-form {
+            display: block;
+        }
+
+        .cart-qty {
+            display: inline-flex;
+            align-items: stretch;
+            border: 1px solid rgba(171, 136, 109, 0.35);
+            background: #fff;
+        }
+
+        .cart-qty-btn {
+            width: 2.5rem;
+            border: none;
+            background: transparent;
+            color: var(--primary);
+            font-size: 1rem;
+            cursor: none;
+            transition: background 0.2s ease;
+        }
+
+        .cart-qty-btn:hover:not(:disabled) {
+            background: var(--cream);
+        }
+
+        .cart-qty-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .cart-qty-input {
+            width: 3rem;
+            text-align: center;
+            border: none;
+            border-left: 1px solid rgba(171, 136, 109, 0.25);
+            border-right: 1px solid rgba(171, 136, 109, 0.25);
+            font-size: 0.88rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            color: var(--primary);
+            background: transparent;
+            padding: 0.5rem 0;
+            -moz-appearance: textfield;
+        }
+
+        .cart-qty-input::-webkit-outer-spin-button,
+        .cart-qty-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .cart-qty-input:focus {
+            outline: none;
+        }
+
+        .cart-row-price-block {
+            min-width: 110px;
+        }
+
+        .cart-row-unit {
+            display: block;
+            font-size: 0.72rem;
+            color: rgba(73, 54, 40, 0.45);
+            margin-bottom: 2px;
+        }
+
+        .cart-row-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        /* ─── Summary ─── */
         .cart-summary {
             background: #fff;
-            border: 1px solid rgba(171, 136, 109, 0.12);
-            padding: 28px 24px;
+            border: 1px solid rgba(171, 136, 109, 0.18);
+            padding: 1.75rem 1.5rem;
             position: sticky;
-            top: 100px;
+            top: 96px;
         }
 
         .cart-summary-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
+            font-size: 1.45rem;
             font-weight: 500;
             color: var(--primary);
-            margin-bottom: 1.25rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(171, 136, 109, 0.15);
+            margin: 0 0 1.25rem;
         }
 
         .cart-summary-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            padding: 0.5rem 0;
             font-size: 0.88rem;
-            color: rgba(73, 54, 40, 0.7);
+            color: rgba(73, 54, 40, 0.65);
+        }
+
+        .cart-summary-divider {
+            height: 1px;
+            background: rgba(171, 136, 109, 0.2);
+            margin: 0.75rem 0 1rem;
         }
 
         .cart-summary-row.total {
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(171, 136, 109, 0.2);
-            font-size: 1rem;
+            font-size: 0.92rem;
             font-weight: 600;
             color: var(--primary);
+            padding-top: 0;
         }
 
         .cart-summary-row.total span:last-child {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.35rem;
+            font-size: 1.5rem;
+            font-weight: 600;
         }
 
         .cart-checkout-btn {
             display: block;
             width: 100%;
-            margin-top: 1.5rem;
-            padding: 16px;
+            margin-top: 1.25rem;
+            padding: 1rem 1.25rem;
             background: var(--primary);
-            color: var(--accent);
-            font-size: 0.75rem;
-            letter-spacing: 0.14em;
+            color: var(--cream);
+            font-size: 0.72rem;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
-            font-weight: 500;
+            font-weight: 600;
             text-align: center;
             text-decoration: none;
             border: none;
             cursor: none;
-            transition: background 0.3s ease;
+            transition: background 0.25s ease;
         }
 
         .cart-checkout-btn:hover {
@@ -274,56 +355,57 @@
         .cart-continue-btn {
             display: block;
             width: 100%;
-            margin-top: 10px;
-            padding: 14px;
+            margin-top: 0.65rem;
+            padding: 0.9rem;
             background: transparent;
             color: var(--primary);
-            font-size: 0.72rem;
-            letter-spacing: 0.1em;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
             font-weight: 500;
             text-align: center;
             text-decoration: none;
-            border: 1px solid var(--accent);
+            border: none;
             cursor: none;
-            transition: all 0.3s ease;
+            transition: color 0.2s ease;
         }
 
         .cart-continue-btn:hover {
-            border-color: var(--secondary);
             color: var(--secondary);
+        }
+
+        .cart-trust {
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(171, 136, 109, 0.15);
+            font-size: 0.72rem;
+            color: rgba(73, 54, 40, 0.45);
+            line-height: 1.6;
+            letter-spacing: 0.02em;
         }
 
         .cart-empty {
             text-align: center;
-            padding: 5rem 1.5rem;
+            padding: 4rem 2rem;
             background: #fff;
-            border: 1px solid rgba(171, 136, 109, 0.12);
+            border: 1px solid rgba(171, 136, 109, 0.18);
         }
 
         .cart-empty p {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
+            font-size: 1.75rem;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .cart-empty span {
             display: block;
             font-size: 0.9rem;
-            color: rgba(73, 54, 40, 0.55);
-            margin-bottom: 2rem;
+            color: rgba(73, 54, 40, 0.5);
+            margin-bottom: 1.75rem;
         }
 
-        .cart-item-count {
-            font-size: 0.78rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--secondary);
-            font-weight: 500;
-        }
-
-        @media (max-width: 1024px) {
+        @media (max-width: 900px) {
             .cart-layout {
                 grid-template-columns: 1fr;
             }
@@ -332,126 +414,214 @@
                 position: static;
             }
 
-            .cart-items-grid {
-                grid-template-columns: 1fr;
+            .cart-list-head {
+                display: none;
+            }
+
+            .cart-row {
+                grid-template-columns: 88px minmax(0, 1fr) auto;
+                grid-template-rows: auto auto;
+                gap: 0.75rem 1rem;
+            }
+
+            .cart-row-img {
+                width: 88px;
+                height: 108px;
+                grid-row: 1 / 3;
+            }
+
+            .cart-row-details {
+                grid-column: 2 / 4;
+            }
+
+            .cart-row-qty-cell {
+                grid-column: 2;
+                grid-row: 2;
+                justify-content: flex-start;
+            }
+
+            .cart-row-price-cell {
+                grid-column: 3;
+                grid-row: 2;
+                justify-content: flex-end;
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 480px) {
             .cart-page {
-                padding: 100px 5% 60px;
+                padding: 96px 4% 48px;
             }
 
-            .cart-header {
-                flex-direction: column;
-                align-items: flex-start;
+            .cart-row {
+                padding: 1rem 16px;
+                gap: 1rem;
             }
 
-            .cart-items-grid {
-                grid-template-columns: 1fr;
+            .cart-list-head {
+                padding: 12px 16px;
             }
         }
     </style>
 
     <section class="cart-page">
         <div class="cart-page-inner">
-            <div class="cart-header">
-                <div>
-                    <div class="section-label">Your Bag</div>
+            <header class="cart-header">
+                <p class="section-label">Your Bag</p>
+                <div class="cart-header-row">
                     <h1 class="section-title">Shopping <em>Cart</em></h1>
+                    @if ($cartItems->isNotEmpty())
+                        <p class="cart-header-meta">
+                            {{ $cartItems->sum('quantity') }} {{ Str::plural('piece', $cartItems->sum('quantity')) }}
+                            &middot; {{ $cartItems->count() }} {{ Str::plural('product', $cartItems->count()) }}
+                        </p>
+                    @endif
                 </div>
-                @if ($cartItems->isNotEmpty())
-                    <span class="cart-item-count">{{ $cartItems->count() }}
-                        {{ Str::plural('item', $cartItems->count()) }}</span>
-                @endif
-            </div>
+            </header>
 
             @if (session('cart_added'))
                 <div class="cart-success-banner" role="status">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
                         <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <span>Product added to cart successfully. Review your items below.</span>
+                    <span>Added to your bag successfully.</span>
                 </div>
             @endif
 
             @if ($cartItems->isEmpty())
                 <div class="cart-empty">
-                    <p>Your cart is empty</p>
-                    <span>Discover our collection and add something you love.</span>
-                    <a href="{{ route('products') }}" class="cart-checkout-btn" style="max-width: 280px; margin: 0 auto;">
-                        Browse Products
-                    </a>
+                    <p>Your bag is empty</p>
+                    <span>Explore our collection and find something you love.</span>
+                    <a href="{{ route('products') }}" class="cart-checkout-btn"
+                        style="max-width: 260px; margin: 0 auto;">Browse Products</a>
                 </div>
             @else
                 <div class="cart-layout">
-                    <div class="cart-items-grid">
-                        @foreach ($cartItems as $item)
-                            @php
-                                $variant = $item->productVarient;
-                                $product = $item->product;
-                                $image = $variant && ! empty($variant->images[0])
-                                    ? $variant->images[0]
-                                    : null;
-                            @endphp
+                    <div class="cart-items-panel">
+                        <div class="cart-list-head" aria-hidden="true">
+                            <span></span>
+                            <span>Product</span>
+                            <span>Quantity</span>
+                            <span>Total</span>
+                        </div>
+                        <ul class="cart-list">
+                            @foreach ($cartItems as $item)
+                                @php
+                                    $variant = $item->productVarient;
+                                    $product = $item->product;
+                                    $image = $variant && ! empty($variant->images[0]) ? $variant->images[0] : null;
+                                    $maxQty = $item->maxQuantity();
+                                    $unitPrice = $item->quantity > 0 ? (float) $item->amount / $item->quantity : 0;
+                                @endphp
+                                <li class="cart-row">
+                                    <a href="{{ route('product', $product->id) }}" class="cart-row-img">
+                                        @if ($image)
+                                            <img src="{{ asset('storage/' . $image) }}" alt="{{ $product->name }}">
+                                        @endif
+                                    </a>
 
-                            <article class="cart-item-card">
-                                <div class="cart-item-img-wrap">
-                                    @if ($image)
-                                        <a href="{{ route('product', $product->id) }}">
-                                            <img src="{{ asset('storage/' . $image) }}"
-                                                alt="{{ $product->name }}">
-                                        </a>
-                                    @endif
-                                    @if ($product->discount)
-                                        <span class="cart-item-badge">-{{ $product->discount }}%</span>
-                                    @endif
-                                </div>
-
-                                <div class="cart-item-body">
-                                    <h2 class="cart-item-name">
-                                        <a href="{{ route('product', $product->id) }}">{{ $product->name }}</a>
-                                    </h2>
-                                    @if ($variant?->name)
-                                        <p class="cart-item-variant">{{ $variant->name }}</p>
-                                    @endif
-
-                                    <div class="cart-item-meta">
-                                        <span class="cart-item-qty">Qty: {{ $item->quantity }}</span>
-                                        <span class="cart-item-price">Rs.
-                                            {{ number_format((float) $item->amount, 2) }}</span>
-                                    </div>
-
-                                    <div class="cart-item-actions">
-                                        <a href="{{ route('product', $product->id) }}"
-                                            class="cart-item-link">View Product</a>
-                                        <form action="{{ route('cart.destroy', $item) }}" method="POST">
+                                    <div class="cart-row-details">
+                                        @if ($product->discount)
+                                            <span class="cart-row-discount">-{{ $product->discount }}% off</span>
+                                        @endif
+                                        <h2 class="cart-row-name">
+                                            <a href="{{ route('product', $product->id) }}">{{ $product->name }}</a>
+                                        </h2>
+                                        @if ($variant?->name)
+                                            <p class="cart-row-variant">{{ $variant->name }}</p>
+                                        @endif
+                                        <form action="{{ route('cart.destroy', $item) }}" method="POST"
+                                            class="cart-remove-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="cart-remove-btn">Remove</button>
+                                            <button type="submit" class="cart-row-remove">Remove</button>
                                         </form>
                                     </div>
-                                </div>
-                            </article>
-                        @endforeach
+
+                                    <div class="cart-row-qty-cell">
+                                        <form action="{{ route('cart.update', $item) }}" method="POST"
+                                            class="cart-qty-form" data-cart-qty-form>
+                                            @csrf
+                                            @method('PATCH')
+                                            <div class="cart-qty">
+                                                <button type="button" class="cart-qty-btn" data-qty-decrease
+                                                    aria-label="Decrease"
+                                                    {{ $item->quantity <= 1 ? 'disabled' : '' }}>−</button>
+                                                <input type="number" name="quantity" class="cart-qty-input"
+                                                    value="{{ $item->quantity }}" min="1" max="{{ $maxQty }}"
+                                                    aria-label="Quantity">
+                                                <button type="button" class="cart-qty-btn" data-qty-increase
+                                                    aria-label="Increase"
+                                                    {{ $item->quantity >= $maxQty ? 'disabled' : '' }}>+</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="cart-row-price-cell">
+                                        @if ($item->quantity > 1)
+                                            <div>
+                                                <span class="cart-row-unit">Rs. {{ number_format($unitPrice, 2) }}
+                                                    each</span>
+                                                <span class="cart-row-price">Rs.
+                                                    {{ number_format((float) $item->amount, 2) }}</span>
+                                            </div>
+                                        @else
+                                            <span class="cart-row-price">Rs.
+                                                {{ number_format((float) $item->amount, 2) }}</span>
+                                        @endif
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
 
                     <aside class="cart-summary">
                         <h2 class="cart-summary-title">Order Summary</h2>
                         <div class="cart-summary-row">
-                            <span>Items ({{ $cartItems->sum('quantity') }})</span>
-                            <span>{{ $cartItems->count() }} products</span>
+                            <span>Subtotal ({{ $cartItems->sum('quantity') }} items)</span>
+                            <span>Rs. {{ number_format((float) $subtotal, 2) }}</span>
                         </div>
+                        <div class="cart-summary-row">
+                            <span>Shipping</span>
+                            <span>Calculated at checkout</span>
+                        </div>
+                        <div class="cart-summary-divider"></div>
                         <div class="cart-summary-row total">
-                            <span>Subtotal</span>
+                            <span>Total</span>
                             <span>Rs. {{ number_format((float) $subtotal, 2) }}</span>
                         </div>
                         <a href="#" class="cart-checkout-btn">Proceed to Checkout</a>
-                        <a href="{{ route('products') }}" class="cart-continue-btn">Continue Shopping</a>
+                        <a href="{{ route('products') }}" class="cart-continue-btn">&larr; Continue Shopping</a>
+                        <p class="cart-trust">Secure checkout &middot; Free returns on eligible orders</p>
                     </aside>
                 </div>
             @endif
         </div>
     </section>
+
+    <script>
+        document.querySelectorAll('[data-cart-qty-form]').forEach((form) => {
+            const input = form.querySelector('.cart-qty-input');
+            const decreaseBtn = form.querySelector('[data-qty-decrease]');
+            const increaseBtn = form.querySelector('[data-qty-increase]');
+            const min = parseInt(input.min, 10) || 1;
+            const max = parseInt(input.max, 10) || 99;
+
+            const syncButtons = () => {
+                const value = parseInt(input.value, 10) || min;
+                decreaseBtn.disabled = value <= min;
+                increaseBtn.disabled = value >= max;
+            };
+
+            const submitQty = (nextValue) => {
+                input.value = Math.min(max, Math.max(min, nextValue));
+                syncButtons();
+                form.submit();
+            };
+
+            decreaseBtn.addEventListener('click', () => submitQty((parseInt(input.value, 10) || min) - 1));
+            increaseBtn.addEventListener('click', () => submitQty((parseInt(input.value, 10) || min) + 1));
+            input.addEventListener('change', () => submitQty(parseInt(input.value, 10) || min));
+            syncButtons();
+        });
+    </script>
 </x-layout>
