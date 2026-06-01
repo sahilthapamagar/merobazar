@@ -636,7 +636,7 @@
                 <ol>
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li class="sep">/</li>
-                    <li><a href="{{ route('home') }}#categories">Products</a></li>
+                    <li><a href="{{ route('products') }}#categories">Products</a></li>
                     <li class="sep">/</li>
                     <li class="current">{{ $product->name }}</li>
                 </ol>
@@ -738,10 +738,10 @@
                             </div>
                         </div>
 
-                        <form action="" method="POST">
+                        <form action="{{ route('cart.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <input type="hidden" name="variant_id" id="selected-variant-id"
+                            <input type="hidden" name="product_varient_id" id="selected-variant-id"
                                 value="{{ $firstVariant ? $firstVariant->id : '' }}">
                             <input type="hidden" name="quantity" id="form-quantity" value="1">
 

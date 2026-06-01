@@ -18,7 +18,7 @@ class PageController extends Controller
 
     public function products()
     {
-        $products = Product::with('productVarient')->whereStock(true)->get();
+        $products = Product::with('productVarient')->whereStock(true)->latest()->get();
 
         return view('frontend.products', compact('products'));
     }

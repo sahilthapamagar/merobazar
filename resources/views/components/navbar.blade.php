@@ -456,7 +456,12 @@
                     </svg>
                 </a>
             @endif
-            <button type="button" class="nav-icon cart-wrap" onclick="typeof openModal === 'function' && openModal()"
+            @php
+                $cartCount = Auth::guard('web')->check()
+                    ? Auth::guard('web')->user()->carts()->count()
+                    : 0;
+            @endphp
+            <a href="{{ $cartCount > 0 ? route('cart.index') : route('products') }}" class="nav-icon cart-wrap"
                 aria-label="Cart">
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"
                     viewBox="0 0 24 24">
@@ -464,8 +469,10 @@
                     <line x1="3" y1="6" x2="21" y2="6" />
                     <path d="M16 10a4 4 0 01-8 0" />
                 </svg>
-                <span class="cart-badge">3</span>
-            </button>
+                @if ($cartCount > 0)
+                    <span class="cart-badge">{{ $cartCount }}</span>
+                @endif
+            </a>
             <button type="button" class="mobile-menu-btn nav-icon" onclick="toggleMobileMenu()" aria-label="Menu">
                 <svg id="menuIcon" width="22" height="22" fill="none" stroke="currentColor"
                     stroke-width="1.8" viewBox="0 0 24 24">
@@ -485,6 +492,7 @@
         <a href="#" onclick="toggleMobileMenu()">Home &amp; Living</a>
         <a href="#" onclick="toggleMobileMenu()">Collections</a>
         <a href="#" onclick="toggleMobileMenu()">Sale</a>
+        <a href="{{ route('cart.index') }}" onclick="toggleMobileMenu()">Cart</a>
         @if ($user = Auth::guard('web')->user())
             <a href="{{ route('profile.edit') }}" onclick="toggleMobileMenu()">Profile</a>
             <form method="POST" action="{{ route('logout') }}" class="mobile-logout-form">

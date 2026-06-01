@@ -2123,40 +2123,6 @@
           </section>
           <!-- ─── SCRIPTS ─── -->
           <script>
-              // ── CURSOR
-              const dot = document.getElementById('cursorDot');
-              const ring = document.getElementById('cursorRing');
-              let mx = 0,
-                  my = 0,
-                  rx = 0,
-                  ry = 0,
-                  cursorReady = false;
-              document.addEventListener('mousemove', e => {
-                  mx = e.clientX;
-                  my = e.clientY;
-
-                  if (!cursorReady) {
-                      cursorReady = true;
-                      dot.classList.add('is-active');
-                      ring.classList.add('is-active');
-                  }
-              });
-
-              function animCursor() {
-                  dot.style.left = mx + 'px';
-                  dot.style.top = my + 'px';
-                  rx += (mx - rx) * 0.14;
-                  ry += (my - ry) * 0.14;
-                  ring.style.left = rx + 'px';
-                  ring.style.top = ry + 'px';
-                  requestAnimationFrame(animCursor);
-              }
-              animCursor();
-              document.querySelectorAll('a,button,[class*="cat-card"],[class*="product-card"]').forEach(el => {
-                  el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
-                  el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
-              });
-
               // ── NAVBAR SCROLL
               const navbar = document.getElementById('navbar');
               window.addEventListener('scroll', () => {

@@ -317,9 +317,6 @@
     </style>
 
     <section class="products-page">
-        <div class="cursor-dot" id="cursorDot"></div>
-        <div class="cursor-ring" id="cursorRing"></div>
-
         <div class="products-page-inner">
             <div class="products-header">
                 <div>
@@ -417,46 +414,6 @@
     </section>
 
     <script>
-        (function initCursor() {
-            const dot = document.getElementById('cursorDot');
-            const ring = document.getElementById('cursorRing');
-            if (!dot || !ring) return;
-
-            let mx = 0,
-                my = 0,
-                rx = 0,
-                ry = 0,
-                cursorReady = false;
-
-            document.addEventListener('mousemove', e => {
-                mx = e.clientX;
-                my = e.clientY;
-
-                if (!cursorReady) {
-                    cursorReady = true;
-                    dot.classList.add('is-active');
-                    ring.classList.add('is-active');
-                }
-            });
-
-            function animCursor() {
-                dot.style.left = mx + 'px';
-                dot.style.top = my + 'px';
-                rx += (mx - rx) * 0.14;
-                ry += (my - ry) * 0.14;
-                ring.style.left = rx + 'px';
-                ring.style.top = ry + 'px';
-                requestAnimationFrame(animCursor);
-            }
-
-            animCursor();
-
-            document.querySelectorAll('.product-interactive, .filter-btn, .variant-swatch').forEach(el => {
-                el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
-                el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
-            });
-        })();
-
         document.querySelectorAll('.variant-swatch').forEach(swatch => {
             swatch.addEventListener('click', function(event) {
                 event.preventDefault();

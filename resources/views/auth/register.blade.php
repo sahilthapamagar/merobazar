@@ -841,35 +841,6 @@
 
     </div>{{-- /.register-page --}}
     <script>
-        // ─── CUSTOM CURSOR ───
-        const dot = document.getElementById('cursorDot');
-        const ring = document.getElementById('cursorRing');
-        if (dot && ring) {
-            let mouseX = 0,
-                mouseY = 0,
-                ringX = 0,
-                ringY = 0;
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                dot.classList.add('is-active');
-                ring.classList.add('is-active');
-                dot.style.left = mouseX + 'px';
-                dot.style.top = mouseY + 'px';
-            });
-            (function animateRing() {
-                ringX += (mouseX - ringX) * 0.11;
-                ringY += (mouseY - ringY) * 0.11;
-                ring.style.left = ringX + 'px';
-                ring.style.top = ringY + 'px';
-                requestAnimationFrame(animateRing);
-            })();
-            document.querySelectorAll('a, button, .reg-checkbox, input, label').forEach(el => {
-                el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
-                el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
-            });
-        }
-
         // ─── PASSWORD TOGGLES ───
         function makeToggle(btnId, inputId, onId, offId) {
             const btn = document.getElementById(btnId);

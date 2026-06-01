@@ -752,47 +752,6 @@
     </section>
 
     <script>
-        // ─── CUSTOM CURSOR ───
-        const dot = document.getElementById('cursorDot');
-        const ring = document.getElementById('cursorRing');
-        let mouseX = 0,
-            mouseY = 0;
-        let ringX = 0,
-            ringY = 0;
-        let ringAnimFrame;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-
-            dot.classList.add('is-active');
-            ring.classList.add('is-active');
-
-            // Dot follows instantly
-            dot.style.left = mouseX + 'px';
-            dot.style.top = mouseY + 'px';
-        });
-
-        // Ring follows with smooth lag
-        function animateRing() {
-            const ease = 0.11;
-            ringX += (mouseX - ringX) * ease;
-            ringY += (mouseY - ringY) * ease;
-            ring.style.left = ringX + 'px';
-            ring.style.top = ringY + 'px';
-            ringAnimFrame = requestAnimationFrame(animateRing);
-        }
-        animateRing();
-
-        // Hover effect on interactive elements
-        const hoverTargets = document.querySelectorAll(
-            'a, button, .custom-checkbox, .check-group, input, label'
-        );
-        hoverTargets.forEach(el => {
-            el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
-        });
-
         // ─── TOGGLE PASSWORD ───
         const togglePw = document.getElementById('togglePw');
         const pwInput = document.getElementById('password');
