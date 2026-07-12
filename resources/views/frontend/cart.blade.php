@@ -74,6 +74,98 @@
             align-items: start;
         }
 
+        .cart-seller-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* ─── Seller group ─── */
+        .cart-seller-group {
+            background: #fff;
+            border: 1px solid rgba(171, 136, 109, 0.18);
+        }
+
+        .cart-seller-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding: 14px 24px;
+            background: var(--cream);
+            border-bottom: 1px solid rgba(171, 136, 109, 0.15);
+        }
+
+        .cart-seller-label {
+            font-size: 0.62rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .cart-seller-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .cart-seller-meta {
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            color: rgba(73, 54, 40, 0.5);
+            text-transform: uppercase;
+        }
+
+        .cart-seller-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding: 14px 24px;
+            background: var(--cream);
+            border-top: 1px solid rgba(171, 136, 109, 0.15);
+        }
+
+        .cart-seller-subtotal {
+            font-size: 0.82rem;
+            color: rgba(73, 54, 40, 0.65);
+        }
+
+        .cart-seller-subtotal strong {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        .cart-seller-checkout {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.25rem;
+            background: var(--primary);
+            color: var(--cream);
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: none;
+            transition: background 0.25s ease;
+        }
+
+        .cart-seller-checkout:hover {
+            background: var(--secondary);
+        }
+
         /* ─── Items panel ─── */
         .cart-items-panel {
             background: #fff;
@@ -384,6 +476,28 @@
             letter-spacing: 0.02em;
         }
 
+        .cart-seller-summary-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.45rem 0;
+            font-size: 0.82rem;
+            color: rgba(73, 54, 40, 0.65);
+        }
+
+        .cart-seller-summary-item span:first-child {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .cart-seller-summary-item span:last-child {
+            flex-shrink: 0;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
         .cart-empty {
             text-align: center;
             padding: 4rem 2rem;
@@ -472,7 +586,7 @@
                     @if ($cartItems->isNotEmpty())
                         <p class="cart-header-meta">
                             {{ $cartItems->sum('quantity') }} {{ Str::plural('piece', $cartItems->sum('quantity')) }}
-                            &middot; {{ $cartItems->count() }} {{ Str::plural('product', $cartItems->count()) }}
+                            &middot; {{ $cartGroups->count() }} {{ Str::plural('seller', $cartGroups->count()) }}
                         </p>
                     @endif
                 </div>
@@ -497,101 +611,143 @@
                 </div>
             @else
                 <div class="cart-layout">
-                    <div class="cart-items-panel">
-                        <div class="cart-list-head" aria-hidden="true">
-                            <span></span>
-                            <span>Product</span>
-                            <span>Quantity</span>
-                            <span>Total</span>
-                        </div>
-                        <ul class="cart-list">
-                            @foreach ($cartItems as $item)
-                                @php
-                                    $variant = $item->productVarient;
-                                    $product = $item->product;
-                                    $image = $variant && ! empty($variant->images[0]) ? $variant->images[0] : null;
-                                    $maxQty = $item->maxQuantity();
-                                    $unitPrice = $item->quantity > 0 ? (float) $item->amount / $item->quantity : 0;
-                                @endphp
-                                <li class="cart-row">
-                                    <a href="{{ route('product', $product->id) }}" class="cart-row-img">
-                                        @if ($image)
-                                            <img src="{{ asset('storage/' . $image) }}" alt="{{ $product->name }}">
-                                        @endif
-                                    </a>
-
-                                    <div class="cart-row-details">
-                                        @if ($product->discount)
-                                            <span class="cart-row-discount">-{{ $product->discount }}% off</span>
-                                        @endif
-                                        <h2 class="cart-row-name">
-                                            <a href="{{ route('product', $product->id) }}">{{ $product->name }}</a>
+                    <div class="cart-seller-groups">
+                        @foreach ($cartGroups as $group)
+                            @php
+                                $seller = $group['seller'];
+                            @endphp
+                            <section class="cart-seller-group">
+                                <header class="cart-seller-head">
+                                    <div>
+                                        <p class="cart-seller-label">Sold by</p>
+                                        <h2 class="cart-seller-name">
+                                            {{ $seller?->shop_name ?? 'Unknown Seller' }}
                                         </h2>
-                                        @if ($variant?->name)
-                                            <p class="cart-row-variant">{{ $variant->name }}</p>
-                                        @endif
-                                        <form action="{{ route('cart.destroy', $item) }}" method="POST"
-                                            class="cart-remove-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="cart-row-remove">Remove</button>
-                                        </form>
                                     </div>
+                                    <span class="cart-seller-meta">
+                                        {{ $group['quantity'] }} {{ Str::plural('item', $group['quantity']) }}
+                                    </span>
+                                </header>
 
-                                    <div class="cart-row-qty-cell">
-                                        <form action="{{ route('cart.update', $item) }}" method="POST"
-                                            class="cart-qty-form" data-cart-qty-form>
-                                            @csrf
-                                            @method('PATCH')
-                                            <div class="cart-qty">
-                                                <button type="button" class="cart-qty-btn" data-qty-decrease
-                                                    aria-label="Decrease"
-                                                    {{ $item->quantity <= 1 ? 'disabled' : '' }}>−</button>
-                                                <input type="number" name="quantity" class="cart-qty-input"
-                                                    value="{{ $item->quantity }}" min="1" max="{{ $maxQty }}"
-                                                    aria-label="Quantity">
-                                                <button type="button" class="cart-qty-btn" data-qty-increase
-                                                    aria-label="Increase"
-                                                    {{ $item->quantity >= $maxQty ? 'disabled' : '' }}>+</button>
+                                <div class="cart-list-head" aria-hidden="true">
+                                    <span></span>
+                                    <span>Product</span>
+                                    <span>Quantity</span>
+                                    <span>Total</span>
+                                </div>
+                                <ul class="cart-list">
+                                    @foreach ($group['items'] as $item)
+                                        @php
+                                            $variant = $item->productVarient;
+                                            $product = $item->product;
+                                            $image = $variant && ! empty($variant->images[0]) ? $variant->images[0] : null;
+                                            $maxQty = $item->maxQuantity();
+                                            $unitPrice = $item->quantity > 0 ? (float) $item->amount / $item->quantity : 0;
+                                        @endphp
+                                        <li class="cart-row">
+                                            <a href="{{ route('product', $product->id) }}" class="cart-row-img">
+                                                @if ($image)
+                                                    <img src="{{ asset('storage/' . $image) }}"
+                                                        alt="{{ $product->name }}">
+                                                @endif
+                                            </a>
+
+                                            <div class="cart-row-details">
+                                                @if ($product->discount)
+                                                    <span class="cart-row-discount">-{{ $product->discount }}% off</span>
+                                                @endif
+                                                <h3 class="cart-row-name">
+                                                    <a href="{{ route('product', $product->id) }}">{{ $product->name }}</a>
+                                                </h3>
+                                                @if ($variant?->name)
+                                                    <p class="cart-row-variant">{{ $variant->name }}</p>
+                                                @endif
+                                                <form action="{{ route('cart.destroy', $item) }}" method="POST"
+                                                    class="cart-remove-form">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="cart-row-remove">Remove</button>
+                                                </form>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <div class="cart-row-price-cell">
-                                        @if ($item->quantity > 1)
-                                            <div>
-                                                <span class="cart-row-unit">Rs. {{ number_format($unitPrice, 2) }}
-                                                    each</span>
-                                                <span class="cart-row-price">Rs.
-                                                    {{ number_format((float) $item->amount, 2) }}</span>
+
+                                            <div class="cart-row-qty-cell">
+                                                <form action="{{ route('cart.update', $item) }}" method="POST"
+                                                    class="cart-qty-form" data-cart-qty-form>
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <div class="cart-qty">
+                                                        <button type="button" class="cart-qty-btn" data-qty-decrease
+                                                            aria-label="Decrease"
+                                                            {{ $item->quantity <= 1 ? 'disabled' : '' }}>−</button>
+                                                        <input type="number" name="quantity" class="cart-qty-input"
+                                                            value="{{ $item->quantity }}" min="1"
+                                                            max="{{ $maxQty }}" aria-label="Quantity">
+                                                        <button type="button" class="cart-qty-btn" data-qty-increase
+                                                            aria-label="Increase"
+                                                            {{ $item->quantity >= $maxQty ? 'disabled' : '' }}>+</button>
+                                                    </div>
+                                                </form>
                                             </div>
-                                        @else
-                                            <span class="cart-row-price">Rs.
-                                                {{ number_format((float) $item->amount, 2) }}</span>
-                                        @endif
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
+                                            <div class="cart-row-price-cell">
+                                                @if ($item->quantity > 1)
+                                                    <div>
+                                                        <span class="cart-row-unit">Rs.
+                                                            {{ number_format($unitPrice, 2) }} each</span>
+                                                        <span class="cart-row-price">Rs.
+                                                            {{ number_format((float) $item->amount, 2) }}</span>
+                                                    </div>
+                                                @else
+                                                    <span class="cart-row-price">Rs.
+                                                        {{ number_format((float) $item->amount, 2) }}</span>
+                                                @endif
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+
+                                <footer class="cart-seller-foot">
+                                    <p class="cart-seller-subtotal">
+                                        Seller subtotal
+                                        <strong>Rs. {{ number_format((float) $group['subtotal'], 2) }}</strong>
+                                    </p>
+                                    @if ($seller)
+                                        <a href="{{ route('checkout.seller', $seller->id) }}" class="cart-seller-checkout">
+                                            Checkout from {{ $seller->shop_name }}
+                                        </a>
+                                    @endif
+                                </footer>
+                            </section>
+                        @endforeach
                     </div>
 
                     <aside class="cart-summary">
-                        <h2 class="cart-summary-title">Order Summary</h2>
+                        <h2 class="cart-summary-title">Bag Summary</h2>
+                        @foreach ($cartGroups as $group)
+                            <div class="cart-seller-summary-item">
+                                <span>{{ $group['seller']?->shop_name ?? 'Seller' }}
+                                    ({{ $group['quantity'] }})</span>
+                                <span>Rs. {{ number_format((float) $group['subtotal'], 2) }}</span>
+                            </div>
+                        @endforeach
+                        <div class="cart-summary-divider"></div>
                         <div class="cart-summary-row">
-                            <span>Subtotal ({{ $cartItems->sum('quantity') }} items)</span>
-                            <span>Rs. {{ number_format((float) $subtotal, 2) }}</span>
+                            <span>Sellers</span>
+                            <span>{{ $cartGroups->count() }}</span>
                         </div>
                         <div class="cart-summary-row">
                             <span>Shipping</span>
-                            <span>Calculated at checkout</span>
+                            <span>Per seller at checkout</span>
                         </div>
                         <div class="cart-summary-divider"></div>
                         <div class="cart-summary-row total">
-                            <span>Total</span>
+                            <span>Bag Total</span>
                             <span>Rs. {{ number_format((float) $subtotal, 2) }}</span>
                         </div>
-                        <a href="#" class="cart-checkout-btn">Proceed to Checkout</a>
                         <a href="{{ route('products') }}" class="cart-continue-btn">&larr; Continue Shopping</a>
-                        <p class="cart-trust">Secure checkout &middot; Free returns on eligible orders</p>
+                        <p class="cart-trust">
+                            Items from different sellers are checked out separately. Use the checkout button on each
+                            seller section above.
+                        </p>
                     </aside>
                 </div>
             @endif

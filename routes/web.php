@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Frontend\AddToCart;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\SellerController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
+
+    Route::get('/checkout/seller/{id}', [CheckoutController::class, 'checkout'])->name('checkout.seller');
+    Route::post('/order/store/{id}', [CheckoutController::class, 'store'])->name('order.store');
+    Route::get('/khalti/callback/{id}', [CheckoutController::class, 'khalti_callback'])->name('khalti.callback');
 });
 
 Route::get('/dashboard', function () {

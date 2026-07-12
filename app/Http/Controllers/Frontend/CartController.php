@@ -21,14 +21,23 @@ class CartController extends Controller
             return redirect()->route('login');
         }
 
-        $cartItems = Cart::with(['product', 'productVarient'])
+        $cartItems = Cart::with(['product', 'productVarient', 'seller'])
             ->where('user_id', $user->id)
             ->latest()
             ->get();
 
         $subtotal = $cartItems->sum('amount');
 
-        return view('frontend.cart', compact('cartItems', 'subtotal'));
+        $cartGroups = $cartItems->groupBy('seller_id')->map(function ($items) {
+            return [
+                'seller' => $items->first()->seller,
+                'items' => $items->values(),
+                'quantity' => $items->sum('quantity'),
+                'subtotal' => $items->sum('amount'),
+            ];
+        })->values();
+
+        return view('frontend.cart', compact('cartItems', 'cartGroups', 'subtotal'));
     }
 
     public function destroy(Request $request, Cart $cart): RedirectResponse
