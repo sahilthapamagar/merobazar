@@ -29,8 +29,15 @@ class AddToCart extends Controller
         }
 
         $quantity = (int) $request->input('quantity', 1);
-        $maxQty = isset($variant->stock) && (int) $variant->stock > 0 ? (int) $variant->stock : 99;
-        $quantity = min(max(1, $quantity), $maxQty);
+        $stock = (int) ($variant->stock ?? 0);
+
+        if ($stock < 1) {
+            toast('This product is out of stock!', 'error');
+
+            return redirect()->back();
+        }
+
+        $quantity = min(max(1, $quantity), $stock);
 
         $cart = new Cart;
         $cart->user_id = $user->id;

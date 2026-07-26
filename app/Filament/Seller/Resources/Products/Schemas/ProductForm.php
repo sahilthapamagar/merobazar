@@ -3,10 +3,12 @@
 namespace App\Filament\Seller\Resources\Products\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 
 class ProductForm
 {
@@ -25,6 +27,8 @@ class ProductForm
                 RichEditor::make('description')
                     ->required()
                     ->columnSpanFull(),
+                Hidden::make('seller_id')
+                    ->default(fn () => Auth::guard('vendor')->id()),
 
                 Repeater::make('Product Variants')
                     ->relationship('productVarient')

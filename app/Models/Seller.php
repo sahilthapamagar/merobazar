@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'shop_name', 'contact', 'khalti_secrect_key', 'status', 'expired_date'])]
 #[Hidden(['password', 'remember_token'])]
 class Seller extends Authenticatable
 {

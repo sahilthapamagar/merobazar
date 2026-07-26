@@ -11,8 +11,7 @@ use App\Models\Seller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-
-// use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -43,14 +42,21 @@ class CheckoutController extends Controller
             ->where('seller_id', $id)
             ->get();
 
-        if (! $user->delivery_address) {
+        if ($carts->isEmpty()) {
+            toast('Your cart is empty for this seller.', 'error');
+
+            return redirect()->route('cart.index');
+        }
+
+        // Use the correct relationship name: deliveryAddresses (hasOne)
+        if (! $user->deliveryAddresses) {
             $delivery_address = new DeliveryAddress;
             $delivery_address->user_id = $user->id;
             $delivery_address->address_detail = $request->address_detail;
             $delivery_address->contact = $request->contact;
             $delivery_address->save();
         } else {
-            $delivery_address = $user->delivery_address;
+            $delivery_address = $user->deliveryAddresses;
             $delivery_address->address_detail = $request->address_detail;
             $delivery_address->contact = $request->contact;
             $delivery_address->save();
@@ -75,7 +81,7 @@ class CheckoutController extends Controller
         }
 
         if ($request->payment_method == 'cod') {
-            toast('Order placed sucessfully', 'success');
+            toast('Order placed successfully', 'success');
 
             return redirect()->route('cart.index');
         }
@@ -83,27 +89,39 @@ class CheckoutController extends Controller
         $response = Http::withHeaders([
             'Authorization' => 'Key '.$seller->khalti_secrect_key,
         ])->post('https://dev.khalti.com/api/v2/epayment/initiate/', [
-            'return_url' => route('khalti.callback', $id),
+            'return_url' => route('khalti.callback', ['id' => $order->id]),
             'website_url' => route('home'),
-            'amount' => $order->total_amount * 100,
-            'purchase_order_id' => $id,
-            'purchase_order_name' => $id,
+            'amount' => (int) ($order->total_amount * 100),
+            'purchase_order_id' => (string) $order->id,
+            'purchase_order_name' => 'Order #'.$order->id,
         ]);
         $data = $response->json();
+
+        if (! $response->successful() || ! isset($data['payment_url'])) {
+            Log::error('Khalti payment initiation failed', [
+                'order_id' => $order->id,
+                'response' => $data,
+            ]);
+            toast('Payment initiation failed. Please try again.', 'error');
+
+            return redirect()->route('cart.index');
+        }
 
         return redirect($data['payment_url']);
     }
 
     public function khalti_callback(Request $request, $id)
     {
-        $order = Order::findorFail($id);
-        $order->payment_status = $request['"status'];
-        $order->save();
-        $toast_message = 'Order '.$request['status'].'sucessfully';
+        // $id is now the order ID (passed correctly from store method)
+        $order = Order::findOrFail($id);
 
-        toast($toast_message, 'success');
+        $status = $request->input('status', 'pending');
+        $order->payment_status = $status;
+        $order->save();
+
+        $message = 'Order '.$status.' successfully';
+        toast($message, $status === 'Completed' ? 'success' : 'info');
 
         return redirect()->route('home');
-
     }
 }

@@ -8,8 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductVarient extends Model
 {
+    protected $fillable = [
+        'title',
+        'price',
+        'product_id',
+        'images',
+        'stock',
+        'compare_price',
+        'name',
+    ];
+
     protected $casts = [
         'images' => 'array',
+        'stock' => 'integer',
+        'price' => 'float',
+        'compare_price' => 'float',
     ];
 
     public function product()

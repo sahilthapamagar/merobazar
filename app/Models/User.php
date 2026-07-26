@@ -42,4 +42,13 @@ class User extends Authenticatable
     {
         return $this->hasOne(DeliveryAddress::class);
     }
+
+    /**
+     * Alias for deliveryAddresses() to maintain backward compatibility
+     * with code referencing $user->delivery_address.
+     */
+    public function getDeliveryAddressAttribute()
+    {
+        return $this->deliveryAddresses;
+    }
 }

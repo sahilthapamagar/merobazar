@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeliveryAddress extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'address_detail',
+        'contact',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
