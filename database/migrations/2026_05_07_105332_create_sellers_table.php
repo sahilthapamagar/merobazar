@@ -16,11 +16,15 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password')->nullable();
-            $table->string('shop_name');
+            $table->string('shop_name')->nullable();
+            $table->string('registration_number')->nullable();
             $table->string('khalti_secrect_key')->nullable();
-            $table->enum('status', ['active', 'inactive', 'pending'])->default('pending');
+            $table->enum('status', ['active', 'inactive', 'pending','rejected'])->default('pending');
             $table->date('expired_date')->nullable();
-            $table->string('contact');
+            $table->string('contact')->nullable();
+            $table->string('citizenship_photo')->nullable();
+            $table->string('image')->nullable();
+            $table->string('rejected_reason')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
