@@ -1732,8 +1732,8 @@
                           <div class="cat-name">Women's</div>
                           <div class="cat-count">142 products</div>
                           <div class="cat-arrow">
-                              <svg width="14" height="14" fill="none" stroke="currentColor"
-                                  stroke-width="2" viewBox="0 0 24 24">
+                              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                                  viewBox="0 0 24 24">
                                   <path d="M5 12h14M13 6l6 6-6 6" />
                               </svg>
                           </div>
@@ -1799,7 +1799,7 @@
                   </div>
               </div>
 
-              <div class="products-grid" id="productsGrid">
+              {{-- <div class="products-grid" id="productsGrid">
                   <!-- Product -->
                   @foreach ($products as $product)
                       <a href="{{ route('product', $product->id) }}">
@@ -1820,7 +1820,6 @@
                                   </div>
                               </div>
                               <div class="product-info">
-                                  {{-- <div class="product-brand">Mero Bazar Studio</div> --}}
                                   <div class="product-name">{{ $product->name }}</div>
                                   <div class="product-price-row">
                                       <span class="product-price">Rs.
@@ -1832,7 +1831,7 @@
                           </div>
                       </a>
                   @endforeach
-              </div>
+              </div> --}}
 
               <div style="text-align:center;margin-top:48px" class="reveal">
                   <a href="{{ route('products') }}" class="btn-primary"><span>View All Products</span></a>
@@ -1956,160 +1955,15 @@
           </section>
 
 
-          <!-- ─── Seller Contact Information ─── -->
-          <section class="seller-contact-section">
-              <div class="seller-contact-inner animate-fade-in">
-                  <!-- Section header -->
-                  <div class="seller-contact-header animate-slide-up">
-                      <span class="badge mb-4">
-                          <svg width="7" height="7" viewBox="0 0 7 7" fill="none">
-                              <circle cx="3.5" cy="3.5" r="3.5" fill="#AB886D" />
-                          </svg>
-                          New Membership
-                      </span>
-
-                      <h2 class="font-display text-4xl font-bold mt-3 mb-2"
-                          style="color: var(--dark); line-height:1.2;">
-                          Register Your<br />
-                          <span style="color: var(--secondary); font-style: italic;">Shop</span>
-                      </h2>
-
-                      <p class="seller-contact-sub">
-                          Join our curated community of artisan shop owners and start your journey today.
-                      </p>
-                  </div>
-
-                  <!-- Card -->
-                  <div class="seller-contact-card animate-slide-up delay-200">
-
-                      <!-- Form title inside card -->
-                      <p class="seller-contact-card-title animate-slide-up delay-300">Personal &amp; Shop Details</p>
-
-                      <form action="{{ route('seller.request') }}" method="POST" novalidate
-                          class="seller-contact-form">
-                          @csrf
-
-                          <!-- Name -->
-                          <div class="input-group animate-slide-up delay-300">
-                              <input type="text" name="name" id="name" placeholder="Full Name"
-                                  autocomplete="name" class="custom-input pr-10" required />
-                              <label for="name">Full Name</label>
-                              <span class="icon-wrap">
-                                  <svg width="18" height="18" fill="none" stroke="currentColor"
-                                      stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.118
-                     a7.5 7.5 0 0 1 15 0A17.933 17.933 0 0 1 12 21.75c-2.676
-                     0-5.216-.584-7.5-1.632Z" />
-                                  </svg>
-                              </span>
-                              @error('name')
-                                  <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                              @enderror
-                          </div>
-
-                          <!-- Email -->
-                          <div class="input-group animate-slide-up delay-400">
-                              <input type="email" name="email" id="email" placeholder="Email Address"
-                                  autocomplete="email" class="custom-input pr-10" required />
-                              <label for="email">Email Address</label>
-                              <span class="icon-wrap">
-                                  <svg width="18" height="18" fill="none" stroke="currentColor"
-                                      stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15
-                     a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0
-                     19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243
-                     a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0
-                     1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                                  </svg>
-                              </span>
-                              @error('email')
-                                  <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                              @enderror
-                          </div>
-
-                          <!-- Two-column row: Shop Name + Contact -->
-                          <div class="seller-contact-form-row">
-
-                              <!-- Shop Name -->
-                              <div class="input-group animate-slide-up delay-500">
-                                  <input type="text" name="shop_name" id="shop_name" placeholder="Shop Name"
-                                      autocomplete="organization" class="custom-input pr-10" required />
-                                  <label for="shop_name">Shop Name</label>
-                                  <span class="icon-wrap">
-                                      <svg width="18" height="18" fill="none" stroke="currentColor"
-                                          stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true">
-                                          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0
-                       1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39
-                       0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0
-                       3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0
-                       1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016
-                       c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0
-                       3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72
-                       L4.318 3.44A1.5 1.5 0 0 1 5.378 3h13.243a1.5
-                       1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621
-                       4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75
-                       0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0
-                       .414.336.75.75.75Z" />
-                                      </svg>
-                                  </span>
-                                  @error('shop_name')
-                                      <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                  @enderror
-                              </div>
-
-                              <!-- Contact -->
-                              <div class="input-group animate-slide-up delay-500">
-                                  <input type="tel" name="contact" id="contact" placeholder="Contact Number"
-                                      autocomplete="tel" class="custom-input pr-10" required />
-                                  <label for="contact">Contact Number</label>
-                                  <span class="icon-wrap">
-                                      <svg width="18" height="18" fill="none" stroke="currentColor"
-                                          stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true">
-                                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25
-                       0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091
-                       l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97
-                       1.293c-.282.376-.769.542-1.21.38a12.035 12.035
-                       0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97
-                       c.363-.271.527-.734.417-1.173L6.963 3.102a1.125
-                       1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0
-                       2.25 4.5v2.25Z" />
-                                      </svg>
-                                  </span>
-                                  @error('contact')
-                                      <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                  @enderror
-                              </div>
-                          </div>
-
-                          <!-- Submit -->
-                          <div class="pt-2 animate-slide-up delay-600">
-                              <button type="submit" class="btn-submit">
-                                  <span class="flex items-center justify-center gap-2">
-                                      Register Shop
-                                      <svg width="16" height="16" fill="none" stroke="currentColor"
-                                          stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                                          <path stroke-linecap="round" stroke-linejoin="round"
-                                              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                                      </svg>
-                                  </span>
-                              </button>
-                          </div>
-
-                      </form>
-                  </div>
-                  <!-- Bottom caption -->
-                  <p class="seller-contact-footer animate-fade-in delay-600">
-                      🔒 Your information is encrypted &amp; secure.
-                  </p>
-              </div>
-          </section>
+       
 
 
           <!-- ─── NEWSLETTER ─── -->
           <section class="newsletter">
               <div class="section-label reveal" style="justify-content:center;color:var(--secondary)">Stay Connected
               </div>
-              <h2 class="newsletter-title reveal reveal-delay-1">The Mero Bazar <em style="font-style:italic">Edit</em>
+              <h2 class="newsletter-title reveal reveal-delay-1">The Mero Bazar <em
+                      style="font-style:italic">Edit</em>
               </h2>
               <p class="newsletter-sub reveal reveal-delay-2">Be the first to know about new arrivals, exclusive
                   offers,<br>and

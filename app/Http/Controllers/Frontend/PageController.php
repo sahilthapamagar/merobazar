@@ -11,7 +11,7 @@ class PageController extends Controller
 {
     public function index()
     {
-        $products = Product::with('productVarient')->whereStock(true)->limit(4)->get();
+        $products = Product::all();
 
         return view('frontend.home', compact('products'));
     }

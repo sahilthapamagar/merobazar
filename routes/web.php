@@ -13,6 +13,8 @@ Route::get('/products', [PageController::class, 'products'])->name('products');
 
 Route::get('/product/{id}', [PageController::class, 'product'])->name('product');
 
+Route::get('/seller-form', [SellerController::class, 'index'])->name('seller.index');
+
 Route::post('/seller/shop', [SellerController::class, 'seller_request'])->name('seller.request');
 
 Route::post('/cart/store', [AddToCart::class, 'addtocart'])->name('cart.store');

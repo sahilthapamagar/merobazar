@@ -400,12 +400,12 @@
         <a href="{{ route('home') }}" class="nav-logo">Mero Bazar</a>
 
         <div class="nav-links">
-            <a href="#">New In</a>
-            <a href="#">Women</a>
-            <a href="#">Men</a>
             <a href="#">Home</a>
-            <a href="#">Collections</a>
-            <a href="#">Sale</a>
+            <a href="#">Category</a>
+            <a href="#">Product</a>
+            <a href="#">About Us</a>
+            <a href="#">Testimonials</a>
+            <a href="#">Blog</a>
         </div>
 
         <div class="nav-actions">
