@@ -155,12 +155,6 @@
         </div>
 
         <div class="content">
-            <div class="success-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
-                </svg>
-            </div>
-
             <h2>Congratulations, {{ $seller->name }}</h2>
             <p>Your seller account has been successfully approved.</p>
 
@@ -179,15 +173,17 @@
                     <div class="value"> {{ $password }}</div>
                     {{-- <button class="copy-btn" onclick="copyToClipboard('{{ $password ?? '' }}')">Copy</button> --}}
                 </div>
+                <div class="form-row">
+                    <div class="label">Expired Date</div>
+                    <div class="value"> {{ $seller->expired_date }}</div>
+                    {{-- <button class="copy-btn" onclick="copyToClipboard('{{ $password ?? '' }}')">Copy</button> --}}
+                </div>
             </div>
 
             <div class="warning">
                 <strong>Security Note:</strong> Please change your password after your first login for better security.
             </div>
 
-            <a href="" class="button" target="_blank">
-                Login to Seller Dashboard
-            </a>
 
             <p style="text-align:center; margin-top:30px;">
                 You can now start adding products and manage your store.
