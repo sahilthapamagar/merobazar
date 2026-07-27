@@ -4,11 +4,12 @@ namespace App\Filament\Seller\Resources\Products\Schemas;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\Auth;
 
 class ProductForm
 {
@@ -16,37 +17,60 @@ class ProductForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('discount')
-                    ->label('Discount (%)')
-                    ->prefix('%')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                RichEditor::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Hidden::make('seller_id')
-                    ->default(fn () => Auth::guard('vendor')->id()),
-
-                Repeater::make('Product Variants')
-                    ->relationship('productVarient')
-                    ->defaultItems(0)
-                    ->columnSpanFull()
-                    ->grid(2)
+                Group::make()
                     ->schema([
-                        TextInput::make('title')
-                            ->required(),
-                        TextInput::make('price')
-                            ->prefix('Rs.')
+                        Section::make('Product Information')
+                            ->schema([
+                                TextInput::make('name')
+                                    ->required(),
+                                TextInput::make('price')
+                                    ->required()
+                                    ->prefix('Rs.'),
+                                TextInput::make('title')
+                                    ->required()
+                                    ->columnSpanFull(),
+                                Hidden::make('seller_id')
+                                    ->default(auth()->guard('vendor')->id()),
+                                Select::make('category_id')
+                                    ->relationship('category', 'name')
+                                    ->required()
+                                    ->columnSpanFull(),
+                            ])->columns(2),
+                        Section::make('Upload Images')
+                            ->schema([
+                                FileUpload::make('main_image')
+                                    ->image()
+                                    ->directory('products/images')
+                                    ->acceptedFileTypes(
+                                        [
+                                            'image/jpeg',
+                                            'image/png',
+                                            'image/jpg',
+                                        ]
+                                    ),
+                            ]),
+                    ])->columns(2),
+
+                Section::make('Product Description')
+                    ->schema([
+                        RichEditor::make('description')
                             ->required()
-                            ->numeric(),
+                            ->columnSpanFull(),
+                    ])->columns(1),
+                Section::make('Additional Images')
+                    ->schema([
                         FileUpload::make('images')
                             ->multiple()
-                            ->required(),
-                    ]),
-
-            ]);
+                            ->image()
+                            ->directory('products/images')
+                            ->acceptedFileTypes(
+                                [
+                                    'image/jpeg',
+                                    'image/png',
+                                    'image/jpg',
+                                ]
+                            ),
+                    ])->columns(1),
+            ])->columns(1);
     }
 }
