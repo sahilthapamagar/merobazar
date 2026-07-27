@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Products\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -17,12 +17,16 @@ class ProductsTable
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('seller.name'),
-                TextColumn::make('discount')
+                TextColumn::make('price')
+                    ->money('Npr', true)
+                    ->sortable(),
+                ImageColumn::make('main_image'),
+                TextColumn::make('seller.name')
                     ->numeric()
                     ->sortable(),
-                IconColumn::make('stock')
-                    ->boolean(),
+                TextColumn::make('category.name')
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

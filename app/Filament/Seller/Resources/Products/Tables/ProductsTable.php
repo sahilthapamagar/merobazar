@@ -6,8 +6,9 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ToggleColumn;
+// use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class ProductsTable
@@ -18,15 +19,15 @@ class ProductsTable
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('discount')
-                    ->suffix('%')
+
+                TextColumn::make('price')
+                    ->money('Npr', true)
+                    ->sortable(),
+                ImageColumn::make('main_image'),
+
+                TextColumn::make('category.name')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('productVarient.price')
-                    ->suffix('Rs')
-                    ->numeric()
-                    ->sortable(),
-                ToggleColumn::make('stock'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
