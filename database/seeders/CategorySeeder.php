@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
 class CategorySeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -18,27 +19,27 @@ class CategorySeeder extends Seeder
             [
                 'name' => "Men's Wear",
                 'slug' => 'mens-wear',
-                'image' => 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=600&q=80&auto=format',
+                'image' => 'category/mens-wear.jpg',
             ],
             [
                 'name' => "Women's Wear",
                 'slug' => 'womens-wear',
-                'image' => 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80&auto=format',
+                'image' => 'category/womens-wear.jpg',
             ],
             [
                 'name' => 'Shoes',
                 'slug' => 'shoes',
-                'image' => 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80&auto=format',
+                'image' => 'category/shoes.jpg',
             ],
             [
                 'name' => 'Accessories',
                 'slug' => 'accessories',
-                'image' => 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80&auto=format',
+                'image' => 'category/accessories.jpg',
             ],
             [
                 'name' => 'Health & Beauty',
                 'slug' => 'health-beauty',
-                'image' => 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80&auto=format',
+                'image' => 'category/health-beauty.jpg',
             ],
         ];
 

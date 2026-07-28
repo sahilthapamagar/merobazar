@@ -1725,62 +1725,30 @@
               </div>
 
               <div class="categories-grid reveal reveal-delay-1">
-                  <div class="cat-card">
-                      <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&q=80&auto=format"
-                          alt="Women" />
-                      <div class="cat-card-overlay">
-                          <div class="cat-name">Women's</div>
-                          <div class="cat-count">142 products</div>
-                          <div class="cat-arrow">
-                              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
-                                  viewBox="0 0 24 24">
-                                  <path d="M5 12h14M13 6l6 6-6 6" />
-                              </svg>
+                  @forelse ($categories->take(5) as $category)
+                      <div class="cat-card">
+                          @if ($category->image)
+                              <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" />
+                          @else
+                              <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&q=80&auto=format"
+                                  alt="{{ $category->name }}" />
+                          @endif
+                          <div class="cat-card-overlay">
+                              <div class="cat-name">{{ $category->name }}</div>
+                              <div class="cat-count">{{ $category->products_count ?? 0 }} products</div>
+                              <div class="cat-arrow">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor"
+                                      stroke-width="2" viewBox="0 0 24 24">
+                                      <path d="M5 12h14M13 6l6 6-6 6" />
+                                  </svg>
+                              </div>
                           </div>
                       </div>
-                  </div>
-                  <div class="cat-card">
-                      <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=600&q=80&auto=format"
-                          alt="Men" />
-                      <div class="cat-card-overlay">
-                          <div class="cat-name">Men's</div>
-                          <div class="cat-count">98 products</div>
-                          <div class="cat-arrow">
-                              <svg width="14" height="14" fill="none" stroke="currentColor"
-                                  stroke-width="2" viewBox="0 0 24 24">
-                                  <path d="M5 12h14M13 6l6 6-6 6" />
-                              </svg>
-                          </div>
+                  @empty
+                      <div style="grid-column:1/-1;text-align:center;padding:48px;color:#7a6858;">
+                          No categories available yet.
                       </div>
-                  </div>
-                  <div class="cat-card">
-                      <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&q=80&auto=format"
-                          alt="Home" />
-                      <div class="cat-card-overlay">
-                          <div class="cat-name">Home & Living</div>
-                          <div class="cat-count">76 products</div>
-                          <div class="cat-arrow">
-                              <svg width="14" height="14" fill="none" stroke="currentColor"
-                                  stroke-width="2" viewBox="0 0 24 24">
-                                  <path d="M5 12h14M13 6l6 6-6 6" />
-                              </svg>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="cat-card">
-                      <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80&auto=format"
-                          alt="Accessories" />
-                      <div class="cat-card-overlay">
-                          <div class="cat-name">Accessories</div>
-                          <div class="cat-count">54 products</div>
-                          <div class="cat-arrow">
-                              <svg width="14" height="14" fill="none" stroke="currentColor"
-                                  stroke-width="2" viewBox="0 0 24 24">
-                                  <path d="M5 12h14M13 6l6 6-6 6" />
-                              </svg>
-                          </div>
-                      </div>
-                  </div>
+                  @endforelse
               </div>
           </section>
 
@@ -1793,21 +1761,15 @@
                   </div>
                   <div class="product-filter reveal reveal-delay-2">
                       <button class="filter-btn active" onclick="filterProducts(this,'all')">All</button>
-                      <button class="filter-btn" onclick="filterProducts(this,'new')">New In</button>
-                      <button class="filter-btn" onclick="filterProducts(this,'sale')">Sale</button>
-                      <button class="filter-btn" onclick="filterProducts(this,'trending')">Trending</button>
                   </div>
               </div>
 
-              {{-- <div class="products-grid" id="productsGrid">
-                  <!-- Product -->
+              <div class="products-grid" id="productsGrid">
                   @foreach ($products as $product)
                       <a href="{{ route('product', $product->id) }}">
                           <div class="product-card reveal" data-tag="new trending">
                               <div class="product-img-wrap">
-                                  <img src="{{ asset(Storage::url($product->productVarient()->first()->images[0])) }}"
-                                      alt="Silk Midi Dress" />
-                                  <span class="product-badge">Discount {{ $product->discount }}%</span>
+                                  <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
                                   <div class="product-actions">
                                       <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
                                       <button class="wishlist-btn">
@@ -1822,23 +1784,74 @@
                               <div class="product-info">
                                   <div class="product-name">{{ $product->name }}</div>
                                   <div class="product-price-row">
-                                      <span class="product-price">Rs.
-                                          {{ $product->productVarient()->first()->price }}</span>
+                                      <span class="product-price">Rs. {{ number_format($product->price, 2) }}</span>
                                   </div>
-                                  <div class="product-rating"><span class="star">★★★★★</span> <span
-                                          style="font-size:0.72rem;color:#7a6858;margin-left:4px">(48)</span></div>
+                                  <div class="product-rating"><span class="star">★★★★★</span><span
+                                          style="font-size:0.72rem;color:#7a6858;margin-left:4px">({{ $loop->index + 42 }})</span>
+                                  </div>
                               </div>
                           </div>
                       </a>
                   @endforeach
-              </div> --}}
+              </div>
 
               <div style="text-align:center;margin-top:48px" class="reveal">
                   <a href="{{ route('products') }}" class="btn-primary"><span>View All Products</span></a>
               </div>
           </section>
 
-          <!-- ─── PROMO BANNER ─── -->
+          {{-- Category Product --}}
+          @foreach ($categories->take(3) as $category)
+              <!-- ─── PRODUCTS ─── -->
+              <section class="section" style="padding-top:0" id="products">
+                  <div class="products-header">
+                      <div>
+                          <h2 class="section-title reveal reveal-delay-1">{{ $category->name }}</h2>
+                      </div>
+                      <div class="product-filter reveal reveal-delay-2">
+                          <button class="filter-btn active" onclick="filterProducts(this,'all')">All</button>
+                      </div>
+                  </div>
+
+                  <div class="products-grid" id="productsGrid">
+                      @foreach ($category->products->take(4) as $product)
+                          <a href="{{ route('product', $product->id) }}">
+                              <div class="product-card reveal" data-tag="new trending">
+                                  <div class="product-img-wrap">
+                                      <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
+                                      <div class="product-actions">
+                                          <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                                          <button class="wishlist-btn">
+                                              <svg fill="none" stroke="currentColor" stroke-width="1.8"
+                                                  viewBox="0 0 24 24">
+                                                  <path
+                                                      d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                                              </svg>
+                                          </button>
+                                      </div>
+                                  </div>
+                                  <div class="product-info">
+                                      <div class="product-name">{{ $product->name }}</div>
+                                      <div class="product-price-row">
+                                          <span class="product-price">Rs.
+                                              {{ number_format($product->price, 2) }}</span>
+                                      </div>
+                                      <div class="product-rating"><span class="star">★★★★★</span><span
+                                              style="font-size:0.72rem;color:#7a6858;margin-left:4px">({{ $loop->index + 42 }})</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </a>
+                      @endforeach
+                  </div>
+
+                  <div style="text-align:center;margin-top:48px" class="reveal">
+                      <a href="{{ route('products') }}" class="btn-primary"><span>View All Products</span></a>
+                  </div>
+              </section>
+          @endforeach
+
+          <!-- ─── PROMO BANNER ─── `-->
           <section class="banner-section">
               <div class="banner-inner reveal">
                   <div class="banner-left">
@@ -1955,7 +1968,7 @@
           </section>
 
 
-       
+
 
 
           <!-- ─── NEWSLETTER ─── -->

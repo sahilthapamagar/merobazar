@@ -2,9 +2,9 @@
 
 namespace App\Filament\Seller\Resources\Sellers\Schemas;
 
-use Filament\Forms\Components\DatePicker;
+// use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
+// use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
@@ -55,7 +55,7 @@ class SellerForm
                     ->icon(Heroicon::LockClosed)
                     ->schema([
                         TextInput::make('khalti_secrect_key'),
-                        
+
                     ]),
             ])->columns(1);
     }
