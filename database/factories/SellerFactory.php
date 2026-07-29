@@ -53,8 +53,8 @@ class SellerFactory extends Factory
             'shop_name' => 'Gurung Boutique',
             'contact' => '9871234567',
             'registration_number' => 'REG-2025-001',
-            'status' => 'pending',
-            'expired_date' => null,
+            'status' => 'active',
+            'expired_date' => '2027-06-30',
         ],
         [
             'name' => 'Binod Chaudhary',
@@ -181,8 +181,8 @@ class SellerFactory extends Factory
             'shop_name' => 'Singh Tailoring Center',
             'contact' => '9831234568',
             'registration_number' => 'REG-2025-008',
-            'status' => 'pending',
-            'expired_date' => null,
+            'status' => 'active',
+            'expired_date' => '2027-06-30',
         ],
         [
             'name' => 'Dipak Bhattarai',

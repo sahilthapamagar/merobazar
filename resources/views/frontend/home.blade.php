@@ -1760,7 +1760,9 @@
                       <h2 class="section-title reveal reveal-delay-1">Featured <em>Products</em></h2>
                   </div>
                   <div class="product-filter reveal reveal-delay-2">
-                      <button class="filter-btn active" onclick="filterProducts(this,'all')">All</button>
+                      <a href="{{ route('products') }}">
+                          <button class="filter-btn active" onclick="filterProducts(this,'all')"> View All</button>
+                      </a>
                   </div>
               </div>
 
@@ -1808,9 +1810,6 @@
                       <div>
                           <h2 class="section-title reveal reveal-delay-1">{{ $category->name }}</h2>
                       </div>
-                      <div class="product-filter reveal reveal-delay-2">
-                          <button class="filter-btn active" onclick="filterProducts(this,'all')">All</button>
-                      </div>
                   </div>
 
                   <div class="products-grid" id="productsGrid">
@@ -1846,129 +1845,11 @@
                   </div>
 
                   <div style="text-align:center;margin-top:48px" class="reveal">
-                      <a href="{{ route('products') }}" class="btn-primary"><span>View All Products</span></a>
+                      <a href="{{ route('products', ['category' => $category->slug]) }}"
+                          class="btn-primary"><span>View All {{ $category->name }}</span></a>
                   </div>
               </section>
           @endforeach
-
-          <!-- ─── PROMO BANNER ─── `-->
-          <section class="banner-section">
-              <div class="banner-inner reveal">
-                  <div class="banner-left">
-                      <div class="banner-eyebrow">Limited Time Offer</div>
-                      <h2 class="banner-title">Summer <em>Sale</em><br>Up to 40% Off</h2>
-                      <p class="banner-text">Refresh your wardrobe with our curated summer selection. Premium pieces at
-                          prices
-                          that let you shop more of what you love.</p>
-                      <a href="#" class="btn-light"><span>Shop the Sale</span></a>
-                      <div class="discount-chip">
-                          <span>40%</span>
-                          <span>Off</span>
-                      </div>
-                  </div>
-                  <div class="banner-right">
-                      <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80&auto=format"
-                          alt="Sale banner" />
-                      <div class="banner-deco"></div>
-                      <div class="banner-deco-2"></div>
-                  </div>
-              </div>
-          </section>
-
-          <!-- ─── FLASH SALE COUNTDOWN ─── -->
-          <section class="countdown-section">
-              <div class="countdown-inner">
-                  <div class="countdown-left reveal">
-                      <div class="flash-badge">
-                          <span class="flash-dot"></span>
-                          Flash Sale Live Now
-                      </div>
-                      <h2 class="countdown-title">Ends in — Don't<br>Miss <em>These Deals</em></h2>
-                      <p class="countdown-sub">Hand-selected pieces at their lowest prices ever. Once the timer hits
-                          zero,
-                          so
-                          do the discounts.</p>
-                      <div class="countdown-timer">
-                          <div class="time-block">
-                              <span class="time-digits" id="cdDays">02</span>
-                              <span class="time-label">Days</span>
-                          </div>
-                          <span class="time-colon">:</span>
-                          <div class="time-block">
-                              <span class="time-digits" id="cdHours">14</span>
-                              <span class="time-label">Hours</span>
-                          </div>
-                          <span class="time-colon">:</span>
-                          <div class="time-block">
-                              <span class="time-digits" id="cdMins">37</span>
-                              <span class="time-label">Mins</span>
-                          </div>
-                          <span class="time-colon">:</span>
-                          <div class="time-block">
-                              <span class="time-digits" id="cdSecs">00</span>
-                              <span class="time-label">Secs</span>
-                          </div>
-                      </div>
-                      <div style="margin-top:32px">
-                          <a href="#" class="btn-light"><span>Shop Flash Deals</span></a>
-                      </div>
-                  </div>
-
-                  <div class="countdown-products reveal reveal-delay-2">
-                      <div class="countdown-product-row" onclick="addToCart(this)">
-                          <img class="cp-img"
-                              src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=120&q=80&auto=format"
-                              alt="Dress" />
-                          <div class="cp-info">
-                              <div class="cp-name">Silk Midi Slip Dress</div>
-                              <div class="cp-price">
-                                  <span class="cp-price-old">$245</span>
-                                  <span style="color:var(--accent);font-weight:600">$148</span>
-                              </div>
-                              <div class="cp-bar">
-                                  <div class="cp-bar-fill" style="width:78%"></div>
-                              </div>
-                              <div class="cp-sold">78% sold · 12 left</div>
-                          </div>
-                      </div>
-                      <div class="countdown-product-row" onclick="addToCart(this)">
-                          <img class="cp-img"
-                              src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=120&q=80&auto=format"
-                              alt="Bag" />
-                          <div class="cp-info">
-                              <div class="cp-name">Structured Leather Tote</div>
-                              <div class="cp-price">
-                                  <span class="cp-price-old">$380</span>
-                                  <span style="color:var(--accent);font-weight:600">$228</span>
-                              </div>
-                              <div class="cp-bar">
-                                  <div class="cp-bar-fill" style="width:54%"></div>
-                              </div>
-                              <div class="cp-sold">54% sold · 8 left</div>
-                          </div>
-                      </div>
-                      <div class="countdown-product-row" onclick="addToCart(this)">
-                          <img class="cp-img"
-                              src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=120&q=80&auto=format"
-                              alt="Watch" />
-                          <div class="cp-info">
-                              <div class="cp-name">Minimalist Leather Watch</div>
-                              <div class="cp-price">
-                                  <span class="cp-price-old">$425</span>
-                                  <span style="color:var(--accent);font-weight:600">$255</span>
-                              </div>
-                              <div class="cp-bar">
-                                  <div class="cp-bar-fill" style="width:91%"></div>
-                              </div>
-                              <div class="cp-sold">91% sold · 4 left</div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </section>
-
-
-
 
 
           <!-- ─── NEWSLETTER ─── -->
@@ -2102,69 +1983,7 @@
               //       btn.classList.add('active');
               //   }
 
-              // ── NEWSLETTER
-              function subscribeNewsletter() {
-                  const val = document.getElementById('emailInput').value.trim();
-                  if (val && val.includes('@')) {
-                      showToast('Subscribed! Welcome to Mero Bazar ✓');
-                      document.getElementById('emailInput').value = '';
-                  } else {
-                      showToast('Please enter a valid email');
-                  }
-              }
-              document.getElementById('emailInput').addEventListener('keydown', e => {
-                  if (e.key === 'Enter') subscribeNewsletter();
-              });
-
-              // ── PARALLAX HERO IMAGE
-              window.addEventListener('scroll', () => {
-                  const hero = document.querySelector('.hero-img-container img');
-                  if (hero) {
-                      const sy = window.scrollY;
-                      hero.style.transform = `scale(1.08) translateY(${sy * 0.06}px)`;
-                  }
-              });
-
-              // ── COUNTDOWN TIMER
-              function startCountdown() {
-                  const target = new Date();
-                  target.setDate(target.getDate() + 2);
-                  target.setHours(target.getHours() + 14, target.getMinutes() + 37, 0);
-
-                  function pad(n) {
-                      return String(n).padStart(2, '0');
-                  }
-
-                  function flip(el, val) {
-                      const cur = el.textContent;
-                      if (cur !== val) {
-                          el.classList.add('flip');
-                          setTimeout(() => {
-                              el.textContent = val;
-                              el.classList.remove('flip');
-                          }, 150);
-                      }
-                  }
-
-                  function tick() {
-                      const now = Date.now();
-                      let diff = Math.max(0, Math.floor((target - now) / 1000));
-                      const d = Math.floor(diff / 86400);
-                      diff -= d * 86400;
-                      const h = Math.floor(diff / 3600);
-                      diff -= h * 3600;
-                      const m = Math.floor(diff / 60);
-                      diff -= m * 60;
-                      const s = diff;
-                      flip(document.getElementById('cdDays'), pad(d));
-                      flip(document.getElementById('cdHours'), pad(h));
-                      flip(document.getElementById('cdMins'), pad(m));
-                      flip(document.getElementById('cdSecs'), pad(s));
-                  }
-                  tick();
-                  setInterval(tick, 1000);
-              }
-              startCountdown();
+             
 
 
               // ── BAR ANIMATION ON SCROLL
