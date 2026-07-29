@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 
+Route::get('/categories', [PageController::class, 'categories'])->name('categories');
+
 Route::get('/products', [PageController::class, 'products'])->name('products');
 
 Route::get('/product/{id}', [PageController::class, 'product'])->name('product');

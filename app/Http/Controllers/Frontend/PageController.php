@@ -20,6 +20,19 @@ class PageController extends Controller
         return view('frontend.home', compact('categories', 'products'));
     }
 
+    public function categories()
+    {
+        $categories = Category::withCount(['products' => function ($q) {
+            $q->whereHas('seller', fn ($s) => $s->where('status', 'active'));
+        }])->get();
+
+        $totalProducts = Product::whereHas('seller', function ($q) {
+            $q->where('status', 'active');
+        })->count();
+
+        return view('frontend.category', compact('categories', 'totalProducts'));
+    }
+
     public function products()
     {
         $query = Product::whereHas('seller', function ($query) {
@@ -54,19 +67,6 @@ class PageController extends Controller
             })
             ->take(4)
             ->get();
-
-        // If not enough related products by category, get latest products
-        if ($relatedProducts->count() < 4) {
-            $additionalProducts = Product::with('productVarient')
-                ->where('stock', true)
-                ->where('id', '!=', $product->id)
-                ->whereNotIn('id', $relatedProducts->pluck('id'))
-                ->latest()
-                ->take(4 - $relatedProducts->count())
-                ->get();
-
-            $relatedProducts = $relatedProducts->concat($additionalProducts);
-        }
 
         return view('frontend.product', compact('product', 'relatedProducts'));
     }

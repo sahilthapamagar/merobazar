@@ -401,7 +401,7 @@
 
         <div class="nav-links">
             <a href="{{ route('home') }}">Home</a>
-            <a href="#">Category</a>
+            <a href="{{ route('categories') }}">Category</a>
             <a href="{{ route('products') }}">Product</a>
             <a href="#">About Us</a>
             <a href="#">Testimonials</a>
@@ -418,9 +418,8 @@
             </button>
             @if ($user = Auth::guard('web')->user())
                 <div class="account-dropdown" id="accountDropdown">
-                    <button type="button" class="nav-icon account-wrap" id="accountMenuBtn"
-                        aria-label="Account menu" aria-expanded="false" aria-haspopup="true"
-                        onclick="toggleAccountMenu(event)">
+                    <button type="button" class="nav-icon account-wrap" id="accountMenuBtn" aria-label="Account menu"
+                        aria-expanded="false" aria-haspopup="true" onclick="toggleAccountMenu(event)">
                         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"
                             viewBox="0 0 24 24">
                             <circle cx="12" cy="7" r="4" />
@@ -457,9 +456,7 @@
                 </a>
             @endif
             @php
-                $cartCount = Auth::guard('web')->check()
-                    ? Auth::guard('web')->user()->carts()->count()
-                    : 0;
+                $cartCount = Auth::guard('web')->check() ? Auth::guard('web')->user()->carts()->count() : 0;
             @endphp
             <a href="{{ $cartCount > 0 ? route('cart.index') : route('products') }}" class="nav-icon cart-wrap"
                 aria-label="Cart">

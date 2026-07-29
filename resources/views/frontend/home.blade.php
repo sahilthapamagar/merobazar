@@ -1726,7 +1726,7 @@
 
               <div class="categories-grid reveal reveal-delay-1">
                   @forelse ($categories->take(5) as $category)
-                      <div class="cat-card">
+                      <a href="{{ route('products', ['category' => $category->slug]) }}" class="cat-card">
                           @if ($category->image)
                               <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" />
                           @else
@@ -1743,7 +1743,7 @@
                                   </svg>
                               </div>
                           </div>
-                      </div>
+                      </a>
                   @empty
                       <div style="grid-column:1/-1;text-align:center;padding:48px;color:#7a6858;">
                           No categories available yet.
