@@ -1,5 +1,5 @@
 <style>
-    nav {
+    #navbar {
         position: fixed;
         top: 0;
         left: 0;
@@ -13,7 +13,7 @@
         transition: all 0.4s ease;
     }
 
-    nav.scrolled {
+    #navbar.scrolled {
         background: rgba(228, 224, 225, 0.92);
         backdrop-filter: blur(12px);
         border-bottom: 1px solid rgba(171, 136, 109, 0.2);
@@ -325,7 +325,7 @@
     }
 
     @media (max-width: 768px) {
-        nav {
+        #navbar {
             padding: 0 4%;
             height: 64px;
             background: rgba(228, 224, 225, 0.96);
@@ -333,7 +333,7 @@
             border-bottom: 1px solid rgba(171, 136, 109, 0.15);
         }
 
-        nav.scrolled {
+        #navbar.scrolled {
             height: 56px;
         }
 
@@ -400,9 +400,9 @@
         <a href="{{ route('home') }}" class="nav-logo">Mero Bazar</a>
 
         <div class="nav-links">
-            <a href="#">Home</a>
+            <a href="{{ route('home') }}">Home</a>
             <a href="#">Category</a>
-            <a href="#">Product</a>
+            <a href="{{ route('products') }}">Product</a>
             <a href="#">About Us</a>
             <a href="#">Testimonials</a>
             <a href="#">Blog</a>

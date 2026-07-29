@@ -22,9 +22,21 @@ class PageController extends Controller
 
     public function products()
     {
-        $products = Product::with('productVarient')->whereStock(true)->latest()->get();
+        $query = Product::whereHas('seller', function ($query) {
+            $query->where('status', 'active');
+        });
 
-        return view('frontend.products', compact('products'));
+        // Filter by category if specified
+        if ($categorySlug = request('category')) {
+            $query->whereHas('category', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+
+        $products = $query->latest()->paginate(20);
+        $categories = Category::withCount('products')->get();
+
+        return view('frontend.products', compact('products', 'categories'));
     }
 
     public function product($id)

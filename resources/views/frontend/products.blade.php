@@ -123,49 +123,6 @@
         font-weight: 500;
     }
 
-    .product-variant-swatches {
-        position: absolute;
-        top: 3.25rem;
-        left: 14px;
-        z-index: 2;
-        display: flex;
-        gap: 0.45rem;
-        opacity: 0;
-        transform: translateY(6px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    .product-card:hover .product-variant-swatches {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .variant-swatch {
-        width: 34px;
-        height: 34px;
-        padding: 0;
-        border-radius: 50%;
-        border: 2px solid #fff;
-        overflow: hidden;
-        background: #fff;
-        cursor: none;
-        box-shadow: 0 2px 8px rgba(73, 54, 40, 0.15);
-        transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-
-    .variant-swatch:hover,
-    .variant-swatch.is-active {
-        transform: scale(1.08);
-        border-color: var(--primary);
-    }
-
-    .variant-swatch img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: none !important;
-    }
-
     .product-actions {
         position: absolute;
         bottom: -60px;
@@ -281,6 +238,155 @@
         color: var(--secondary);
     }
 
+    /* ─── Pagination ─── */
+    .pagination-wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-top: 3.5rem;
+        padding-top: 1.75rem;
+        border-top: 1px solid rgba(171, 136, 109, 0.15);
+    }
+
+    .pagination-info {
+        font-size: 0.8rem;
+        color: var(--secondary);
+        letter-spacing: 0.03em;
+        font-weight: 400;
+        margin-right: auto;
+    }
+
+    .pagination-info strong {
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    .pagination-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+        margin-left: auto;
+        position: static;
+        height: auto;
+        padding: 0;
+        z-index: auto;
+    }
+
+    .products-page-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 34px;
+        height: 34px;
+        padding: 0 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 450;
+        color: var(--secondary);
+        background: transparent;
+        border: none;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: none;
+        position: relative;
+    }
+
+    .products-page-btn::after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        width: 0;
+        height: 1.5px;
+        background: var(--primary);
+        transform: translateX(-50%);
+        transition: width 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .products-page-btn:hover {
+        color: var(--primary);
+    }
+
+    .products-page-btn:hover::after {
+        width: 50%;
+    }
+
+    .products-page-btn--active {
+        color: var(--primary);
+        font-weight: 600;
+        cursor: default;
+        background: rgba(73, 54, 40, 0.06);
+        border-radius: 4px;
+    }
+
+    .products-page-btn--active::after {
+        width: 40%;
+        background: var(--primary);
+    }
+
+    .products-page-btn--active:hover::after {
+        width: 40%;
+    }
+
+    .products-page-btn--disabled {
+        color: #d4c9bf;
+        cursor: default;
+        pointer-events: none;
+        border-color: transparent;
+    }
+
+    .products-page-btn--disabled svg {
+        stroke: #d4c9bf;
+    }
+
+    .products-page-btn--nav {
+        min-width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid rgba(171, 136, 109, 0.2);
+    }
+
+    .products-page-btn--nav::after {
+        display: none;
+    }
+
+    .products-page-btn--nav:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        background: rgba(73, 54, 40, 0.04);
+    }
+
+    .products-page-btn--ellipsis {
+        min-width: 22px;
+        padding: 0;
+        color: #c4b8ac;
+        letter-spacing: 3px;
+        cursor: default;
+        pointer-events: none;
+        font-size: 0.85rem;
+    }
+
+    .products-page-btn--ellipsis::after {
+        display: none;
+    }
+
+    @media (max-width: 640px) {
+        .pagination-wrap {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            gap: 1rem;
+        }
+
+        .pagination-info,
+        .pagination-nav {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
     @media (max-width: 1024px) {
         .products-grid {
             grid-template-columns: repeat(3, 1fr);
@@ -301,11 +407,6 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 14px;
         }
-
-        .product-variant-swatches {
-            opacity: 1;
-            transform: none;
-        }
     }
 
     @media (max-width: 480px) {
@@ -323,11 +424,10 @@
                     <h1 class="section-title">All <em>Products</em></h1>
                 </div>
                 <div class="product-filter">
-                    <button type="button" class="filter-btn active product-interactive" data-filter="all">All</button>
-                    <button type="button" class="filter-btn product-interactive" data-filter="new">New In</button>
-                    <button type="button" class="filter-btn product-interactive" data-filter="sale">Sale</button>
-                    <button type="button" class="filter-btn product-interactive"
-                        data-filter="trending">Trending</button>
+                    <a href="{{ route('products') }}" class="filter-btn {{ !request('category') ? 'active' : '' }} product-interactive">All</a>
+                    @foreach ($categories as $cat)
+                        <a href="{{ route('products', ['category' => $cat->slug]) }}" class="filter-btn {{ request('category') === $cat->slug ? 'active' : '' }} product-interactive">{{ $cat->name }}</a>
+                    @endforeach
                 </div>
             </div>
 
@@ -339,114 +439,116 @@
                 <div class="products-grid" id="productsGrid">
                     @foreach ($products as $product)
                         @php
-                            $variants = $product->productVarient;
-                            $firstVariant = $variants->first();
-                            $mainImage =
-                                $firstVariant && !empty($firstVariant->images[0]) ? $firstVariant->images[0] : null;
-                            $price = $firstVariant?->price ?? 0;
+                            $isNew = $product->created_at && $product->created_at->gt(now()->subDays(30));
                         @endphp
+                        <article class="product-card product-interactive" data-tag="{{ $isNew ? 'new' : '' }}">
+                            <div class="product-img-wrap">
+                                <a href="{{ route('product', $product->id) }}"
+                                    class="product-img-link product-interactive">
+                                    <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
+                                </a>
 
-                        @if ($mainImage)
-                            <article class="product-card product-interactive" data-tag="new trending sale">
-                                <div class="product-img-wrap">
+                                @if ($isNew)
+                                    <span class="product-badge">New In</span>
+                                @endif
+
+                                <div class="product-actions">
+                                    <button type="button" class="add-cart-btn product-interactive"
+                                        onclick="event.preventDefault(); event.stopPropagation();">Add to
+                                        Cart</button>
+                                    <button type="button" class="wishlist-btn product-interactive"
+                                        onclick="event.preventDefault(); event.stopPropagation();"
+                                        aria-label="Add to wishlist">
+                                        <svg fill="none" stroke="currentColor" stroke-width="1.8"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="product-info">
+                                <div class="product-name">
                                     <a href="{{ route('product', $product->id) }}"
-                                        class="product-img-link product-interactive">
-                                        <img src="{{ asset('storage/' . $mainImage) }}" alt="{{ $product->name }}"
-                                            data-product-image>
-                                    </a>
-
-                                    @if ($product->discount)
-                                        <span class="product-badge">Discount {{ $product->discount }}%</span>
-                                    @endif
-
-                                    @if ($variants->count() > 1)
-                                        <div class="product-variant-swatches">
-                                            @foreach ($variants->take(4) as $index => $variant)
-                                                @php
-                                                    $variantImage = $variant->images[0] ?? $mainImage;
-                                                @endphp
-                                                <button type="button"
-                                                    class="variant-swatch product-interactive {{ $index === 0 ? 'is-active' : '' }}"
-                                                    data-image="{{ asset('storage/' . $variantImage) }}"
-                                                    aria-label="View {{ $variant->name ?? 'variant ' . ($index + 1) }}">
-                                                    <img src="{{ asset('storage/' . $variantImage) }}"
-                                                        alt="{{ $variant->name ?? 'Variant ' . ($index + 1) }}">
-                                                </button>
-                                            @endforeach
-                                        </div>
-                                    @endif
-
-                                    <div class="product-actions">
-                                        <button type="button" class="add-cart-btn product-interactive"
-                                            onclick="event.preventDefault(); event.stopPropagation();">Add to
-                                            Cart</button>
-                                        <button type="button" class="wishlist-btn product-interactive"
-                                            onclick="event.preventDefault(); event.stopPropagation();"
-                                            aria-label="Add to wishlist">
-                                            <svg fill="none" stroke="currentColor" stroke-width="1.8"
-                                                viewBox="0 0 24 24">
-                                                <path
-                                                    d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                            </svg>
-                                        </button>
-                                    </div>
+                                        class="product-interactive">{{ $product->name }}</a>
                                 </div>
-
-                                <div class="product-info">
-                                    <div class="product-name">
-                                        <a href="{{ route('product', $product->id) }}"
-                                            class="product-interactive">{{ $product->name }}</a>
-                                    </div>
-                                    <div class="product-price-row">
-                                        <span class="product-price">Rs. {{ number_format((float) $price, 2) }}</span>
-                                    </div>
-                                    <div class="product-rating">
-                                        <span class="star">★★★★★</span>
-                                        <span class="rating-count">(48)</span>
-                                    </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">Rs. {{ number_format((float) $product->price, 2) }}</span>
                                 </div>
-                            </article>
-                        @endif
+                                <div class="product-rating">
+                                    <span class="star">★★★★★</span>
+                                    <span class="rating-count">(48)</span>
+                                </div>
+                            </div>
+                        </article>
                     @endforeach
+                </div>
+
+                {{-- Pagination --}}
+                <div class="pagination-wrap">
+                    <div class="pagination-info">
+                        Showing <strong>{{ $products->firstItem() }}–{{ $products->lastItem() }}</strong> of <strong>{{ $products->total() }}</strong> products
+                    </div>
+                    @php
+                        $current = $products->currentPage();
+                        $last = $products->lastPage();
+                        $window = 2;
+                        $start = max(1, $current - $window);
+                        $end = min($last, $current + $window);
+                    @endphp
+                    <nav class="pagination-nav" aria-label="Product pagination">
+                        {{-- Previous --}}
+                        @if ($products->onFirstPage())
+                            <span class="products-page-btn products-page-btn--nav products-page-btn--disabled">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                            </span>
+                        @else
+                            <a href="{{ $products->previousPageUrl() }}" class="products-page-btn products-page-btn--nav" rel="prev">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                            </a>
+                        @endif
+
+                        {{-- First page + ellipsis --}}
+                        @if ($start > 1)
+                            <a href="{{ $products->url(1) }}" class="products-page-btn">1</a>
+                            @if ($start > 2)
+                                <span class="products-page-btn products-page-btn--ellipsis" aria-hidden="true">…</span>
+                            @endif
+                        @endif
+
+                        {{-- Page window --}}
+                        @foreach ($products->getUrlRange($start, $end) as $page => $url)
+                            @if ($page == $current)
+                                <span class="products-page-btn products-page-btn--active" aria-current="page">{{ $page }}</span>
+                            @else
+                                <a href="{{ $url }}" class="products-page-btn">{{ $page }}</a>
+                            @endif
+                        @endforeach
+
+                        {{-- Last page + ellipsis --}}
+                        @if ($end < $last)
+                            @if ($end < $last - 1)
+                                <span class="products-page-btn products-page-btn--ellipsis" aria-hidden="true">…</span>
+                            @endif
+                            <a href="{{ $products->url($last) }}" class="products-page-btn">{{ $last }}</a>
+                        @endif
+
+                        {{-- Next --}}
+                        @if ($products->hasMorePages())
+                            <a href="{{ $products->nextPageUrl() }}" class="products-page-btn products-page-btn--nav" rel="next">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                            </a>
+                        @else
+                            <span class="products-page-btn products-page-btn--nav products-page-btn--disabled">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                            </span>
+                        @endif
+                    </nav>
                 </div>
             @endif
         </div>
     </section>
 
-    <script>
-        document.querySelectorAll('.variant-swatch').forEach(swatch => {
-            swatch.addEventListener('click', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
 
-                const card = this.closest('.product-card');
-                const image = card?.querySelector('[data-product-image]');
-                const swatches = card?.querySelectorAll('.variant-swatch') ?? [];
-
-                if (image && this.dataset.image) {
-                    image.src = this.dataset.image;
-                }
-
-                swatches.forEach(btn => btn.classList.remove('is-active'));
-                this.classList.add('is-active');
-            });
-        });
-
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tag = btn.dataset.filter;
-
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                document.querySelectorAll('.product-card').forEach(card => {
-                    if (tag === 'all' || (card.dataset.tag && card.dataset.tag.includes(tag))) {
-                        card.style.display = '';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
-    </script>
 </x-layout>
