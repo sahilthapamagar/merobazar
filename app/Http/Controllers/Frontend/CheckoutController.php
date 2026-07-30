@@ -19,7 +19,7 @@ class CheckoutController extends Controller
     {
         $seller = Seller::findOrFail($id);
         $user = Auth::guard('web')->user();
-        $carts = Cart::with(['product', 'productVarient'])
+        $carts = Cart::with('product')
             ->where('user_id', $user->id)
             ->where('seller_id', $id)
             ->get();
@@ -37,7 +37,7 @@ class CheckoutController extends Controller
 
         $seller = Seller::findOrFail($id);
         $user = Auth::guard('web')->user();
-        $carts = Cart::with(['product', 'productVarient'])
+        $carts = Cart::with('product')
             ->where('user_id', $user->id)
             ->where('seller_id', $id)
             ->get();
@@ -73,7 +73,7 @@ class CheckoutController extends Controller
             $orderItem = new OrderItem;
             $orderItem->order_id = $order->id;
             $orderItem->product_id = $cart->product_id;
-            $orderItem->product_varient_id = $cart->product_varient_id;
+
             $orderItem->quantity = $cart->quantity;
             $orderItem->amount = $cart->amount;
             $orderItem->save();

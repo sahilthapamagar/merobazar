@@ -21,7 +21,7 @@ class CartController extends Controller
             return redirect()->route('login');
         }
 
-        $cartItems = Cart::with(['product', 'productVarient', 'seller'])
+        $cartItems = Cart::with(['product', 'seller'])
             ->where('user_id', $user->id)
             ->latest()
             ->get();
@@ -63,27 +63,23 @@ class CartController extends Controller
             abort(403);
         }
 
-        $cart->load(['product', 'productVarient']);
-        $variant = $cart->productVarient;
         $product = $cart->product;
 
-        if (! $variant || ! $product) {
+        if (! $product) {
             $cart->delete();
-            toast('This cart item is no longer available.', 'error');
+            toast('This product is no longer available.', 'error');
 
             return redirect()->route('cart.index');
         }
 
-        $maxQty = $cart->maxQuantity();
-
         $validated = $request->validate([
-            'quantity' => ['required', 'integer', 'min:1', 'max:'.$maxQty],
+            'quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ]);
 
         $quantity = (int) $validated['quantity'];
 
         $cart->quantity = $quantity;
-        $cart->amount = Cart::lineAmountFor($product, $variant, $quantity);
+        $cart->amount = (float) $product->price * $quantity;
         $cart->save();
 
         toast('Cart quantity updated.', 'success');

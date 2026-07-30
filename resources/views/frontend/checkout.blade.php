@@ -515,24 +515,21 @@
                             <div class="checkout-items">
                                 @foreach ($carts as $cart)
                                     @php
-                                        $variant = $cart->productVarient;
                                         $product = $cart->product;
-                                        $image = $variant && !empty($variant->images[0]) ? $variant->images[0] : null;
+                                        $image = $product?->main_image;
                                     @endphp
                                     <div class="checkout-item">
                                         <div class="checkout-item-img {{ $image ? '' : 'checkout-item-img--empty' }}">
                                             @if ($image)
-                                                <img src="{{ asset('storage/' . $image) }}"
-                                                    alt="{{ $product?->name ?? 'Product' }}">
+                                            <img src="{{ $image }}"
+                                                alt="{{ $product?->name ?? 'Product' }}">
                                             @endif
                                         </div>
                                         <div class="checkout-item-details">
                                             <p class="checkout-item-name">{{ $product?->name ?? 'Product' }}</p>
                                             <p class="checkout-item-meta">
                                                 Qty: {{ $cart->quantity }}
-                                                @if ($variant?->name)
-                                                    &middot; {{ $variant->name }}
-                                                @endif
+
                                             </p>
                                         </div>
                                         <span class="checkout-item-price">Rs.

@@ -188,6 +188,7 @@
             color: var(--primary);
             font-weight: 600;
         }
+
         .product-field-label {
             display: block;
             font-size: 0.75rem;
@@ -274,7 +275,7 @@
             cursor: not-allowed;
         }
 
-        .product-tabs-wrap {
+        .product-description-section {
             max-width: 760px;
             margin: 4rem auto 0;
             padding-top: 2.5rem;
@@ -282,84 +283,65 @@
             text-align: center;
         }
 
-        .product-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2.5rem;
-            border-bottom: 1px solid #e5e7eb;
+        .product-description-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.75rem;
+            color: var(--primary);
             margin-bottom: 1.5rem;
         }
 
-        .product-tab-btn {
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
-            padding: 0 0 0.75rem;
-            margin-bottom: -1px;
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--secondary);
-            cursor: none;
-            transition: color 0.2s ease, border-color 0.2s ease;
-        }
-
-        .product-tab-btn:hover,
-        .product-tab-btn.is-active {
-            color: var(--primary);
-        }
-
-        .product-tab-btn.is-active {
-            border-bottom-color: var(--primary);
-        }
-
-        .product-tab-panel {
-            display: none;
-            animation: productTabIn 0.3s ease;
-        }
-
-        .product-tab-panel.is-active {
-            display: block;
-        }
-
-        @keyframes productTabIn {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .product-description {
+        .product-description-content {
             color: var(--primary);
             line-height: 1.8;
             font-size: 0.95rem;
-            text-align: center;
         }
 
-        .product-description h1,
-        .product-description h2,
-        .product-description h3,
-        .product-description h4 {
+        .product-description-content h1,
+        .product-description-content h2,
+        .product-description-content h3,
+        .product-description-content h4 {
             font-family: 'Cormorant Garamond', serif;
             color: var(--primary);
             margin: 1rem 0 0.5rem;
         }
 
-        .product-description p {
+        .product-description-content p {
             margin-bottom: 0.75rem;
         }
 
-        .product-description ul,
-        .product-description ol {
+        .product-description-content ul,
+        .product-description-content ol {
             margin: 0.75rem auto;
             display: inline-block;
             text-align: left;
+        }
+
+        .product-seller-block {
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(171, 136, 109, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .product-seller-block-line {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .product-seller-block-label {
+            color: var(--secondary);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+
+        .product-seller-block-value {
+            color: var(--primary);
+            font-weight: 600;
         }
 
         .product-related {
@@ -485,7 +467,7 @@
                 margin-right: auto;
             }
 
-            .product-tabs-wrap {
+            .product-description-section {
                 margin-top: 2.5rem;
                 padding-top: 2rem;
             }
@@ -543,18 +525,14 @@
 
                     @if (count($galleryImages) > 0)
                         <div class="product-thumbs" id="thumbnail-gallery">
-                            <button type="button"
-                                onclick="changeMainImage('{{ $product->main_image }}', this)"
+                            <button type="button" onclick="changeMainImage('{{ $product->main_image }}', this)"
                                 class="product-thumb product-interactive is-active" data-main-thumb>
-                                <img src="{{ $product->main_image }}"
-                                    alt="{{ $product->name }}">
+                                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
                             </button>
                             @foreach ($galleryImages as $index => $image)
-                                <button type="button"
-                                    onclick="changeMainImage('{{ $image }}', this)"
+                                <button type="button" onclick="changeMainImage('{{ $image }}', this)"
                                     class="product-thumb product-interactive">
-                                    <img src="{{ $image }}"
-                                        alt="{{ $product->name }} - {{ $index + 1 }}">
+                                    <img src="{{ $image }}" alt="{{ $product->name }} - {{ $index + 1 }}">
                                 </button>
                             @endforeach
                         </div>
@@ -601,32 +579,27 @@
                 </div>
             </div>
 
-            {{-- Product Tabs (centered, full width) --}}
-            <div class="product-tabs-wrap">
-                <div class="product-tabs" role="tablist">
-                    <button type="button" class="product-tab-btn product-interactive is-active" data-tab="description"
-                        role="tab" aria-selected="true">Description</button>
-                    @if ($product->seller)
-                        <button type="button" class="product-tab-btn product-interactive" data-tab="seller"
-                            role="tab" aria-selected="false">Seller</button>
+            {{-- Product Description (centered, full width) --}}
+            <div class="product-description-section">
+                <h2 class="product-description-heading">Description</h2>
+
+                <div class="product-description-content">
+                    @if ($product->description)
+                        {!! $product->description !!}
+                    @else
+                        <p>No description available.</p>
                     @endif
                 </div>
 
-                <div class="product-tab-panel is-active" id="tab-description" role="tabpanel">
-                    <div class="product-description">
-                        @if ($product->description)
-                            {!! $product->description !!}
-                        @else
-                            <p>No description available.</p>
-                        @endif
-                    </div>
-                </div>
-
                 @if ($product->seller)
-                    <div class="product-tab-panel" id="tab-seller" role="tabpanel">
-                        <div class="product-description">
-                            <h3>{{ $product->seller->name }}</h3>
-                            <p>{{ $product->seller->description ?? 'No seller information available.' }}</p>
+                    <div class="product-seller-block">
+                        <div class="product-seller-block-line">
+                            <span class="product-seller-block-label">Seller:</span>
+                            <span class="product-seller-block-value">{{ $product->seller->name }}</span>
+                        </div>
+                        <div class="product-seller-block-line">
+                            <span class="product-seller-block-label">Shop:</span>
+                            <span class="product-seller-block-value">{{ $product->seller->shop_name ?? 'N/A' }}</span>
                         </div>
                     </div>
                 @endif
@@ -638,10 +611,11 @@
                     <div class="product-related-grid">
                         @foreach ($relatedProducts as $related)
                             <a href="{{ route('product', $related->id) }}"
-                                class="product-related-card product-interactive">                                    @php
-                                        $relatedImage = $related->main_image;
-                                    @endphp
-                                    <div class="product-related-card-image">
+                                class="product-related-card product-interactive">
+                                @php
+                                    $relatedImage = $related->main_image;
+                                @endphp
+                                <div class="product-related-card-image">
                                     <img src="{{ $relatedImage }}" alt="{{ $related->name }}">
                                 </div>
                                 <h3>{{ $related->name }}</h3>
@@ -690,7 +664,7 @@
 
             animCursor();
 
-            document.querySelectorAll('.product-interactive, .product-breadcrumb a, .product-tab-btn').forEach(el => {
+            document.querySelectorAll('.product-interactive, .product-breadcrumb a').forEach(el => {
                 el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
                 el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
             });
@@ -720,25 +694,6 @@
             });
             update();
         })();
-
-        // Tabs
-        document.querySelectorAll('.product-tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tab = btn.dataset.tab;
-
-                document.querySelectorAll('.product-tab-btn').forEach(b => {
-                    b.classList.remove('is-active');
-                    b.setAttribute('aria-selected', 'false');
-                });
-                document.querySelectorAll('.product-tab-panel').forEach(panel => {
-                    panel.classList.remove('is-active');
-                });
-
-                btn.classList.add('is-active');
-                btn.setAttribute('aria-selected', 'true');
-                document.getElementById('tab-' + tab)?.classList.add('is-active');
-            });
-        });
 
         function changeMainImage(imageSrc, trigger) {
             const mainImage = document.getElementById('main-image');

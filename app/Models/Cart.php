@@ -10,32 +10,9 @@ class Cart extends Model
         'user_id',
         'seller_id',
         'product_id',
-        'product_varient_id',
         'quantity',
         'amount',
     ];
-
-    public static function lineAmountFor(Product $product, ProductVarient $variant, int $quantity): float
-    {
-        $unitPrice = (float) $variant->price;
-
-        if ($product->discount > 0) {
-            $unitPrice -= $unitPrice * ((float) $product->discount / 100);
-        }
-
-        return round($unitPrice * max(1, $quantity), 2);
-    }
-
-    public function maxQuantity(): int
-    {
-        $variant = $this->productVarient;
-
-        if ($variant && isset($variant->stock) && (int) $variant->stock > 0) {
-            return (int) $variant->stock;
-        }
-
-        return 99;
-    }
 
     public function user()
     {
@@ -52,8 +29,5 @@ class Cart extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function productVarient()
-    {
-        return $this->belongsTo(ProductVarient::class, 'product_varient_id');
-    }
+
 }

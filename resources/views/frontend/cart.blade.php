@@ -638,10 +638,8 @@
                                 <ul class="cart-list">
                                     @foreach ($group['items'] as $item)
                                         @php
-                                            $variant = $item->productVarient;
                                             $product = $item->product;
-                                            $image = $variant && ! empty($variant->images[0]) ? $variant->images[0] : null;
-                                            $maxQty = $item->maxQuantity();
+                                            $image = $product?->main_image;
                                             $unitPrice = $item->quantity > 0 ? (float) $item->amount / $item->quantity : 0;
                                         @endphp
                                         <li class="cart-row">
@@ -659,9 +657,7 @@
                                                 <h3 class="cart-row-name">
                                                     <a href="{{ route('product', $product->id) }}">{{ $product->name }}</a>
                                                 </h3>
-                                                @if ($variant?->name)
-                                                    <p class="cart-row-variant">{{ $variant->name }}</p>
-                                                @endif
+
                                                 <form action="{{ route('cart.destroy', $item) }}" method="POST"
                                                     class="cart-remove-form">
                                                     @csrf
@@ -681,10 +677,10 @@
                                                             {{ $item->quantity <= 1 ? 'disabled' : '' }}>−</button>
                                                         <input type="number" name="quantity" class="cart-qty-input"
                                                             value="{{ $item->quantity }}" min="1"
-                                                            max="{{ $maxQty }}" aria-label="Quantity">
+                                                            max="99" aria-label="Quantity">
                                                         <button type="button" class="cart-qty-btn" data-qty-increase
                                                             aria-label="Increase"
-                                                            {{ $item->quantity >= $maxQty ? 'disabled' : '' }}>+</button>
+                                                            {{ $item->quantity >= 99 ? 'disabled' : '' }}>+</button>
                                                     </div>
                                                 </form>
                                             </div>
