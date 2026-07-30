@@ -97,17 +97,7 @@
             transform: scale(1.05);
         }
 
-        .product-badge-oos {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: rgba(153, 27, 27, 0.9);
-            color: #fff;
-            padding: 0.5rem 1rem;
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
+
 
         .product-thumbs {
             display: grid;
@@ -198,20 +188,6 @@
             color: var(--primary);
             font-weight: 600;
         }
-
-        .product-compare {
-            color: var(--secondary);
-            text-decoration: line-through;
-        }
-
-        .product-discount {
-            font-size: 0.75rem;
-            color: #15803d;
-            background: #dcfce7;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-        }
-
         .product-field-label {
             display: block;
             font-size: 0.75rem;
@@ -219,75 +195,6 @@
             text-transform: uppercase;
             color: var(--primary);
             margin-bottom: 0.75rem;
-        }
-
-        .product-variants {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-            margin-bottom: 2rem;
-        }
-
-        .variant-btn {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
-            padding: 0.85rem 1rem;
-            border: 1px solid rgba(171, 136, 109, 0.22);
-            background: #fff;
-            border-radius: 8px;
-            text-align: left;
-            cursor: none;
-            transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .variant-btn-thumb {
-            width: 52px;
-            height: 52px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid rgba(171, 136, 109, 0.25);
-            flex-shrink: 0;
-            background: #f5f0eb;
-        }
-
-        .variant-btn-body {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .variant-btn:hover {
-            border-color: var(--secondary);
-        }
-
-        .variant-btn.is-active {
-            border-color: var(--primary);
-            background: var(--cream);
-            box-shadow: 0 0 0 1px var(--primary);
-        }
-
-        .variant-btn-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.125rem;
-            color: var(--primary);
-        }
-
-        .variant-btn-price {
-            font-size: 0.875rem;
-            color: var(--secondary);
-            margin-top: 0.25rem;
-        }
-
-        .variant-stock-badge {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            font-size: 0.65rem;
-            color: #c2410c;
-            background: #ffedd5;
-            padding: 0.15rem 0.45rem;
-            border-radius: 4px;
         }
 
         .product-purchase-box {
@@ -578,19 +485,6 @@
                 margin-right: auto;
             }
 
-            .product-variants {
-                grid-template-columns: 1fr;
-            }
-
-            .variant-btn {
-                text-align: left;
-                justify-content: flex-start;
-            }
-
-            .variant-btn-body {
-                text-align: left;
-            }
-
             .product-tabs-wrap {
                 margin-top: 2.5rem;
                 padding-top: 2rem;
@@ -625,9 +519,7 @@
 
         <div class="product-container">
             @php
-                $firstVariant = $product->productVarient->first();
-                $mainImage =
-                    $firstVariant && isset($firstVariant->images[0]) ? $firstVariant->images[0] : 'placeholder.jpg';
+                $galleryImages = $product->images ?? [];
                 $formatPrice = fn($amount) => 'Rs. ' . number_format((float) $amount, 2);
             @endphp
 
@@ -646,20 +538,22 @@
                 {{-- Left: Product Images --}}
                 <div class="product-gallery-panel">
                     <div class="product-gallery-main" id="main-image-container">
-                        <img id="main-image" src="{{ asset('storage/' . $mainImage) }}" alt="{{ $product->name }}">
-
-                        @if (!$product->stock)
-                            <div class="product-badge-oos">Out of Stock</div>
-                        @endif
+                        <img id="main-image" src="{{ $product->main_image }}" alt="{{ $product->name }}">
                     </div>
 
-                    @if ($firstVariant && count($firstVariant->images) > 1)
+                    @if (count($galleryImages) > 0)
                         <div class="product-thumbs" id="thumbnail-gallery">
-                            @foreach ($firstVariant->images as $index => $image)
+                            <button type="button"
+                                onclick="changeMainImage('{{ $product->main_image }}', this)"
+                                class="product-thumb product-interactive is-active" data-main-thumb>
+                                <img src="{{ $product->main_image }}"
+                                    alt="{{ $product->name }}">
+                            </button>
+                            @foreach ($galleryImages as $index => $image)
                                 <button type="button"
-                                    onclick="changeMainImage('{{ asset('storage/' . $image) }}', this)"
-                                    class="product-thumb product-interactive {{ $index === 0 ? 'is-active' : '' }}">
-                                    <img src="{{ asset('storage/' . $image) }}"
+                                    onclick="changeMainImage('{{ $image }}', this)"
+                                    class="product-thumb product-interactive">
+                                    <img src="{{ $image }}"
                                         alt="{{ $product->name }} - {{ $index + 1 }}">
                                 </button>
                             @endforeach
@@ -677,53 +571,10 @@
                     @endif
 
                     <div class="product-price-row">
-                        @if ($firstVariant)
-                            <span class="product-price" id="variant-price">
-                                {{ $formatPrice($firstVariant->price) }}
-                            </span>
-                        @endif
-
-                        @if ($firstVariant && $firstVariant->compare_price)
-                            <span class="product-compare">
-                                {{ $formatPrice($firstVariant->compare_price) }}
-                            </span>
-                            <span class="product-discount">
-                                {{ round((($firstVariant->compare_price - $firstVariant->price) / $firstVariant->compare_price) * 100) }}%
-                                OFF
-                            </span>
-                        @endif
+                        <span class="product-price" id="product-price">
+                            {{ $formatPrice($product->price) }}
+                        </span>
                     </div>
-
-                    @if ($product->productVarient->count() > 1)
-                        <div>
-                            <span class="product-field-label">Select Variant</span>
-                            <div class="product-variants" id="variant-selector">
-                                @foreach ($product->productVarient as $variant)
-                                    @php
-                                        $variantImage = $variant->images[0] ?? 'placeholder.jpg';
-                                    @endphp
-                                    <button type="button"
-                                        onclick="selectVariant('{{ $variant->id }}', '{{ $variant->price }}', '{{ asset('storage/' . $variantImage) }}', this)"
-                                        data-variant-id="{{ $variant->id }}"
-                                        class="variant-btn product-interactive {{ $loop->first ? 'is-active' : '' }}">
-                                        <img src="{{ asset('storage/' . $variantImage) }}"
-                                            alt="{{ $variant->name ?? 'Variant ' . $loop->iteration }}"
-                                            class="variant-btn-thumb">
-                                        <div class="variant-btn-body">
-                                            <p class="variant-btn-name">
-                                                {{ $variant->name ?? 'Variant ' . $loop->iteration }}
-                                            </p>
-                                            <p class="variant-btn-price">{{ $formatPrice($variant->price) }}</p>
-                                        </div>
-
-                                        @if ($variant->stock < 5 && $variant->stock > 0)
-                                            <span class="variant-stock-badge">Only {{ $variant->stock }} left</span>
-                                        @endif
-                                    </button>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
 
                     <div class="product-purchase-box">
                         <div class="product-qty-wrap">
@@ -731,8 +582,7 @@
                             <div class="product-qty">
                                 <button type="button" class="product-interactive" onclick="updateQuantity(-1)"
                                     aria-label="Decrease quantity">−</button>
-                                <input type="number" id="quantity" value="1" min="1"
-                                    max="{{ $firstVariant ? $firstVariant->stock : 1 }}">
+                                <input type="number" id="quantity" value="1" min="1" max="99">
                                 <button type="button" class="product-interactive" onclick="updateQuantity(1)"
                                     aria-label="Increase quantity">+</button>
                             </div>
@@ -741,13 +591,10 @@
                         <form action="{{ route('cart.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <input type="hidden" name="product_varient_id" id="selected-variant-id"
-                                value="{{ $firstVariant ? $firstVariant->id : '' }}">
                             <input type="hidden" name="quantity" id="form-quantity" value="1">
 
-                            <button type="submit" class="product-add-btn product-interactive"
-                                {{ !$product->stock ? 'disabled' : '' }}>
-                                {{ $product->stock ? 'Add to Cart' : 'Out of Stock' }}
+                            <button type="submit" class="product-add-btn product-interactive">
+                                Add to Cart
                             </button>
                         </form>
                     </div>
@@ -791,15 +638,14 @@
                     <div class="product-related-grid">
                         @foreach ($relatedProducts as $related)
                             <a href="{{ route('product', $related->id) }}"
-                                class="product-related-card product-interactive">
-                                @php
-                                    $relatedImage = $related->productVarient->first()->images[0] ?? 'placeholder.jpg';
-                                @endphp
-                                <div class="product-related-card-image">
-                                    <img src="{{ asset('storage/' . $relatedImage) }}" alt="{{ $related->name }}">
+                                class="product-related-card product-interactive">                                    @php
+                                        $relatedImage = $related->main_image;
+                                    @endphp
+                                    <div class="product-related-card-image">
+                                    <img src="{{ $relatedImage }}" alt="{{ $related->name }}">
                                 </div>
                                 <h3>{{ $related->name }}</h3>
-                                <p>{{ $formatPrice($related->productVarient->first()->price ?? 0) }}</p>
+                                <p>{{ $formatPrice($related->price ?? 0) }}</p>
                             </a>
                         @endforeach
                     </div>
@@ -912,27 +758,6 @@
             }
         }
 
-        function formatRs(price) {
-            return 'Rs. ' + parseFloat(price).toLocaleString('en-IN', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        }
-
-        function selectVariant(variantId, price, imageSrc, trigger) {
-            document.getElementById('selected-variant-id').value = variantId;
-            document.getElementById('variant-price').textContent = formatRs(price);
-            changeMainImage(imageSrc, null);
-
-            document.querySelectorAll('.variant-btn').forEach(btn => {
-                btn.classList.remove('is-active');
-            });
-
-            if (trigger) {
-                trigger.classList.add('is-active');
-            }
-        }
-
         function updateQuantity(change) {
             const input = document.getElementById('quantity');
             const formQuantity = document.getElementById('form-quantity');
@@ -946,12 +771,8 @@
         }
 
         document.getElementById('quantity').addEventListener('change', function() {
-            const maxStock = parseInt(this.max, 10);
             let value = parseInt(this.value, 10);
-
             if (Number.isNaN(value) || value < 1) value = 1;
-            if (value > maxStock) value = maxStock;
-
             this.value = value;
             document.getElementById('form-quantity').value = value;
         });

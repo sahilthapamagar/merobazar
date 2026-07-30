@@ -1672,13 +1672,13 @@
                       </div>
                       <div class="hero-stat-divider"></div>
                       <div>
-                          <div class="hero-stat-value">360<span>+</span></div>
+                          <div class="hero-stat-value">{{ $products->count() }}<span>+</span></div>
                           <div class="hero-stat-label">Products</div>
                       </div>
                       <div class="hero-stat-divider"></div>
                       <div>
-                          <div class="hero-stat-value">12<span>+</span></div>
-                          <div class="hero-stat-label">Countries</div>
+                          <div class="hero-stat-value">{{ $sellercount }}<span>+</span></div>
+                          <div class="hero-stat-label">Seller</div>
                       </div>
                   </div>
               </div>
@@ -1715,7 +1715,7 @@
               <div class="section-label reveal">Shop by Category</div>
               <div class="flex justify-between items-end">
                   <h2 class="section-title reveal reveal-delay-1">Explore Our<br><em>Curated World</em></h2>
-                  <a href="#" class="btn-ghost reveal reveal-delay-2" style="margin-bottom:4px">
+                  <a href="{{ route('categories') }}" class="btn-ghost reveal reveal-delay-2" style="margin-bottom:4px">
                       All Categories
                       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
                           viewBox="0 0 24 24">
@@ -1767,14 +1767,17 @@
               </div>
 
               <div class="products-grid" id="productsGrid">
-                  @foreach ($products as $product)
+                  @foreach ($products->take(4) as $product)
                       <a href="{{ route('product', $product->id) }}">
                           <div class="product-card reveal" data-tag="new trending">
                               <div class="product-img-wrap">
                                   <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
                                   <div class="product-actions">
-                                      <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
-                                      <button class="wishlist-btn">
+                                      <button class="add-cart-btn"
+                                          onclick="event.preventDefault(); event.stopPropagation(); addToCart(this)">Add
+                                          to Cart</button>
+                                      <button class="wishlist-btn"
+                                          onclick="event.preventDefault(); event.stopPropagation();">
                                           <svg fill="none" stroke="currentColor" stroke-width="1.8"
                                               viewBox="0 0 24 24">
                                               <path
@@ -1819,8 +1822,11 @@
                                   <div class="product-img-wrap">
                                       <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
                                       <div class="product-actions">
-                                          <button class="add-cart-btn" onclick="addToCart(this)">Add to Cart</button>
-                                          <button class="wishlist-btn">
+                                          <button class="add-cart-btn"
+                                              onclick="event.preventDefault(); event.stopPropagation(); addToCart(this)">Add
+                                              to Cart</button>
+                                          <button class="wishlist-btn"
+                                              onclick="event.preventDefault(); event.stopPropagation();">
                                               <svg fill="none" stroke="currentColor" stroke-width="1.8"
                                                   viewBox="0 0 24 24">
                                                   <path
@@ -1983,7 +1989,7 @@
               //       btn.classList.add('active');
               //   }
 
-             
+
 
 
               // ── BAR ANIMATION ON SCROLL

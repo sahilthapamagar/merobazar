@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Seller;
 
 // use Illuminate\Http\Request;
 
@@ -15,9 +16,11 @@ class PageController extends Controller
         $categories = Category::withCount('products')->get();
         $products = Product::whereHas('seller', function ($query) {
             $query->where('status', 'active');
-        })->inRandomOrder()->take(4)->get();
+            $sellercount = Seller::count();
+        })->inRandomOrder()->get();
+        $sellercount = Seller::count();
 
-        return view('frontend.home', compact('categories', 'products'));
+        return view('frontend.home', compact('categories', 'products', 'sellercount'));
     }
 
     public function categories()
@@ -54,16 +57,12 @@ class PageController extends Controller
 
     public function product($id)
     {
-        $product = Product::with(['productVarient', 'seller'])
-            ->where('stock', true)
-            ->findOrFail($id);
+        $product = Product::with('seller')->findOrFail($id);
 
         // Get related products (same category, excluding current product)
-        $relatedProducts = Product::with('productVarient')
-            ->where('stock', true)
-            ->where('id', '!=', $product->id)
-            ->when($product->category, function ($query) use ($product) {
-                return $query->where('category', $product->category);
+        $relatedProducts = Product::where('id', '!=', $product->id)
+            ->when($product->category_id, function ($query) use ($product) {
+                return $query->where('category_id', $product->category_id);
             })
             ->take(4)
             ->get();

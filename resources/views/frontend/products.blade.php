@@ -71,6 +71,12 @@
         gap: 1.5rem;
     }
 
+    .product-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
     .product-card {
         background: #fff;
         position: relative;
@@ -441,12 +447,11 @@
                         @php
                             $isNew = $product->created_at && $product->created_at->gt(now()->subDays(30));
                         @endphp
-                        <article class="product-card product-interactive" data-tag="{{ $isNew ? 'new' : '' }}">
+                        <a href="{{ route('product', $product->id) }}" class="product-card-link">
+                        <article class="product-card product-interactive"
+                            data-tag="{{ $isNew ? 'new' : '' }}">
                             <div class="product-img-wrap">
-                                <a href="{{ route('product', $product->id) }}"
-                                    class="product-img-link product-interactive">
-                                    <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
-                                </a>
+                                <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
 
                                 @if ($isNew)
                                     <span class="product-badge">New In</span>
@@ -469,10 +474,7 @@
                             </div>
 
                             <div class="product-info">
-                                <div class="product-name">
-                                    <a href="{{ route('product', $product->id) }}"
-                                        class="product-interactive">{{ $product->name }}</a>
-                                </div>
+                                <div class="product-name">{{ $product->name }}</div>
                                 <div class="product-price-row">
                                     <span class="product-price">Rs. {{ number_format((float) $product->price, 2) }}</span>
                                 </div>
@@ -482,6 +484,7 @@
                                 </div>
                             </div>
                         </article>
+                        </a>
                     @endforeach
                 </div>
 

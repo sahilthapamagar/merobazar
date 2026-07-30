@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    protected function casts(): array
+    {
+        return [
+            'images' => 'array',
+        ];
+    }
+
     public function seller()
     {
         return $this->belongsTo(Seller::class);
