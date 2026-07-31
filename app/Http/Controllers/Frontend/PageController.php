@@ -17,7 +17,9 @@ class PageController extends Controller
         $products = Product::whereHas('seller', function ($query) {
             $query->where('status', 'active');
             $sellercount = Seller::count();
-        })->inRandomOrder()->get();
+        })
+            ->inRandomOrder()
+            ->get();
         $sellercount = Seller::count();
 
         return view('frontend.home', compact('categories', 'products', 'sellercount'));
@@ -25,9 +27,11 @@ class PageController extends Controller
 
     public function categories()
     {
-        $categories = Category::withCount(['products' => function ($q) {
-            $q->whereHas('seller', fn ($s) => $s->where('status', 'active'));
-        }])->get();
+        $categories = Category::withCount([
+            'products' => function ($q) {
+                $q->whereHas('seller', fn($s) => $s->where('status', 'active'));
+            },
+        ])->get();
 
         $totalProducts = Product::whereHas('seller', function ($q) {
             $q->where('status', 'active');

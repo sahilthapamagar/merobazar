@@ -194,7 +194,7 @@
 <footer>
     <div class="footer-grid">
         <div>
-            <div class="footer-brand-name">Mero Bazar</div>
+            <div class="footer-brand-name">MeroBazar</div>
             <p class="footer-desc">Curated fashion and lifestyle for those who seek beauty in the details.
                 From
                 our
@@ -233,14 +233,12 @@
         </div>
 
         <div>
-            <div class="footer-col-title">Shop</div>
+            <div class="footer-col-title">Category</div>
             <ul class="footer-links">
-                <li><a href="#">New Arrivals</a></li>
-                <li><a href="#">Women's</a></li>
-                <li><a href="#">Men's</a></li>
-                <li><a href="#">Accessories</a></li>
-                <li><a href="#">Home & Living</a></li>
-                <li><a href="#">Sale</a></li>
+                @foreach ($categories as $category)
+                    <li><a href="{{ route('products', ['category' => $category->slug]) }}">{{ $category->name }}</a>
+                    </li>
+                @endforeach
             </ul>
         </div>
 
@@ -248,16 +246,14 @@
             <div class="footer-col-title">Company</div>
             <ul class="footer-links">
                 <li><a href="#">Our Story</a></li>
-                <li><a href="#">Sustainability</a></li>
-                <li><a href="#">Artisans</a></li>
-                <li><a href="#">Press & Media</a></li>
-                <li><a href="#">Careers</a></li>
                 <li><a href="#">Contact</a></li>
+                <li><a href="{{ route('seller.index') }}">Become a Vendor</a></li>
+
             </ul>
         </div>
 
         <div>
-            <div class="footer-col-title">Help</div>
+            <div class="footer-col-title">Customer Service</div>
             <ul class="footer-links">
                 <li><a href="#">FAQ</a></li>
                 <li><a href="#">Shipping & Returns</a></li>
@@ -270,7 +266,7 @@
     </div>
 
     <div class="footer-bottom">
-        <p class="footer-copyright">© 2025 Mero Bazar. All rights reserved.</p>
+        <p class="footer-copyright">© 2025 MeroBazar. All rights reserved.</p>
         <div class="footer-legal">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
