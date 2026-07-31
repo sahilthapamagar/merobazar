@@ -192,7 +192,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>Mero Bazar</strong> • Pokhara, Nepal</p>
+            <p><strong>MeroBazar</strong> • Pokhara, Nepal</p>
             <p>If you have any questions, contact us at merobazar@gmail.com</p>
         </div>
     </div>

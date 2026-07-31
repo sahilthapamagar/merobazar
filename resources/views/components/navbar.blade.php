@@ -397,7 +397,7 @@
 <section>
     <!-- ─── NAVBAR ─── -->
     <nav id="navbar">
-        <a href="{{ route('home') }}" class="nav-logo">Mero Bazar</a>
+        <a href="{{ route('home') }}" class="nav-logo">MeroBazar</a>
 
         <div class="nav-links">
             <a href="{{ route('home') }}">Home</a>

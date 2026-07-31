@@ -627,7 +627,7 @@
 
             <div class="brand">
                 <div class="brand-mark"><span>M</span></div>
-                <span class="brand-name">Mero Bazar</span>
+                <span class="brand-name">MeroBazar</span>
             </div>
 
             <div class="left-content">
@@ -639,7 +639,7 @@
 
             <div class="left-footer">
                 <div class="left-footer-rule"></div>
-                <p>&copy; 2024 Mero Bazar &mdash; All rights reserved</p>
+                <p>&copy; 2024 MeroBazar &mdash; All rights reserved</p>
             </div>
         </div>
 

@@ -1862,12 +1862,11 @@
           <section class="newsletter">
               <div class="section-label reveal" style="justify-content:center;color:var(--secondary)">Stay Connected
               </div>
-              <h2 class="newsletter-title reveal reveal-delay-1">The Mero Bazar <em
-                      style="font-style:italic">Edit</em>
+              <h2 class="newsletter-title reveal reveal-delay-1">The MeroBazar <em style="font-style:italic">Edit</em>
               </h2>
               <p class="newsletter-sub reveal reveal-delay-2">Be the first to know about new arrivals, exclusive
                   offers,<br>and
-                  stories from the world of Mero Bazar.</p>
+                  stories from the world of MeroBazar.</p>
               <div class="newsletter-form reveal reveal-delay-3">
                   <input type="email" placeholder="Enter your email address" id="emailInput" />
                   <button onclick="subscribeNewsletter()">Subscribe</button>

@@ -665,7 +665,7 @@
 
             <div class="reg-brand">
                 <div class="reg-brand-mark"><span>M</span></div>
-                <span class="reg-brand-name">Mero Bazar</span>
+                <span class="reg-brand-name">MeroBazar</span>
             </div>
 
             <div class="reg-left-content">
@@ -682,7 +682,7 @@
 
             <div class="reg-left-footer">
                 <div class="reg-footer-rule"></div>
-                <p>&copy; 2024 Mero Bazar &mdash; All rights reserved</p>
+                <p>&copy; 2024 MeroBazar &mdash; All rights reserved</p>
             </div>
         </div>
 
@@ -694,24 +694,24 @@
             <div class="reg-card">
                 <p class="reg-card-eyebrow">Get started</p>
                 <h2 class="reg-card-title">Create your<br>account</h2>
-                <p class="reg-card-subtitle">Fill in your details below to join the Mero Bazar community.</p>
+                <p class="reg-card-subtitle">Fill in your details below to join the MeroBazar community.</p>
                 <div class="reg-card-rule"></div>
 
                 <form method="POST" action="{{ route('register') }}" id="registerForm" novalidate>
                     @csrf
 
 
-                        <div class="rg-group" id="nameGroup">
-                            <label class="rg-label" for="name">Username</label>
-                            <div class="input-group">
-                                <input class="rg-input" type="text" id="name" name="name"
-                                    placeholder="jane_doe" value="{{ old('name') }}" autocomplete="name">
-                                <div class="input-group-line"></div>
-                            </div>
-                            @error('name')
-                                <p class="rg-error" style="display:block;">{{ $message }}</p>
-                            @enderror
+                    <div class="rg-group" id="nameGroup">
+                        <label class="rg-label" for="name">Username</label>
+                        <div class="input-group">
+                            <input class="rg-input" type="text" id="name" name="name" placeholder="jane_doe"
+                                value="{{ old('name') }}" autocomplete="name">
+                            <div class="input-group-line"></div>
                         </div>
+                        @error('name')
+                            <p class="rg-error" style="display:block;">{{ $message }}</p>
+                        @enderror
+                    </div>
 
                     <!-- Email -->
                     <div class="rg-group" id="emailGroup">
