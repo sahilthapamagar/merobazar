@@ -1827,6 +1827,9 @@
                               <div class="product-card reveal" data-tag="new trending">
                                   <div class="product-img-wrap">
                                       <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
+                                      @if ($product->is_new)
+                                          <span class="product-badge">New</span>
+                                      @endif
                                       <div class="product-actions">
                                           <button class="add-cart-btn"
                                               onclick="event.preventDefault(); event.stopPropagation(); addToCart(this)">Add

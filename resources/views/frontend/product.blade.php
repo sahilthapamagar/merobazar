@@ -532,7 +532,7 @@
 
         <div class="product-container">
             @php
-                $galleryImages = $product->images ?? [];
+                $galleryImages = is_array($product->images) ? $product->images : [];
                 $formatPrice = fn($amount) => 'Rs. ' . number_format((float) $amount, 2);
             @endphp
 

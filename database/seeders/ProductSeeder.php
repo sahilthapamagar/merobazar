@@ -634,7 +634,39 @@ class ProductSeeder extends Seeder
             ],
         ];
 
-        foreach ($products as $product) {
+        // Give roughly half the seeded products a sale (discounted) price so the
+        // sale display can be previewed. A rotating set of multipliers keeps the
+        // discount varied (10%–30% off). Products with an explicit
+        // discounted_price key are left untouched.
+        $discountMultipliers = [0.85, 0.75, 0.8, 0.9, 0.7];
+
+        foreach ($products as $index => $product) {
+            if (! isset($product['discounted_price']) && ($index % 2) === 1) {
+                $multiplier = $discountMultipliers[$index % count($discountMultipliers)];
+                $product['discounted_price'] = round($product['price'] * $multiplier, 2);
+            }
+
+            // Normalize the gallery to a plain array — the model casts 'images'
+            // to array, so passing a pre-encoded JSON string would double-encode
+            // it and make count($product->images) fail on the frontend.
+            $images = is_array($product['images'] ?? null)
+                ? $product['images']
+                : (json_decode($product['images'] ?? '[]', true) ?: []);
+
+            // Every seeded product must expose at least two gallery images.
+            while (count($images) < 2) {
+                $images[] = $product['main_image'];
+            }
+
+            $product['images'] = $images;
+
+            // Stagger created_at so only some products appear "new" (within the
+            // last 7 days) — otherwise every freshly seeded product shows the
+            // New badge.
+            $createdDaysAgo = [0, 3, 10, 1, 20, 5, 30, 2];
+            $product['created_at'] = now()->subDays($createdDaysAgo[$index % count($createdDaysAgo)]);
+            $product['updated_at'] = $product['created_at'];
+
             Product::create($product);
         }
     }
