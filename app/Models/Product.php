@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $title
  * @property string $description
- * @property numeric $price
+ * @property float $price
+ * @property float|null $discounted_price
  * @property string $main_image
  * @property array<array-key, mixed>|null $images
  * @property int $seller_id
@@ -18,6 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cart> $carts
  * @property-read int|null $carts_count
+ * @property-read float $effective_price
+ * @property-read bool $is_discounted
+ * @property-read int $discount_percent
+ * @property-read bool $is_new
  * @property-read \App\Models\Category $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $orderItems
  * @property-read int|null $order_items_count
@@ -28,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereDiscountedPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereImages($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereMainImage($value)
@@ -44,7 +50,47 @@ class Product extends Model
     {
         return [
             'images' => 'array',
+            'price' => 'float',
+            'discounted_price' => 'float',
         ];
+    }
+
+    /**
+     * The effective price a customer pays (discounted price when available).
+     */
+    public function getEffectivePriceAttribute(): float
+    {
+        return $this->is_discounted ? (float) $this->discounted_price : (float) $this->price;
+    }
+
+    /**
+     * Whether this product currently has an active discount.
+     */
+    public function getIsDiscountedAttribute(): bool
+    {
+        return $this->discounted_price !== null
+            && (float) $this->discounted_price > 0
+            && (float) $this->discounted_price < (float) $this->price;
+    }
+
+    /**
+     * Discount percentage (rounded), e.g. 10 for 10% off.
+     */
+    public function getDiscountPercentAttribute(): int
+    {
+        if (! $this->is_discounted) {
+            return 0;
+        }
+
+        return (int) round(((float) $this->price - (float) $this->discounted_price) / (float) $this->price * 100);
+    }
+
+    /**
+     * Whether the product is "new" (created within the last 7 days).
+     */
+    public function getIsNewAttribute(): bool
+    {
+        return $this->created_at !== null && $this->created_at->gt(now()->subDays(7));
     }
 
     public function seller()

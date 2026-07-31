@@ -220,6 +220,12 @@
         color: var(--primary);
     }
 
+    .product-price-old {
+        font-size: 0.82rem;
+        color: #aaa;
+        text-decoration: line-through;
+    }
+
     .product-rating {
         display: flex;
         align-items: center;
@@ -445,7 +451,7 @@
                 <div class="products-grid" id="productsGrid">
                     @foreach ($products as $product)
                         @php
-                            $isNew = $product->created_at && $product->created_at->gt(now()->subDays(30));
+                            $isNew = $product->is_new;
                         @endphp
                         <a href="{{ route('product', $product->id) }}" class="product-card-link">
                         <article class="product-card product-interactive"
@@ -476,7 +482,10 @@
                             <div class="product-info">
                                 <div class="product-name">{{ $product->name }}</div>
                                 <div class="product-price-row">
-                                    <span class="product-price">Rs. {{ number_format((float) $product->price, 2) }}</span>
+                                    <span class="product-price">Rs. {{ number_format((float) $product->effective_price, 2) }}</span>
+                                    @if ($product->is_discounted)
+                                        <span class="product-price-old">Rs. {{ number_format((float) $product->price, 2) }}</span>
+                                    @endif
                                 </div>
                                 <div class="product-rating">
                                     <span class="star">★★★★★</span>

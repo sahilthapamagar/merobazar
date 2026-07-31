@@ -1772,6 +1772,9 @@
                           <div class="product-card reveal" data-tag="new trending">
                               <div class="product-img-wrap">
                                   <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
+                                  @if ($product->is_new)
+                                      <span class="product-badge">New</span>
+                                  @endif
                                   <div class="product-actions">
                                       <button class="add-cart-btn"
                                           onclick="event.preventDefault(); event.stopPropagation(); addToCart(this)">Add
@@ -1789,7 +1792,10 @@
                               <div class="product-info">
                                   <div class="product-name">{{ $product->name }}</div>
                                   <div class="product-price-row">
-                                      <span class="product-price">Rs. {{ number_format($product->price, 2) }}</span>
+                                      <span class="product-price">Rs. {{ number_format($product->effective_price, 2) }}</span>
+                                      @if ($product->is_discounted)
+                                          <span class="product-price-old">Rs. {{ number_format($product->price, 2) }}</span>
+                                      @endif
                                   </div>
                                   <div class="product-rating"><span class="star">★★★★★</span><span
                                           style="font-size:0.72rem;color:#7a6858;margin-left:4px">({{ $loop->index + 42 }})</span>
@@ -1837,10 +1843,13 @@
                                   </div>
                                   <div class="product-info">
                                       <div class="product-name">{{ $product->name }}</div>
-                                      <div class="product-price-row">
-                                          <span class="product-price">Rs.
-                                              {{ number_format($product->price, 2) }}</span>
-                                      </div>
+                                  <div class="product-price-row">
+                                      <span class="product-price">Rs.
+                                          {{ number_format($product->effective_price, 2) }}</span>
+                                      @if ($product->is_discounted)
+                                          <span class="product-price-old">Rs. {{ number_format($product->price, 2) }}</span>
+                                      @endif
+                                  </div>
                                       <div class="product-rating"><span class="star">★★★★★</span><span
                                               style="font-size:0.72rem;color:#7a6858;margin-left:4px">({{ $loop->index + 42 }})</span>
                                       </div>

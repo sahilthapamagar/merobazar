@@ -79,7 +79,7 @@ class CartController extends Controller
         $quantity = (int) $validated['quantity'];
 
         $cart->quantity = $quantity;
-        $cart->amount = (float) $product->price * $quantity;
+        $cart->amount = $product->effective_price * $quantity;
         $cart->save();
 
         toast('Cart quantity updated.', 'success');

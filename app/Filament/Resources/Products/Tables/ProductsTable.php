@@ -20,6 +20,10 @@ class ProductsTable
                 TextColumn::make('price')
                     ->money('Npr', true)
                     ->sortable(),
+                TextColumn::make('discounted_price')
+                    ->label('Discount Price')
+                    ->money('Npr', true)
+                    ->sortable(),
                 ImageColumn::make('main_image'),
                 TextColumn::make('seller.name')
                     ->numeric()

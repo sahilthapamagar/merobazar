@@ -40,7 +40,7 @@ class AddToCart extends Controller
         $cart->seller_id = $seller->id;
         $cart->product_id = $product->id;
         $cart->quantity = $quantity;
-        $cart->amount = (float) $product->price * $quantity;
+        $cart->amount = $product->effective_price * $quantity;
         $cart->save();
 
         toast('Product added to cart successfully!', 'success');

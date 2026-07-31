@@ -25,7 +25,14 @@ class ProductForm
                                     ->required(),
                                 TextInput::make('price')
                                     ->required()
+                                    ->numeric()
                                     ->prefix('Rs.'),
+                                TextInput::make('discounted_price')
+                                    ->numeric()
+                                    ->prefix('Rs.')
+                                    ->placeholder('Leave empty if no discount')
+                                    ->rule('lt:price')
+                                    ->helperText('Sale price shown to customers (must be lower than the regular price).'),
                                 TextInput::make('title')
                                     ->required()
                                     ->columnSpanFull(),

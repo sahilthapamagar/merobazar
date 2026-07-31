@@ -189,6 +189,37 @@
             font-weight: 600;
         }
 
+        .product-price-old {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            color: #aaa;
+            text-decoration: line-through;
+        }
+
+        .product-new-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--accent);
+            padding: 0.25rem 0.6rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-left: 0.75rem;
+            vertical-align: middle;
+        }
+
+        .product-discount-tag {
+            display: inline-block;
+            background: var(--secondary);
+            color: #fff;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
         .product-field-label {
             display: block;
             font-size: 0.75rem;
@@ -519,9 +550,17 @@
             <div class="product-grid">
                 {{-- Left: Product Images --}}
                 <div class="product-gallery-panel">
-                    <div class="product-gallery-main" id="main-image-container">
-                        <img id="main-image" src="{{ $product->main_image }}" alt="{{ $product->name }}">
-                    </div>
+                <div class="product-gallery-main" id="main-image-container">
+                    <img id="main-image" src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                    @if ($product->is_new)
+                        <span class="product-discount-tag"
+                            style="position:absolute;top:14px;left:14px;z-index:2;background:var(--primary);color:var(--accent);">New</span>
+                    @endif
+                    @if ($product->is_discounted)
+                        <span class="product-discount-tag"
+                            style="position:absolute;top:14px;right:14px;z-index:2;">-{{ $product->discount_percent }}%</span>
+                    @endif
+                </div>
 
                     @if (count($galleryImages) > 0)
                         <div class="product-thumbs" id="thumbnail-gallery">
@@ -542,7 +581,12 @@
                 {{-- Right: Product Details --}}
                 <div class="product-info">
                     <span class="product-eyebrow">Premium Collection</span>
-                    <h1 class="product-title">{{ $product->name }}</h1>
+                    <h1 class="product-title">
+                        {{ $product->name }}
+                        @if ($product->is_new)
+                            <span class="product-new-badge">New</span>
+                        @endif
+                    </h1>
 
                     @if ($product->seller)
                         <p class="product-seller">by {{ $product->seller->name }}</p>
@@ -550,8 +594,13 @@
 
                     <div class="product-price-row">
                         <span class="product-price" id="product-price">
-                            {{ $formatPrice($product->price) }}
+                            {{ $formatPrice($product->effective_price) }}
                         </span>
+                        @if ($product->is_discounted)
+                            <span class="product-price-old" id="product-price-old">
+                                {{ $formatPrice($product->price) }}
+                            </span>
+                        @endif
                     </div>
 
                     <div class="product-purchase-box">
@@ -619,7 +668,13 @@
                                     <img src="{{ $relatedImage }}" alt="{{ $related->name }}">
                                 </div>
                                 <h3>{{ $related->name }}</h3>
-                                <p>{{ $formatPrice($related->price ?? 0) }}</p>
+                                <p>
+                                    {{ $formatPrice($related->effective_price ?? 0) }}
+                                    @if ($related->is_discounted)
+                                        <span
+                                            style="text-decoration:line-through;opacity:0.55;margin-left:6px;font-size:0.82rem;">{{ $formatPrice($related->price) }}</span>
+                                    @endif
+                                </p>
                             </a>
                         @endforeach
                     </div>

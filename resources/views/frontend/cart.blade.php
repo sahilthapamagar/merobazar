@@ -651,8 +651,8 @@
                                             </a>
 
                                             <div class="cart-row-details">
-                                                @if ($product->discount)
-                                                    <span class="cart-row-discount">-{{ $product->discount }}% off</span>
+                                                @if ($product->is_discounted)
+                                                    <span class="cart-row-discount">-{{ $product->discount_percent }}% off</span>
                                                 @endif
                                                 <h3 class="cart-row-name">
                                                     <a href="{{ route('product', $product->id) }}">{{ $product->name }}</a>
