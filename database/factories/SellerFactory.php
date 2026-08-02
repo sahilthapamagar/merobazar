@@ -221,7 +221,9 @@ class SellerFactory extends Factory
             'shop_name' => $seller['shop_name'],
             'contact' => $seller['contact'],
             'registration_number' => $seller['registration_number'],
-            'khalti_secrect_key' => 'khalti_' . Str::random(24),
+            // Only the first 10 sellers get the fixed Khalti secret key; the
+            // rest stay null so the Khalti payment option is hidden for them.
+            'khalti_secrect_key' => static::$index <= 10 ? '232f36274ae94c70aaf8b5a521bc7641' : null,
             'status' => $seller['status'],
             'expired_date' => $seller['expired_date'],
             'citizenship_photo' => 'seed/citizenship/' . Str::slug($seller['name']) . '.jpg',
