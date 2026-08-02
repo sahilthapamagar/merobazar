@@ -682,7 +682,7 @@
 
             <div class="reg-left-footer">
                 <div class="reg-footer-rule"></div>
-                <p>&copy; 2024 MeroBazar &mdash; All rights reserved</p>
+                <p>&copy; 2026 MeroBazar &mdash; All rights reserved</p>
             </div>
         </div>
 

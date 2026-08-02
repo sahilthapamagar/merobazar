@@ -631,7 +631,7 @@
             </div>
 
             <div class="left-content">
-                <p class="left-eyebrow">Est. 2024</p>
+                <p class="left-eyebrow">Est. 2026</p>
                 <h1 class="left-headline">Where craft<br>meets <em>intention.</em></h1>
                 <p class="left-body">A refined digital space built for those who demand more from every interaction and
                     every detail.</p>
@@ -639,7 +639,7 @@
 
             <div class="left-footer">
                 <div class="left-footer-rule"></div>
-                <p>&copy; 2024 MeroBazar &mdash; All rights reserved</p>
+                <p>&copy; 2026 MeroBazar &mdash; All rights reserved</p>
             </div>
         </div>
 

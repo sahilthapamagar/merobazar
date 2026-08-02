@@ -29,7 +29,7 @@ class PageController extends Controller
     {
         $categories = Category::withCount([
             'products' => function ($q) {
-                $q->whereHas('seller', fn($s) => $s->where('status', 'active'));
+                $q->whereHas('seller', fn ($s) => $s->where('status', 'active'));
             },
         ])->get();
 
@@ -69,6 +69,7 @@ class PageController extends Controller
                 return $query->where('category_id', $product->category_id);
             })
             ->take(6)
+            ->inRandomOrder()
             ->get();
 
         return view('frontend.product', compact('product', 'relatedProducts'));
