@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\Orders\Schemas;
 
+use App\Models\Order;
+use App\Models\OrderItem;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -19,6 +22,10 @@ class OrderForm
                     ->components([
                         TextEntry::make('user.name')
                             ->label('User'),
+                        TextEntry::make('user.deliveryAddresses.contact')
+                            ->label('User Contact'),
+                        TextEntry::make('user.deliveryAddresses.address_detail')
+                            ->label('User Address'),
                         Select::make('status')
                             ->options([
                                 'pending' => 'Pending (Order Placed)',
@@ -42,6 +49,34 @@ class OrderForm
                             ->required()
                             ->default('pending'),
                     ]),
+                Section::make('Order Items')
+                    ->schema(function (Order $record) {
+                        return $record->orderItems
+                            ->values()
+                            ->map(function (OrderItem $item, int $index) {
+                                return Grid::make(3)
+                                    ->schema([
+                                        TextEntry::make('product.name')
+                                            ->label('Product')
+                                            ->getStateUsing(fn () => $item->product?->name ?? '—'),
+                                        TextInput::make('quantity')
+                                            ->statePath("orderItems.{$index}.quantity")
+                                            ->numeric()
+                                            ->minValue(1)
+                                            ->disabled()
+                                            ->dehydrated(false)
+                                            ->formatStateUsing(fn () => $item->quantity),
+                                        TextInput::make('amount')
+                                            ->statePath("orderItems.{$index}.amount")
+                                            ->numeric()
+                                            ->prefix('Rs.')
+                                            ->disabled()
+                                            ->dehydrated(false)
+                                            ->formatStateUsing(fn () => $item->amount),
+                                    ]);
+                            })
+                            ->all();
+                    }),
             ])->columns(1);
     }
 }
