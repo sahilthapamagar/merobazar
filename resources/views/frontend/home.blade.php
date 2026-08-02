@@ -1655,7 +1655,7 @@
                       with
                       modern sensibility. Every stitch tells a story.</p>
                   <div class="hero-cta-group reveal reveal-delay-2">
-                      <a href="#" class="btn-primary"><span>Explore Collection</span></a>
+                      <a href="{{ route('products') }}" class="btn-primary"><span>Explore Collection</span></a>
                       <a href="#" class="btn-ghost">
                           Our Story
                           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -1792,9 +1792,11 @@
                               <div class="product-info">
                                   <div class="product-name">{{ $product->name }}</div>
                                   <div class="product-price-row">
-                                      <span class="product-price">Rs. {{ number_format($product->effective_price, 2) }}</span>
+                                      <span class="product-price">Rs.
+                                          {{ number_format($product->effective_price, 2) }}</span>
                                       @if ($product->is_discounted)
-                                          <span class="product-price-old">Rs. {{ number_format($product->price, 2) }}</span>
+                                          <span class="product-price-old">Rs.
+                                              {{ number_format($product->price, 2) }}</span>
                                       @endif
                                   </div>
                                   <div class="product-rating"><span class="star">★★★★★</span><span
@@ -1846,13 +1848,14 @@
                                   </div>
                                   <div class="product-info">
                                       <div class="product-name">{{ $product->name }}</div>
-                                  <div class="product-price-row">
-                                      <span class="product-price">Rs.
-                                          {{ number_format($product->effective_price, 2) }}</span>
-                                      @if ($product->is_discounted)
-                                          <span class="product-price-old">Rs. {{ number_format($product->price, 2) }}</span>
-                                      @endif
-                                  </div>
+                                      <div class="product-price-row">
+                                          <span class="product-price">Rs.
+                                              {{ number_format($product->effective_price, 2) }}</span>
+                                          @if ($product->is_discounted)
+                                              <span class="product-price-old">Rs.
+                                                  {{ number_format($product->price, 2) }}</span>
+                                          @endif
+                                      </div>
                                       <div class="product-rating"><span class="star">★★★★★</span><span
                                               style="font-size:0.72rem;color:#7a6858;margin-left:4px">({{ $loop->index + 42 }})</span>
                                       </div>

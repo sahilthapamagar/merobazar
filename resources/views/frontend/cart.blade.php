@@ -645,7 +645,7 @@
                                         <li class="cart-row">
                                             <a href="{{ route('product', $product->id) }}" class="cart-row-img">
                                                 @if ($image)
-                                                    <img src="{{ asset('storage/' . $image) }}"
+                                                    <img src="{{ $image }}"
                                                         alt="{{ $product->name }}">
                                                 @endif
                                             </a>
