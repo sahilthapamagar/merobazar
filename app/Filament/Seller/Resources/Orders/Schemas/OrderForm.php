@@ -56,14 +56,14 @@ class OrderForm
                                             ->label('Product')
                                             ->getStateUsing(fn () => $item->product?->name ?? '—'),
                                         TextInput::make('quantity')
-                                            ->statePath("orderItems.{$index}.quantity")
+                                            ->statePath("_order_item_qty_{$index}")
                                             ->numeric()
                                             ->minValue(1)
                                             ->disabled()
                                             ->dehydrated(false)
                                             ->formatStateUsing(fn () => $item->quantity),
                                         TextInput::make('amount')
-                                            ->statePath("orderItems.{$index}.amount")
+                                            ->statePath("_order_item_amount_{$index}")
                                             ->numeric()
                                             ->prefix('Rs.')
                                             ->disabled()

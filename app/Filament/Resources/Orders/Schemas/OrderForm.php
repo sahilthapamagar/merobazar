@@ -50,9 +50,9 @@ class OrderForm
                             ->default('pending'),
                     ]),
                 Section::make('Order Items')
-                    ->schema(function (Order $record) {
-                        return $record->orderItems
-                            ->values()
+                    ->schema(function (?Order $record) {
+                        return $record?->orderItems
+                            ?->values()
                             ->map(function (OrderItem $item, int $index) {
                                 return Grid::make(3)
                                     ->schema([
@@ -60,14 +60,14 @@ class OrderForm
                                             ->label('Product')
                                             ->getStateUsing(fn () => $item->product?->name ?? '—'),
                                         TextInput::make('quantity')
-                                            ->statePath("orderItems.{$index}.quantity")
+                                            ->statePath("_order_item_qty_{$index}")
                                             ->numeric()
                                             ->minValue(1)
                                             ->disabled()
                                             ->dehydrated(false)
                                             ->formatStateUsing(fn () => $item->quantity),
                                         TextInput::make('amount')
-                                            ->statePath("orderItems.{$index}.amount")
+                                            ->statePath("_order_item_amount_{$index}")
                                             ->numeric()
                                             ->prefix('Rs.')
                                             ->disabled()
@@ -75,7 +75,7 @@ class OrderForm
                                             ->formatStateUsing(fn () => $item->amount),
                                     ]);
                             })
-                            ->all();
+                            ->all() ?? [];
                     }),
             ])->columns(1);
     }

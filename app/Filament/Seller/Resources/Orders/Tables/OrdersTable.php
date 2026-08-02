@@ -2,6 +2,7 @@
 
 namespace App\Filament\Seller\Resources\Orders\Tables;
 
+use App\Models\Order;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -40,7 +41,9 @@ class OrdersTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->visible(fn (Order $record) => $record->payment_method === 'khalti'
+                        && strtolower((string) $record->payment_status) === 'completed'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
