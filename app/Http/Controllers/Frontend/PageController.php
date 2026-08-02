@@ -68,7 +68,7 @@ class PageController extends Controller
             ->when($product->category_id, function ($query) use ($product) {
                 return $query->where('category_id', $product->category_id);
             })
-            ->take(4)
+            ->take(6)
             ->get();
 
         return view('frontend.product', compact('product', 'relatedProducts'));

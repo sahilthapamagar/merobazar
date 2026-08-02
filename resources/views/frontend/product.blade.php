@@ -88,7 +88,7 @@
 
         .product-gallery-main img {
             width: 100%;
-            height: 500px;
+            aspect-ratio: 4 / 5;
             object-fit: cover;
             transition: transform 0.7s ease, opacity 0.3s ease;
         }
@@ -102,19 +102,19 @@
         .product-thumbs {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
+            gap: 0.85rem;
+            margin-top: 1.25rem;
         }
 
         .product-thumb {
             position: relative;
             overflow: hidden;
-            border-radius: 2px;
+            border-radius: 10px;
             border: 2px solid transparent;
             padding: 0;
             background: none;
             cursor: none;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s ease, transform 0.25s ease;
         }
 
         .product-thumb.is-active,
@@ -122,9 +122,13 @@
             border-color: var(--primary);
         }
 
+        .product-thumb:hover {
+            transform: translateY(-2px);
+        }
+
         .product-thumb img {
             width: 100%;
-            height: 7rem;
+            aspect-ratio: 4 / 5;
             object-fit: cover;
             display: block;
             transition: transform 0.5s ease;
@@ -306,12 +310,43 @@
             cursor: not-allowed;
         }
 
-        .product-description-section {
-            max-width: 760px;
-            margin: 4rem auto 0;
+        /* ─── Trust / benefits strip ─── */
+        .product-benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(171, 136, 109, 0.15);
+        }
+
+        .product-benefit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+            text-align: center;
+            font-size: 0.66rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(73, 54, 40, 0.55);
+        }
+
+        .product-benefit svg {
+            width: 20px;
+            height: 20px;
+            color: var(--secondary);
+        }
+
+        /* Lower section: Description (full row) + Related Products (full row) */
+        .product-lower {
+            margin-top: 4rem;
             padding-top: 2.5rem;
             border-top: 1px solid #d1d5db;
-            text-align: center;
+        }
+
+        .product-description-section {
+            min-width: 0;
         }
 
         .product-description-heading {
@@ -325,6 +360,7 @@
             color: var(--primary);
             line-height: 1.8;
             font-size: 0.95rem;
+            text-align: left;
         }
 
         .product-description-content h1,
@@ -342,18 +378,16 @@
 
         .product-description-content ul,
         .product-description-content ol {
-            margin: 0.75rem auto;
-            display: inline-block;
-            text-align: left;
+            margin: 0.75rem 0;
+            padding-left: 1.25rem;
         }
 
         .product-seller-block {
             margin-top: 2.5rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(171, 136, 109, 0.2);
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: 0.6rem;
         }
 
@@ -366,7 +400,8 @@
 
         .product-seller-block-label {
             color: var(--secondary);
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.2rem;
             letter-spacing: 0.05em;
         }
 
@@ -376,27 +411,72 @@
         }
 
         .product-related {
-            margin-top: 6rem;
-            padding-top: 4rem;
-            border-top: 1px solid #d1d5db;
+            position: relative;
+            margin-top: 3.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(171, 136, 109, 0.2);
         }
 
         .product-related-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
+            font-size: 1.75rem;
             color: var(--primary);
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
 
-        .product-related-grid {
+        .product-related-arrows {
+            position: absolute;
+            top: 2.75rem;
+            right: 0;
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .product-related-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(171, 136, 109, 0.25);
+            background: #fff;
+            color: var(--primary);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
-            justify-content: center;
-            gap: 2rem;
+            place-items: center;
+            cursor: none;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+        }
+
+        .product-related-arrow:hover:not(:disabled) {
+            background: var(--primary);
+            color: var(--accent);
+            border-color: var(--primary);
+        }
+
+        .product-related-arrow:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .product-related-viewport {
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .product-related-viewport::-webkit-scrollbar {
+            display: none;
+        }
+
+        .product-related-grid {
+            display: flex;
+            gap: 1.5rem;
         }
 
         .product-related-card {
+            flex: 0 0 calc(25% - 18px);
+            min-width: 0;
+            display: block;
             text-decoration: none;
             color: inherit;
             cursor: none;
@@ -416,14 +496,14 @@
 
         .product-related-card-image {
             overflow: hidden;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+            border-radius: 10px;
+            aspect-ratio: 4 / 5;
             background: var(--cream);
         }
 
         .product-related-card img {
             width: 100%;
-            height: 18rem;
+            height: 100%;
             object-fit: cover;
             display: block;
             transition: transform 0.7s ease;
@@ -433,10 +513,16 @@
             transform: scale(1.05);
         }
 
+        .product-related-card-info {
+            margin-top: 0.75rem;
+        }
+
         .product-related-card h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             color: var(--primary);
+            line-height: 1.25;
+            margin-bottom: 0.3rem;
             transition: color 0.3s ease;
         }
 
@@ -446,9 +532,14 @@
 
         .product-related-card p {
             color: var(--secondary);
-            margin-top: 0.35rem;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
+        }
+
+        @media (max-width: 1024px) {
+            .product-related-card {
+                flex-basis: calc(33.333% - 16px);
+            }
         }
 
         @media (max-width: 768px) {
@@ -465,7 +556,7 @@
             }
 
             .product-gallery-main img {
-                height: 360px;
+                aspect-ratio: 4 / 5;
             }
 
             .product-info {
@@ -498,20 +589,19 @@
                 margin-right: auto;
             }
 
+            .product-related-card {
+                flex-basis: calc(50% - 12px);
+            }
+
             .product-description-section {
                 margin-top: 2.5rem;
                 padding-top: 2rem;
-            }
-
-            .product-related {
-                margin-top: 4rem;
-                padding-top: 3rem;
             }
         }
 
         @media (max-width: 480px) {
             .product-gallery-main img {
-                height: 300px;
+                aspect-ratio: 4 / 5;
             }
 
             .product-title {
@@ -525,6 +615,10 @@
             .product-thumbs {
                 grid-template-columns: repeat(3, 1fr);
             }
+
+            .product-related-card {
+                flex-basis: 100%;
+            }
         }
     </style>
 
@@ -534,6 +628,7 @@
             @php
                 $galleryImages = is_array($product->images) ? $product->images : [];
                 $formatPrice = fn($amount) => 'Rs. ' . number_format((float) $amount, 2);
+                $hasRelated = isset($relatedProducts) && $relatedProducts->count() > 0;
             @endphp
 
             {{-- Breadcrumb --}}
@@ -550,17 +645,17 @@
             <div class="product-grid">
                 {{-- Left: Product Images --}}
                 <div class="product-gallery-panel">
-                <div class="product-gallery-main" id="main-image-container">
-                    <img id="main-image" src="{{ $product->main_image }}" alt="{{ $product->name }}">
-                    @if ($product->is_new)
-                        <span class="product-discount-tag"
-                            style="position:absolute;top:14px;left:14px;z-index:2;background:var(--primary);color:var(--accent);">New</span>
-                    @endif
-                    @if ($product->is_discounted)
-                        <span class="product-discount-tag"
-                            style="position:absolute;top:14px;right:14px;z-index:2;">-{{ $product->discount_percent }}%</span>
-                    @endif
-                </div>
+                    <div class="product-gallery-main" id="main-image-container">
+                        <img id="main-image" src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                        @if ($product->is_new)
+                            <span class="product-discount-tag"
+                                style="position:absolute;top:14px;left:14px;z-index:2;background:var(--primary);color:var(--accent);">New</span>
+                        @endif
+                        @if ($product->is_discounted)
+                            <span class="product-discount-tag"
+                                style="position:absolute;top:14px;right:14px;z-index:2;">-{{ $product->discount_percent }}%</span>
+                        @endif
+                    </div>
 
                     @if (count($galleryImages) > 0)
                         <div class="product-thumbs" id="thumbnail-gallery">
@@ -588,9 +683,9 @@
                         @endif
                     </h1>
 
-                    @if ($product->seller)
+                    {{-- @if ($product->seller)
                         <p class="product-seller">by {{ $product->seller->name }}</p>
-                    @endif
+                    @endif --}}
 
                     <div class="product-price-row">
                         <span class="product-price" id="product-price">
@@ -600,6 +695,7 @@
                             <span class="product-price-old" id="product-price-old">
                                 {{ $formatPrice($product->price) }}
                             </span>
+                            <span class="product-discount-tag">-{{ $product->discount_percent }}%</span>
                         @endif
                     </div>
 
@@ -625,61 +721,105 @@
                             </button>
                         </form>
                     </div>
+
+                    <div class="product-benefits">
+                        <div class="product-benefit">
+                            <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                                <path d="M5 12h14" />
+                                <path d="M12 5l7 7-7 7" />
+                            </svg>
+                            Free Delivery
+                        </div>
+                        <div class="product-benefit">
+                            <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                                <rect x="3" y="11" width="18" height="11" rx="2" />
+                                <path d="M7 11V7a5 5 0 0110 0v4" />
+                            </svg>
+                            Secure Payment
+                        </div>
+                        <div class="product-benefit">
+                            <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                                <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
+                                <path d="M3 3v5h5" />
+                            </svg>
+                            Easy Returns
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {{-- Product Description (centered, full width) --}}
-            <div class="product-description-section">
-                <h2 class="product-description-heading">Description</h2>
+            {{-- Product Description row + Related Products row --}}
+            <div class="product-lower">
+                <div class="product-description-section">
+                    <h2 class="product-description-heading">Description</h2>
 
-                <div class="product-description-content">
-                    @if ($product->description)
-                        {!! $product->description !!}
-                    @else
-                        <p>No description available.</p>
+                    <div class="product-description-content">
+                        @if ($product->description)
+                            {!! $product->description !!}
+                        @else
+                            <p>No description available.</p>
+                        @endif
+                    </div>
+
+                    @if ($product->seller)
+                        <div class="product-seller-block">
+                            <div class="product-seller-block-line">
+                                <span class="product-seller-block-label">Seller:</span>
+                                <span class="product-seller-block-value">{{ $product->seller->name }}</span>
+                            </div>
+                            <div class="product-seller-block-line">
+                                <span class="product-seller-block-label">Shop:</span>
+                                <span
+                                    class="product-seller-block-value">{{ $product->seller->shop_name ?? 'N/A' }}</span>
+                            </div>
+                        </div>
                     @endif
                 </div>
 
-                @if ($product->seller)
-                    <div class="product-seller-block">
-                        <div class="product-seller-block-line">
-                            <span class="product-seller-block-label">Seller:</span>
-                            <span class="product-seller-block-value">{{ $product->seller->name }}</span>
+                @if ($hasRelated)
+                    <aside class="product-related">
+                        <h2 class="product-related-title">You May Also Like</h2>
+                        <div class="product-related-arrows">
+                            <button type="button" class="product-related-arrow prev product-interactive"
+                                aria-label="Previous products" disabled>
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    width="18" height="18">
+                                    <path d="M15 18l-6-6 6-6" />
+                                </svg>
+                            </button>
+                            <button type="button" class="product-related-arrow next product-interactive"
+                                aria-label="Next products">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    width="18" height="18">
+                                    <path d="M9 18l6-6-6-6" />
+                                </svg>
+                            </button>
                         </div>
-                        <div class="product-seller-block-line">
-                            <span class="product-seller-block-label">Shop:</span>
-                            <span class="product-seller-block-value">{{ $product->seller->shop_name ?? 'N/A' }}</span>
+                        <div class="product-related-viewport">
+                            <div class="product-related-grid">
+                                @foreach ($relatedProducts as $related)
+                                    <a href="{{ route('product', $related->id) }}"
+                                        class="product-related-card product-interactive">
+                                        <div class="product-related-card-image">
+                                            <img src="{{ $related->main_image }}" alt="{{ $related->name }}">
+                                        </div>
+                                        <div class="product-related-card-info">
+                                            <h3>{{ $related->name }}</h3>
+                                            <p>
+                                                {{ $formatPrice($related->effective_price ?? 0) }}
+                                                @if ($related->is_discounted)
+                                                    <span
+                                                        style="text-decoration:line-through;opacity:0.55;margin-left:6px;font-size:0.82rem;">{{ $formatPrice($related->price) }}</span>
+                                                @endif
+                                            </p>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
+                    </aside>
                 @endif
             </div>
-
-            @if (isset($relatedProducts) && $relatedProducts->count() > 0)
-                <div class="product-related">
-                    <h2 class="product-related-title">You May Also Like</h2>
-                    <div class="product-related-grid">
-                        @foreach ($relatedProducts as $related)
-                            <a href="{{ route('product', $related->id) }}"
-                                class="product-related-card product-interactive">
-                                @php
-                                    $relatedImage = $related->main_image;
-                                @endphp
-                                <div class="product-related-card-image">
-                                    <img src="{{ $relatedImage }}" alt="{{ $related->name }}">
-                                </div>
-                                <h3>{{ $related->name }}</h3>
-                                <p>
-                                    {{ $formatPrice($related->effective_price ?? 0) }}
-                                    @if ($related->is_discounted)
-                                        <span
-                                            style="text-decoration:line-through;opacity:0.55;margin-left:6px;font-size:0.82rem;">{{ $formatPrice($related->price) }}</span>
-                                    @endif
-                                </p>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
         </div>
     </section>
 
@@ -786,5 +926,51 @@
             this.value = value;
             document.getElementById('form-quantity').value = value;
         });
+
+        // Related products carousel (4 visible at a time, arrows slide the rest)
+        (function initRelatedCarousel() {
+            const viewport = document.querySelector('.product-related-viewport');
+            const track = document.querySelector('.product-related-grid');
+            const arrows = document.querySelector('.product-related-arrows');
+            const prevBtn = document.querySelector('.product-related-arrow.prev');
+            const nextBtn = document.querySelector('.product-related-arrow.next');
+            if (!viewport || !track || !arrows || !prevBtn || !nextBtn) return;
+
+            const gap = () => parseFloat(getComputedStyle(track).columnGap) || 24;
+
+            const updateArrows = () => {
+                const maxScroll = viewport.scrollWidth - viewport.clientWidth;
+                arrows.style.display = maxScroll <= 1 ? 'none' : 'flex';
+                prevBtn.disabled = viewport.scrollLeft <= 1;
+                nextBtn.disabled = viewport.scrollLeft >= maxScroll - 1;
+            };
+
+            const step = () => {
+                const card = track.querySelector('.product-related-card');
+                return card ? card.getBoundingClientRect().width + gap() : viewport.clientWidth;
+            };
+
+            prevBtn.addEventListener('click', () => {
+                viewport.scrollBy({
+                    left: -step(),
+                    behavior: 'smooth'
+                });
+            });
+
+            nextBtn.addEventListener('click', () => {
+                viewport.scrollBy({
+                    left: step(),
+                    behavior: 'smooth'
+                });
+            });
+
+            viewport.addEventListener('scroll', updateArrows, {
+                passive: true
+            });
+            window.addEventListener('resize', updateArrows, {
+                passive: true
+            });
+            updateArrows();
+        })();
     </script>
 </x-layout>
