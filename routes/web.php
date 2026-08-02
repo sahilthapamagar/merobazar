@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\AddToCart;
+use App\Http\Controllers\Frontend\BuyingHistoryController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\PageController;
@@ -29,6 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/seller/{id}', [CheckoutController::class, 'checkout'])->name('checkout.seller');
     Route::post('/order/store/{id}', [CheckoutController::class, 'store'])->name('order.store');
     Route::get('/khalti/callback/{id}', [CheckoutController::class, 'khalti_callback'])->name('khalti.callback');
+
+    Route::get('/buying-history', [BuyingHistoryController::class, 'index'])->name('buying-history');
+    Route::get('/buying-history/{order}', [BuyingHistoryController::class, 'show'])->name('buying-history.show');
 });
 
 Route::get('/dashboard', function () {

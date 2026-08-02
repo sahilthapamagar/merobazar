@@ -435,6 +435,9 @@
                             <a href="{{ route('profile.edit') }}" class="account-menu-item" role="menuitem">
                                 Profile
                             </a>
+                            <a href="{{ route('buying-history') }}" class="account-menu-item" role="menuitem">
+                                Buying History
+                            </a>
                             <form method="POST" action="{{ route('logout') }}" role="none">
                                 @csrf
                                 <button type="submit" class="account-menu-item account-menu-item--logout"
@@ -492,6 +495,7 @@
         <a href="{{ route('cart.index') }}" onclick="toggleMobileMenu()">Cart</a>
         @if ($user = Auth::guard('web')->user())
             <a href="{{ route('profile.edit') }}" onclick="toggleMobileMenu()">Profile</a>
+            <a href="{{ route('buying-history') }}" onclick="toggleMobileMenu()">Buying History</a>
             <form method="POST" action="{{ route('logout') }}" class="mobile-logout-form">
                 @csrf
                 <button type="submit" onclick="toggleMobileMenu()">Logout</button>
