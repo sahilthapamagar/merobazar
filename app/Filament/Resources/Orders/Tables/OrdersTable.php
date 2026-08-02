@@ -37,7 +37,7 @@ class OrdersTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('payment_status')
                     ->searchable(),
-            ])
+            ])->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

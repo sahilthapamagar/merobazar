@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Orders\Schemas;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class OrderForm
@@ -12,30 +14,34 @@ class OrderForm
     {
         return $schema
             ->components([
-                TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('seller_id')
-                    ->required()
-                    ->numeric(),
-                Select::make('status')
-                    ->options([
-            'pending' => 'Pending',
-            'processing' => 'Processing',
-            'delivered' => 'Delivered',
-            'cancelled' => 'Cancelled',
-        ])
-                    ->default('pending')
-                    ->required(),
-                TextInput::make('total_amount')
-                    ->required()
-                    ->numeric(),
-                Select::make('payment_method')
-                    ->options(['cod' => 'Cod', 'khalti' => 'Khalti'])
-                    ->required(),
-                TextInput::make('payment_status')
-                    ->required()
-                    ->default('pending'),
-            ]);
+                Section::make('Order Details')
+                    ->columns(2)
+                    ->components([
+                        TextEntry::make('user.name')
+                            ->label('User'),
+                        Select::make('status')
+                            ->options([
+                                'pending' => 'Pending (Order Placed)',
+                                'processing' => 'Processing (Order is being processed && On the way)',
+                                'delivered' => 'Delivered (Order has been delivered)',
+                                'cancelled' => 'Cancelled (Order has been cancelled)',
+                            ])
+                            ->default('pending')
+                            ->required(),
+                        TextEntry::make('seller.name')
+                            ->label('Seller'),
+                        TextEntry::make('seller.email')
+                            ->label('Seller Email'),
+                        TextInput::make('total_amount')
+                            ->required()
+                            ->numeric(),
+                        Select::make('payment_method')
+                            ->options(['cod' => 'Cod', 'khalti' => 'Khalti'])
+                            ->required(),
+                        TextInput::make('payment_status')
+                            ->required()
+                            ->default('pending'),
+                    ]),
+            ])->columns(1);
     }
 }
