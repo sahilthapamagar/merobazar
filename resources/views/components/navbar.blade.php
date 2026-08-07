@@ -486,12 +486,12 @@
 
     <!-- ─── MOBILE MENU ─── -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-        <a href="#" onclick="toggleMobileMenu()">New In</a>
-        <a href="#" onclick="toggleMobileMenu()">Women</a>
-        <a href="#" onclick="toggleMobileMenu()">Men</a>
-        <a href="#" onclick="toggleMobileMenu()">Home &amp; Living</a>
-        <a href="#" onclick="toggleMobileMenu()">Collections</a>
-        <a href="#" onclick="toggleMobileMenu()">Sale</a>
+        <a href="{{ route('home') }} " onclick="toggleMobileMenu()">Home</a>
+        <a href="{{ route('categories') }}" onclick="toggleMobileMenu()">Category</a>
+        <a href="{{ route('products') }}" onclick="toggleMobileMenu()">Product</a>
+        <a href="#" onclick="toggleMobileMenu()">About Us</a>
+        <a href="#" onclick="toggleMobileMenu()">Testimonials</a>
+        <a href="#" onclick="toggleMobileMenu()">Blog</a>
         <a href="{{ route('cart.index') }}" onclick="toggleMobileMenu()">Cart</a>
         @if ($user = Auth::guard('web')->user())
             <a href="{{ route('profile.edit') }}" onclick="toggleMobileMenu()">Profile</a>
