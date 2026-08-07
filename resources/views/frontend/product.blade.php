@@ -600,6 +600,61 @@
             padding-left: 0.85rem;
         }
 
+        .product-reviews-distribution {
+            background: #fff;
+            border: 1px solid rgba(171, 136, 109, 0.18);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.75rem;
+            max-width: 480px;
+        }
+
+        .product-rating-bar {
+            display: grid;
+            grid-template-columns: 52px 1fr 30px;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.65rem;
+        }
+
+        .product-rating-bar:last-child {
+            margin-bottom: 0;
+        }
+
+        .product-rating-bar-label {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.78rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .product-rating-bar-label .star {
+            font-size: 0.7rem;
+        }
+
+        .product-rating-bar-track {
+            height: 6px;
+            background: var(--cream);
+            border: 1px solid rgba(171, 136, 109, 0.15);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .product-rating-bar-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--secondary), #c29b40);
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+
+        .product-rating-bar-count {
+            font-size: 0.72rem;
+            color: #7a6858;
+            text-align: right;
+        }
+
         .product-review {
             background: #fff;
             border: 1px solid rgba(171, 136, 109, 0.18);
@@ -807,6 +862,16 @@
                 $galleryImages = is_array($product->images) ? $product->images : [];
                 $formatPrice = fn($amount) => 'Rs. ' . number_format((float) $amount, 2);
                 $hasRelated = isset($relatedProducts) && $relatedProducts->count() > 0;
+
+                $totalReviews = (int) ($product->reviews_count ?? 0);
+                $ratingDistribution = [];
+                for ($star = 5; $star >= 1; $star--) {
+                    $count = $product->reviews->where('rating', $star)->count();
+                    $ratingDistribution[$star] = [
+                        'count' => $count,
+                        'percent' => $totalReviews > 0 ? round($count / $totalReviews * 100) : 0,
+                    ];
+                }
             @endphp
 
             {{-- Breadcrumb --}}
@@ -973,6 +1038,22 @@
                             </div>
                         @endif
                     </div>
+
+                    @if ($product->reviews_count)
+                        <div class="product-reviews-distribution">
+                            @for ($star = 5; $star >= 1; $star--)
+                                <div class="product-rating-bar">
+                                    <span class="product-rating-bar-label">{{ $star }}<span
+                                            class="star is-fill">&starf;</span></span>
+                                    <div class="product-rating-bar-track">
+                                        <div class="product-rating-bar-fill"
+                                            style="width: {{ $ratingDistribution[$star]['percent'] }}%"></div>
+                                    </div>
+                                    <span class="product-rating-bar-count">{{ $ratingDistribution[$star]['count'] }}</span>
+                                </div>
+                            @endfor
+                        </div>
+                    @endif
 
                     @forelse ($product->reviews as $review)
                         <article class="product-review">
