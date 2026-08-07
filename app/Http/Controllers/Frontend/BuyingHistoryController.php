@@ -26,7 +26,7 @@ class BuyingHistoryController extends Controller
 
     public function show($id)
     {
-        $order = Order::with(['seller', 'orderItems.product', 'user.deliveryAddresses'])
+        $order = Order::with(['seller', 'orderItems.product', 'orderItems.review', 'user.deliveryAddresses'])
             ->where('user_id', Auth::guard('web')->id())
             ->findOrFail($id);
 
