@@ -582,8 +582,12 @@
           }
 
           .star {
-              color: var(--secondary);
+              color: rgba(171, 136, 109, 0.35);
               font-size: 0.75rem;
+          }
+
+          .star.is-fill {
+              color: #c29b40;
           }
 
           /* ─── BANNER ─── */
@@ -1799,8 +1803,12 @@
                                               {{ number_format($product->price, 2) }}</span>
                                       @endif
                                   </div>
-                                  <div class="product-rating"><span class="star">★★★★★</span><span
-                                          style="font-size:0.72rem;color:#7a6858;margin-left:4px">({{ $loop->index + 42 }})</span>
+                                  <div class="product-rating">
+                                      @for ($i = 1; $i <= 5; $i++)
+                                          <span
+                                              class="star{{ $i <= (int) round($product->reviews_avg_rating ?? 0) ? ' is-fill' : '' }}">&starf;</span>
+                                      @endfor
+                                      <span style="font-size:0.72rem;color:#7a6858;margin-left:4px">{{ $product->reviews_count ? '(' . $product->reviews_count . ')' : 'No reviews yet' }}</span>
                                   </div>
                               </div>
                           </div>
@@ -1856,8 +1864,13 @@
                                                   {{ number_format($product->price, 2) }}</span>
                                           @endif
                                       </div>
-                                      <div class="product-rating"><span class="star">★★★★★</span><span
-                                              style="font-size:0.72rem;color:#7a6858;margin-left:4px">({{ $loop->index + 42 }})</span>
+                                      <div class="product-rating">
+                                          @for ($i = 1; $i <= 5; $i++)
+                                              <span
+                                                  class="star{{ $i <= (int) round($product->reviews_avg_rating ?? 0) ? ' is-fill' : '' }}">&starf;</span>
+                                          @endfor
+                                          <span
+                                              style="font-size:0.72rem;color:#7a6858;margin-left:4px">{{ $product->reviews_count ? '(' . $product->reviews_count . ')' : 'No reviews yet' }}</span>
                                       </div>
                                   </div>
                               </div>
@@ -1922,11 +1935,13 @@
                       setTimeout(() => el.classList.add('visible'), 500 + i * 180);
                   });
                   const card = document.getElementById('heroCard');
-                  setTimeout(() => {
-                      card.style.opacity = '1';
-                      card.style.transform = 'translateX(0)';
-                      card.style.transition = 'all 0.7s cubic-bezier(0.25,0.46,0.45,0.94)';
-                  }, 1100);
+                  if (card) {
+                      setTimeout(() => {
+                          card.style.opacity = '1';
+                          card.style.transform = 'translateX(0)';
+                          card.style.transition = 'all 0.7s cubic-bezier(0.25,0.46,0.45,0.94)';
+                      }, 1100);
+                  }
               });
 
               // ── MOBILE MENU

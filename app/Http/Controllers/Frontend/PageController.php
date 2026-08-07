@@ -13,13 +13,20 @@ class PageController extends Controller
 {
     public function index()
     {
-        $categories = Category::withCount('products')->get();
+        $categories = Category::withCount('products')
+            ->with(['products' => function ($query) {
+                $query->withAvg('reviews', 'rating')->withCount('reviews')->take(4);
+            }])
+            ->get();
+
         $products = Product::whereHas('seller', function ($query) {
             $query->where('status', 'active');
-            $sellercount = Seller::count();
         })
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
             ->inRandomOrder()
             ->get();
+
         $sellercount = Seller::count();
 
         return view('frontend.home', compact('categories', 'products', 'sellercount'));
