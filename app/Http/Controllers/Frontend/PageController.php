@@ -78,6 +78,8 @@ class PageController extends Controller
             ->when($product->category_id, function ($query) use ($product) {
                 return $query->where('category_id', $product->category_id);
             })
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
             ->take(6)
             ->inRandomOrder()
             ->get();

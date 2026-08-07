@@ -536,6 +536,24 @@
             font-weight: 500;
         }
 
+        .product-related-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            margin-top: 0.45rem;
+        }
+
+        .product-related-rating .star {
+            font-size: 0.68rem;
+        }
+
+        .product-related-rating-count {
+            font-size: 0.68rem;
+            color: #7a6858;
+            margin-left: 4px;
+        }
+
         /* ─── Reviews ─── */
         .product-reviews {
             margin-top: 3.5rem;
@@ -1016,6 +1034,15 @@
                                                         style="text-decoration:line-through;opacity:0.55;margin-left:6px;font-size:0.82rem;">{{ $formatPrice($related->price) }}</span>
                                                 @endif
                                             </p>
+                                            <div class="product-related-rating">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <span
+                                                        class="star{{ $i <= (int) round($related->reviews_avg_rating ?? 0) ? ' is-fill' : '' }}">&starf;</span>
+                                                @endfor
+                                                @if ($related->reviews_count)
+                                                    <span class="product-related-rating-count">({{ $related->reviews_count }})</span>
+                                                @endif
+                                            </div>
                                         </div>
                                     </a>
                                 @endforeach
