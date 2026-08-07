@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\BuyingHistoryController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\PageController;
+use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\SellerController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/buying-history', [BuyingHistoryController::class, 'index'])->name('buying-history');
     Route::get('/buying-history/{order}', [BuyingHistoryController::class, 'show'])->name('buying-history.show');
+
+    Route::post('/order/{order}/item/{orderItem}/review', [ReviewController::class, 'store'])->name('review.store');
 });
 
 Route::get('/dashboard', function () {
