@@ -234,9 +234,13 @@
     }
 
     .star {
-        color: var(--secondary);
+        color: rgba(171, 136, 109, 0.35);
         font-size: 0.75rem;
         letter-spacing: 1px;
+    }
+
+    .star.is-fill {
+        color: #c29b40;
     }
 
     .rating-count {
@@ -488,8 +492,11 @@
                                     @endif
                                 </div>
                                 <div class="product-rating">
-                                    <span class="star">★★★★★</span>
-                                    <span class="rating-count">(48)</span>
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <span
+                                            class="star{{ $i <= (int) round($product->reviews_avg_rating ?? 0) ? ' is-fill' : '' }}">&starf;</span>
+                                    @endfor
+                                    <span class="rating-count">{{ $product->reviews_count ? '(' . $product->reviews_count . ')' : 'No reviews yet' }}</span>
                                 </div>
                             </div>
                         </article>

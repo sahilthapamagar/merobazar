@@ -60,7 +60,7 @@ class PageController extends Controller
             });
         }
 
-        $products = $query->latest()->paginate(20);
+        $products = $query->withAvg('reviews', 'rating')->withCount('reviews')->latest()->paginate(20);
         $categories = Category::withCount('products')->get();
 
         return view('frontend.products', compact('products', 'categories'));
