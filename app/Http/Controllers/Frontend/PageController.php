@@ -68,7 +68,10 @@ class PageController extends Controller
 
     public function product($id)
     {
-        $product = Product::with('seller')->findOrFail($id);
+        $product = Product::with(['seller', 'reviews' => fn ($q) => $q->with('user')->latest()])
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->findOrFail($id);
 
         // Get related products (same category, excluding current product)
         $relatedProducts = Product::where('id', '!=', $product->id)

@@ -536,6 +536,166 @@
             font-weight: 500;
         }
 
+        /* ─── Reviews ─── */
+        .product-reviews {
+            margin-top: 3.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(171, 136, 109, 0.2);
+        }
+
+        .product-reviews-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-reviews-summary {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            background: var(--cream);
+            border: 1px solid rgba(171, 136, 109, 0.15);
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+        }
+
+        .product-reviews-avg {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .product-reviews-stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .product-reviews-count {
+            font-size: 0.78rem;
+            color: #7a6858;
+            border-left: 1px solid rgba(171, 136, 109, 0.25);
+            padding-left: 0.85rem;
+        }
+
+        .product-review {
+            background: #fff;
+            border: 1px solid rgba(171, 136, 109, 0.18);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .product-review:hover {
+            border-color: rgba(171, 136, 109, 0.4);
+            box-shadow: 0 10px 26px rgba(43, 31, 20, 0.05);
+        }
+
+        .product-review-top {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .product-review-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--cream);
+            display: grid;
+            place-items: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .product-review-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            min-width: 0;
+        }
+
+        .product-review-author {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.92rem;
+        }
+
+        .product-review-date {
+            font-size: 0.72rem;
+            color: #7a6858;
+            letter-spacing: 0.05em;
+        }
+
+        .product-review-stars {
+            display: flex;
+            gap: 2px;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .product-review-comment {
+            margin: 0;
+            color: var(--primary);
+            line-height: 1.7;
+            font-size: 0.92rem;
+        }
+
+        .star {
+            color: rgba(171, 136, 109, 0.35);
+            font-size: 0.8rem;
+        }
+
+        .star.is-fill {
+            color: #c29b40;
+        }
+
+        .product-reviews-empty {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background: #fff;
+            border: 1px dashed rgba(171, 136, 109, 0.35);
+            border-radius: 12px;
+        }
+
+        .product-reviews-empty p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .product-reviews-empty span {
+            font-size: 0.85rem;
+            color: #7a6858;
+        }
+
+        @media (max-width: 480px) {
+            .product-review-top {
+                flex-wrap: wrap;
+                gap: 0.6rem;
+            }
+
+            .product-review-stars {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .product-reviews-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
         @media (max-width: 1024px) {
             .product-related-card {
                 flex-basis: calc(33.333% - 16px);
@@ -775,6 +935,50 @@
                         </div>
                     @endif
                 </div>
+
+                {{-- Reviews --}}
+                <section class="product-reviews">
+                    <div class="product-reviews-header">
+                        <h2 class="product-description-heading">Customer Reviews</h2>
+
+                        @if ($product->reviews_count)
+                            <div class="product-reviews-summary">
+                                <span class="product-reviews-avg">{{ number_format((float) $product->reviews_avg_rating, 1) }}</span>
+                                <div class="product-reviews-stars">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <span
+                                            class="star{{ $i <= (int) round($product->reviews_avg_rating ?? 0) ? ' is-fill' : '' }}">&starf;</span>
+                                    @endfor
+                                </div>
+                                <span class="product-reviews-count">{{ $product->reviews_count }}
+                                    {{ Str::plural('review', $product->reviews_count) }}</span>
+                            </div>
+                        @endif
+                    </div>
+
+                    @forelse ($product->reviews as $review)
+                        <article class="product-review">
+                            <div class="product-review-top">
+                                <div class="product-review-avatar">{{ Str::upper(Str::substr($review->user->name ?? 'U', 0, 1)) }}</div>
+                                <div class="product-review-meta">
+                                    <span class="product-review-author">{{ $review->user->name ?? 'Verified Buyer' }}</span>
+                                    <span class="product-review-date">{{ $review->created_at->format('M d, Y') }}</span>
+                                </div>
+                                <div class="product-review-stars">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <span class="star{{ $i <= $review->rating ? ' is-fill' : '' }}">&starf;</span>
+                                    @endfor
+                                </div>
+                            </div>
+                            <p class="product-review-comment">{{ $review->comment }}</p>
+                        </article>
+                    @empty
+                        <div class="product-reviews-empty">
+                            <p>No reviews yet</p>
+                            <span>Share your experience once your order is delivered.</span>
+                        </div>
+                    @endforelse
+                </section>
 
                 @if ($hasRelated)
                     <aside class="product-related">
