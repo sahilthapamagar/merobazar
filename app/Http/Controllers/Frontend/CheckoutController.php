@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderPlacementMail;
 use App\Models\Cart;
 use App\Models\DeliveryAddress;
 use App\Models\Order;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -81,6 +83,8 @@ class CheckoutController extends Controller
         }
 
         if ($request->payment_method == 'cod') {
+            Mail::to($user->email)->send(new OrderPlacementMail($order, 'Cash on Delivery'));
+
             toast('Order placed successfully', 'success');
 
             return redirect()->route('cart.index');
@@ -118,6 +122,11 @@ class CheckoutController extends Controller
         $status = $request->input('status', 'pending');
         $order->payment_status = $status;
         $order->save();
+
+        // Only confirm (email) the order once the Khalti payment is completed.
+        if (strtolower((string) $status) === 'completed' && $order->user) {
+            Mail::to($order->user->email)->send(new OrderPlacementMail($order, 'Khalti'));
+        }
 
         $message = 'Order '.$status.' successfully';
         toast($message, $status === 'Completed' ? 'success' : 'info');
