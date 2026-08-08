@@ -1964,17 +1964,17 @@
                       </div>
                   </div>
 
-                  <!-- Slide 4 : Food & Groceries -->
+                  <!-- Slide 4 : Packaged Food -->
                   <div class="hero-slide" data-index="3">
                       <div class="hero-left">
-                          <span class="hero-eyebrow">Food & Groceries</span>
+                          <span class="hero-eyebrow">Packaged Food</span>
                           <h1 class="hero-headline">
-                              Fresh, Delivered<br>to Your <em>Door</em>
+                              Packaged Goodness,<br>Ready to <em>Go</em>
                           </h1>
-                          <p class="hero-sub">Everyday essentials, snacks and fresh produce — from local grocers to
-                              your home, fast.</p>
+                          <p class="hero-sub">Snacks, instant meals, beverages and pantry staples — long-lasting
+                              packaged food from trusted brands, delivered to your door.</p>
                           <div class="hero-cta-group">
-                              <a href="{{ route('products') }}" class="btn-primary"><span>Shop Food</span></a>
+                              <a href="{{ route('products') }}" class="btn-primary"><span>Shop Packaged Food</span></a>
                               <a href="{{ route('our-story') }}" class="btn-ghost">
                                   Our Story
                                   <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -1986,26 +1986,26 @@
 
                           <div class="hero-stats">
                               <div>
-                                  <div class="hero-stat-value" data-count="1200" data-suffix="+">1.2k+</div>
+                                  <div class="hero-stat-value" data-count="800" data-suffix="+">800+</div>
                                   <div class="hero-stat-label">Items</div>
                               </div>
                               <div class="hero-stat-divider"></div>
                               <div>
-                                  <div class="hero-stat-value" data-count="100" data-suffix="%">100%</div>
-                                  <div class="hero-stat-label">Fresh</div>
+                                  <div class="hero-stat-value" data-count="60" data-suffix="+">60+</div>
+                                  <div class="hero-stat-label">Brands</div>
                               </div>
                               <div class="hero-stat-divider"></div>
                               <div>
-                                  <div class="hero-stat-value" data-count="2" data-suffix="h">2h</div>
-                                  <div class="hero-stat-label">Express Delivery</div>
+                                  <div class="hero-stat-value" data-count="24" data-suffix="h">24h</div>
+                                  <div class="hero-stat-label">Fast Delivery</div>
                               </div>
                           </div>
                       </div>
 
                       <div class="hero-right">
                           <div class="hero-img-container">
-                              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900&q=80&auto=format"
-                                  alt="Food & Groceries" />
+                              <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=900&q=80&auto=format"
+                                  alt="Packaged Food" />
                               <div class="hero-img-overlay"></div>
                           </div>
                       </div>
