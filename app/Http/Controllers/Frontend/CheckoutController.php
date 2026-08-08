@@ -92,7 +92,7 @@ class CheckoutController extends Controller
 
         $response = Http::withHeaders([
             'Authorization' => 'Key '.$seller->khalti_secrect_key,
-        ])->post('https://dev.khalti.com/api/v2/epayment/initiate/', [
+        ])->withoutVerifying()->post('https://dev.khalti.com/api/v2/epayment/initiate/', [
             'return_url' => route('khalti.callback', ['id' => $order->id]),
             'website_url' => route('home'),
             'amount' => (int) ($order->total_amount * 100),

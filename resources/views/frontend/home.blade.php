@@ -1651,16 +1651,15 @@
           <!-- ─── HERO ─── -->
           <section class="hero" id="hero">
               <div class="hero-left">
-                  <span class="hero-eyebrow" id="heroEyebrow">SS 2025 Collection</span>
+                  <span class="hero-eyebrow" id="heroEyebrow">Nepal's Multi-Vendor Marketplace</span>
                   <h1 class="hero-headline reveal" id="heroHead">
-                      Wear <em>Your</em><br>Story With<br>Elegance
+                      Everything <em>You</em><br>Need, All in<br>One Place
                   </h1>
-                  <p class="hero-sub reveal reveal-delay-1">Discover curated pieces that blend timeless craftsmanship
-                      with
-                      modern sensibility. Every stitch tells a story.</p>
+                  <p class="hero-sub reveal reveal-delay-1">From electronics and fashion to food, home essentials and
+                      more — discover thousands of products from trusted local sellers.</p>
                   <div class="hero-cta-group reveal reveal-delay-2">
                       <a href="{{ route('products') }}" class="btn-primary"><span>Explore Collection</span></a>
-                      <a href="#" class="btn-ghost">
+                      <a href="{{ route('our-story') }}" class="btn-ghost">
                           Our Story
                           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
                               viewBox="0 0 24 24">
@@ -1699,18 +1698,18 @@
           <!-- ─── MARQUEE ─── -->
           <div class="marquee-strip">
               <div class="marquee-inner">
-                  <span class="marquee-item">Sustainable Fashion <span class="dot"></span></span>
-                  <span class="marquee-item">Artisan Crafted <span class="dot"></span></span>
-                  <span class="marquee-item">Timeless Design <span class="dot"></span></span>
-                  <span class="marquee-item">Conscious Living <span class="dot"></span></span>
-                  <span class="marquee-item">Curated Selections <span class="dot"></span></span>
-                  <span class="marquee-item">Free Returns <span class="dot"></span></span>
-                  <span class="marquee-item">Sustainable Fashion <span class="dot"></span></span>
-                  <span class="marquee-item">Artisan Crafted <span class="dot"></span></span>
-                  <span class="marquee-item">Timeless Design <span class="dot"></span></span>
-                  <span class="marquee-item">Conscious Living <span class="dot"></span></span>
-                  <span class="marquee-item">Curated Selections <span class="dot"></span></span>
-                  <span class="marquee-item">Free Returns <span class="dot"></span></span>
+                  <span class="marquee-item">Thousands of Products <span class="dot"></span></span>
+                  <span class="marquee-item">Trusted Local Sellers <span class="dot"></span></span>
+                  <span class="marquee-item">Secure Payments <span class="dot"></span></span>
+                  <span class="marquee-item">Fast Delivery <span class="dot"></span></span>
+                  <span class="marquee-item">Easy Returns <span class="dot"></span></span>
+                  <span class="marquee-item">Every Category Covered <span class="dot"></span></span>
+                  <span class="marquee-item">Thousands of Products <span class="dot"></span></span>
+                  <span class="marquee-item">Trusted Local Sellers <span class="dot"></span></span>
+                  <span class="marquee-item">Secure Payments <span class="dot"></span></span>
+                  <span class="marquee-item">Fast Delivery <span class="dot"></span></span>
+                  <span class="marquee-item">Easy Returns <span class="dot"></span></span>
+                  <span class="marquee-item">Every Category Covered <span class="dot"></span></span>
               </div>
           </div>
 

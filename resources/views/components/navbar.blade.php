@@ -403,7 +403,7 @@
             <a href="{{ route('home') }}">Home</a>
             <a href="{{ route('categories') }}">Category</a>
             <a href="{{ route('products') }}">Product</a>
-            <a href="#">About Us</a>
+            <a href="{{ route('our-story') }}">Our Story</a>
             <a href="#">Testimonials</a>
             <a href="#">Blog</a>
         </div>
@@ -489,7 +489,7 @@
         <a href="{{ route('home') }} " onclick="toggleMobileMenu()">Home</a>
         <a href="{{ route('categories') }}" onclick="toggleMobileMenu()">Category</a>
         <a href="{{ route('products') }}" onclick="toggleMobileMenu()">Product</a>
-        <a href="#" onclick="toggleMobileMenu()">About Us</a>
+        <a href="{{ route('our-story') }}" onclick="toggleMobileMenu()">Our Story</a>
         <a href="#" onclick="toggleMobileMenu()">Testimonials</a>
         <a href="#" onclick="toggleMobileMenu()">Blog</a>
         <a href="{{ route('cart.index') }}" onclick="toggleMobileMenu()">Cart</a>

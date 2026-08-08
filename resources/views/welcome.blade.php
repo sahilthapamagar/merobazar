@@ -1729,14 +1729,14 @@
   <!-- ─── HERO ─── -->
   <section class="hero" id="hero">
     <div class="hero-left">
-      <span class="hero-eyebrow" id="heroEyebrow">SS 2025 Collection</span>
+      <span class="hero-eyebrow" id="heroEyebrow">Nepal's Multi-Vendor Marketplace</span>
       <h1 class="hero-headline reveal" id="heroHead">
-        Wear <em>Your</em><br>Story With<br>Elegance
+        Everything <em>You</em><br>Need, All in<br>One Place
       </h1>
-      <p class="hero-sub reveal reveal-delay-1">Discover curated pieces that blend timeless craftsmanship with modern sensibility. Every stitch tells a story.</p>
+      <p class="hero-sub reveal reveal-delay-1">From electronics and fashion to food, home essentials and more — discover thousands of products from trusted local sellers.</p>
       <div class="hero-cta-group reveal reveal-delay-2">
         <a href="#" class="btn-primary"><span>Explore Collection</span></a>
-        <a href="#" class="btn-ghost">
+        <a href="{{ route('our-story') }}" class="btn-ghost">
           Our Story
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
             <path d="M5 12h14M13 6l6 6-6 6"/>
@@ -2178,19 +2178,19 @@
   <!-- ─── BRAND STORY ─── -->
   <section class="story-section">
     <div class="story-img-stack reveal">
-      <img class="story-img-main" src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=700&q=80&auto=format" alt="Our Story" />
-      <img class="story-img-accent" src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&q=80&auto=format" alt="Artisan" />
+      <img class="story-img-main" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=700&q=80&auto=format" alt="Marketplace" />
+      <img class="story-img-accent" src="https://images.unsplash.com/photo-1556742111-a301076d9d18?w=500&q=80&auto=format" alt="Shopping" />
       <div class="story-year-badge">
-        <div class="story-year">2012</div>
-        <div class="story-year-label">Founded</div>
+        <div class="story-year">2024</div>
+        <div class="story-year-label">Launched</div>
       </div>
     </div>
     <div class="story-right">
-      <div class="section-label reveal">Our Heritage</div>
-      <h2 class="section-title reveal reveal-delay-1">Where Every<br>Thread <em>Matters</em></h2>
-      <p class="story-quote reveal reveal-delay-2">"We don't follow trends. We set the standard for what enduring style truly means."</p>
-      <p class="story-body reveal reveal-delay-2">Founded in 2012 in the heart of Lyon, Maison began as a single atelier with a singular purpose: to create garments worthy of becoming heirlooms. Today, across 12 countries and with over 4,800 devoted clients, our philosophy remains unchanged — every piece must earn its place in your wardrobe forever.</p>
-      <p class="story-body reveal reveal-delay-2">We partner exclusively with small-batch artisans who share our uncompromising standards. From the organic linen farms of Belgium to the silk weavers of Como, every material is chosen with intention.</p>
+      <div class="section-label reveal">Our Mission</div>
+      <h2 class="section-title reveal reveal-delay-1">Connecting<br>Buyers & <em>Sellers</em></h2>
+      <p class="story-quote reveal reveal-delay-2">"We believe everyone deserves access to quality products from trusted local sellers."</p>
+      <p class="story-body reveal reveal-delay-2">MeroBazar was built to bring Nepal's best sellers and buyers together in one place. Whether you're looking for electronics, fashion, home goods, food, or anything in between — our multi-vendor marketplace connects you directly with sellers you can trust.</p>
+      <p class="story-body reveal reveal-delay-2">We empower local businesses of all sizes to reach more customers, while giving shoppers a seamless, secure experience across every category imaginable.</p>
 
       <div class="story-values reveal reveal-delay-3">
         <div class="story-value-item">
@@ -2198,8 +2198,8 @@
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           </div>
           <div>
-            <div class="sv-label">Artisan Quality</div>
-            <div class="sv-text">Every item hand-inspected before dispatch.</div>
+            <div class="sv-label">Quality Sellers</div>
+            <div class="sv-text">Every seller verified for trust and reliability.</div>
           </div>
         </div>
         <div class="story-value-item">
@@ -2207,8 +2207,8 @@
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M9 12l2 2 4-4"/></svg>
           </div>
           <div>
-            <div class="sv-label">Certified Sustainable</div>
-            <div class="sv-text">Carbon-neutral since 2020.</div>
+            <div class="sv-label">Secure Payments</div>
+            <div class="sv-text">Safe checkout with Khalti and COD options.</div>
           </div>
         </div>
         <div class="story-value-item">
@@ -2216,8 +2216,8 @@
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
           </div>
           <div>
-            <div class="sv-label">Timeless Design</div>
-            <div class="sv-text">Collections built to outlast every season.</div>
+            <div class="sv-label">Fast Delivery</div>
+            <div class="sv-text">Quick shipping from sellers near you.</div>
           </div>
         </div>
         <div class="story-value-item">
@@ -2225,15 +2225,15 @@
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
           </div>
           <div>
-            <div class="sv-label">Community First</div>
-            <div class="sv-text">1% of revenue to artisan cooperatives.</div>
+            <div class="sv-label">Support Local</div>
+            <div class="sv-text">Helping Nepali businesses grow every day.</div>
           </div>
         </div>
       </div>
 
-      <a href="#" class="btn-primary reveal reveal-delay-3"><span>Read Our Full Story</span></a>
-      <div class="story-signature reveal reveal-delay-4">Élise Moreau</div>
-      <div class="story-sig-label reveal reveal-delay-4">Founder & Creative Director</div>
+      <a href="{{ route('our-story') }}" class="btn-primary reveal reveal-delay-3"><span>Read Our Full Story</span></a>
+      <div class="story-signature reveal reveal-delay-4">MeroBazar Team</div>
+      <div class="story-sig-label reveal reveal-delay-4">Nepal's Multi-Vendor Marketplace</div>
     </div>
   </section>
 
@@ -2767,7 +2767,7 @@
       <div>
         <div class="footer-col-title">Company</div>
         <ul class="footer-links">
-          <li><a href="#">Our Story</a></li>
+          <li><a href="{{ route('our-story') }}">Our Story</a></li>
           <li><a href="#">Sustainability</a></li>
           <li><a href="#">Artisans</a></li>
           <li><a href="#">Press & Media</a></li>

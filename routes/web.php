@@ -15,6 +15,8 @@ Route::get('/categories', [PageController::class, 'categories'])->name('categori
 
 Route::get('/products', [PageController::class, 'products'])->name('products');
 
+Route::get('/our-story', [PageController::class, 'ourStory'])->name('our-story');
+
 Route::get('/product/{id}', [PageController::class, 'product'])->name('product');
 
 Route::get('/seller-form', [SellerController::class, 'index'])->name('seller.index');
