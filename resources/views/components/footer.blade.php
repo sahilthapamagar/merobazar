@@ -255,7 +255,7 @@
         <div>
             <div class="footer-col-title">Customer Service</div>
             <ul class="footer-links">
-                <li><a href="#">FAQ</a></li>
+                <li><a href="{{ route('faq') }}">FAQ</a></li>
                 <li><a href="#">Shipping & Returns</a></li>
                 <li><a href="#">Track Order</a></li>
                 <li><a href="#">Sell on MeroBazar</a></li>

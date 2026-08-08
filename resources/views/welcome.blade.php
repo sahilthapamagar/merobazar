@@ -2779,7 +2779,7 @@
       <div>
         <div class="footer-col-title">Help</div>
         <ul class="footer-links">
-          <li><a href="#">FAQ</a></li>
+          <li><a href="{{ route('faq') }}">FAQ</a></li>
           <li><a href="#">Shipping & Returns</a></li>
           <li><a href="#">Size Guide</a></li>
           <li><a href="#">Track Order</a></li>
