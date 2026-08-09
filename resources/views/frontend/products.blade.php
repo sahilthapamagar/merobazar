@@ -461,7 +461,7 @@
                         <article class="product-card product-interactive"
                             data-tag="{{ $isNew ? 'new' : '' }}">
                             <div class="product-img-wrap">
-                                <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
+                                <img src="{{ $product->main_image_url }}" alt="{{ $product->name }}" />
 
                                 @if ($isNew)
                                     <span class="product-badge">New In</span>

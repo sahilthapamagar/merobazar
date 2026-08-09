@@ -639,7 +639,7 @@
                                     @foreach ($group['items'] as $item)
                                         @php
                                             $product = $item->product;
-                                            $image = $product?->main_image;
+                                            $image = $product?->main_image_url;
                                             $unitPrice = $item->quantity > 0 ? (float) $item->amount / $item->quantity : 0;
                                         @endphp
                                         <li class="cart-row">

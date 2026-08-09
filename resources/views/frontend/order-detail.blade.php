@@ -584,8 +584,8 @@
                         @endphp
                         <li class="detail-item">
                             <a href="{{ route('product', $item->product_id) }}" class="detail-item-img">
-                                @if ($item->product && $item->product->main_image)
-                                    <img src="{{ $item->product->main_image }}" alt="{{ $item->product->name }}">
+                                @if ($item->product && $item->product->main_image_url)
+                                    <img src="{{ $item->product->main_image_url }}" alt="{{ $item->product->name }}">
                                 @endif
                             </a>
                             <div class="detail-item-details">
@@ -609,7 +609,7 @@
                                         <button type="button" class="detail-item-review" data-review-open
                                             data-action="{{ route('review.store', [$order->id, $item->id]) }}"
                                             data-product-name="{{ $item->product?->name ?? 'Product' }}"
-                                            data-product-image="{{ $item->product?->main_image ?? '' }}">
+                                            data-product-image="{{ $item->product?->main_image_url ?? '' }}">
                                             <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
                                                 <path
                                                     d="M12 2l2.9 6.26 6.6.56-5 4.33 1.5 6.45L12 16.9l-5.9 3.7 1.5-6.45-5-4.33 6.6-.56L12 2z" />

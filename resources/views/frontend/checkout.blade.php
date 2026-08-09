@@ -516,7 +516,7 @@
                                 @foreach ($carts as $cart)
                                     @php
                                         $product = $cart->product;
-                                        $image = $product?->main_image;
+                                        $image = $product?->main_image_url;
                                     @endphp
                                     <div class="checkout-item">
                                         <div class="checkout-item-img {{ $image ? '' : 'checkout-item-img--empty' }}">

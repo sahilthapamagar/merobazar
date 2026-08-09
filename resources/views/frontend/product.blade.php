@@ -859,7 +859,7 @@
 
         <div class="product-container">
             @php
-                $galleryImages = is_array($product->images) ? $product->images : [];
+                $galleryImages = $product->image_urls;
                 $formatPrice = fn($amount) => 'Rs. ' . number_format((float) $amount, 2);
                 $hasRelated = isset($relatedProducts) && $relatedProducts->count() > 0;
 
@@ -889,7 +889,7 @@
                 {{-- Left: Product Images --}}
                 <div class="product-gallery-panel">
                     <div class="product-gallery-main" id="main-image-container">
-                        <img id="main-image" src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                        <img id="main-image" src="{{ $product->main_image_url }}" alt="{{ $product->name }}">
                         @if ($product->is_new)
                             <span class="product-discount-tag"
                                 style="position:absolute;top:14px;left:14px;z-index:2;background:var(--primary);color:var(--accent);">New</span>
@@ -902,9 +902,9 @@
 
                     @if (count($galleryImages) > 0)
                         <div class="product-thumbs" id="thumbnail-gallery">
-                            <button type="button" onclick="changeMainImage('{{ $product->main_image }}', this)"
+                            <button type="button" onclick="changeMainImage('{{ $product->main_image_url }}', this)"
                                 class="product-thumb product-interactive is-active" data-main-thumb>
-                                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                                <img src="{{ $product->main_image_url }}" alt="{{ $product->name }}">
                             </button>
                             @foreach ($galleryImages as $index => $image)
                                 <button type="button" onclick="changeMainImage('{{ $image }}', this)"
@@ -1055,7 +1055,7 @@
                         </div>
                     @endif
 
-                    @forelse ($product->reviews as $review)
+                    @forelse ($product->reviews->take(6) as $review)
                         <article class="product-review">
                             <div class="product-review-top">
                                 <div class="product-review-avatar">{{ Str::upper(Str::substr($review->user->name ?? 'U', 0, 1)) }}</div>
@@ -1104,7 +1104,7 @@
                                     <a href="{{ route('product', $related->id) }}"
                                         class="product-related-card product-interactive">
                                         <div class="product-related-card-image">
-                                            <img src="{{ $related->main_image }}" alt="{{ $related->name }}">
+                                            <img src="{{ $related->main_image_url }}" alt="{{ $related->name }}">
                                         </div>
                                         <div class="product-related-card-info">
                                             <h3>{{ $related->name }}</h3>

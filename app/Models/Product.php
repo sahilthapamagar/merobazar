@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read bool $is_discounted
  * @property-read int $discount_percent
  * @property-read bool $is_new
+ * @property-read string|null $main_image_url
+ * @property-read array<array-key, string> $image_urls
  * @property-read \App\Models\Category $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $orderItems
  * @property-read int|null $order_items_count
@@ -53,6 +55,49 @@ class Product extends Model
             'price' => 'float',
             'discounted_price' => 'float',
         ];
+    }
+
+    /**
+     * Resolve an image value (full URL or stored path) into a usable URL.
+     *
+     * Values that are already absolute URLs are returned unchanged. Values
+     * stored by the file uploader (e.g. "products/images/abc.jpg") are resolved
+     * to their public URL under the storage disk.
+     */
+    public static function resolveImageUrl(?string $path): ?string
+    {
+        if (blank($path)) {
+            return null;
+        }
+
+        // Already a full URL (http/https), protocol-relative (//host), or data URI.
+        if (preg_match('#^(?:https?:)?//|^data:|^blob:#i', $path)) {
+            return $path;
+        }
+
+        // Stored path on the public disk — prefix if not already present.
+        $relative = str_starts_with($path, 'storage/') ? $path : 'storage/'.ltrim($path, '/');
+
+        return asset($relative);
+    }
+
+    /**
+     * Fully-qualified URL for the main product image.
+     */
+    public function getMainImageUrlAttribute(): ?string
+    {
+        return static::resolveImageUrl($this->main_image);
+    }
+
+    /**
+     * Fully-qualified URLs for the additional gallery images.
+     */
+    public function getImageUrlsAttribute(): array
+    {
+        return array_values(array_filter(array_map(
+            static fn ($image): ?string => static::resolveImageUrl(is_string($image) ? $image : null),
+            is_array($this->images) ? $this->images : [],
+        )));
     }
 
     /**

@@ -1775,7 +1775,7 @@
                       <a href="{{ route('product', $product->id) }}">
                           <div class="product-card reveal" data-tag="new trending">
                               <div class="product-img-wrap">
-                                  <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
+                                  <img src="{{ $product->main_image_url }}" alt="{{ $product->name }}" />
                                   @if ($product->is_new)
                                       <span class="product-badge">New</span>
                                   @endif
@@ -1836,7 +1836,7 @@
                           <a href="{{ route('product', $product->id) }}">
                               <div class="product-card reveal" data-tag="new trending">
                                   <div class="product-img-wrap">
-                                      <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
+                                      <img src="{{ $product->main_image_url }}" alt="{{ $product->name }}" />
                                       @if ($product->is_new)
                                           <span class="product-badge">New</span>
                                       @endif
