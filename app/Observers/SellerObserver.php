@@ -32,7 +32,7 @@ class SellerObserver
 
         if ($seller->isDirty('status') && $seller->status === 'active' && ! $seller->password) {
             // Generate a strong random password
-            $password = bin2hex(random_bytes(8));
+            $password = random_bytes(6);
             $seller->password = Hash::make($password);
             $seller->saveQuietly();
             Mail::to($seller->email)->send(new SellerApprovalMail($seller, $password));

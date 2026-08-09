@@ -15,7 +15,7 @@ class PageController extends Controller
     {
         $categories = Category::withCount('products')
             ->with(['products' => function ($query) {
-                $query->withAvg('reviews', 'rating')->withCount('reviews')->take(4);
+                $query->withAvg('reviews', 'rating')->withCount('reviews')->latest()->take(4);
             }])
             ->get();
 
