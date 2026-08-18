@@ -212,7 +212,7 @@
     .cat-mosaic-card {
         position: relative;
         overflow: hidden;
-        cursor: none;
+        
         background: var(--cream);
     }
 

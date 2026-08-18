@@ -15,7 +15,6 @@
         background: var(--primary);
         color: var(--accent);
         border: none;
-        cursor: none;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -100,7 +99,6 @@
         background: none;
         border: none;
         color: var(--accent);
-        cursor: none;
         padding: 4px;
         display: flex;
         opacity: 0.7;
@@ -208,7 +206,6 @@
         font-size: 0.72rem;
         font-weight: 500;
         letter-spacing: 0.04em;
-        cursor: none;
         transition: background 0.2s;
     }
 
@@ -250,7 +247,6 @@
         background: var(--primary);
         color: var(--accent);
         border: none;
-        cursor: none;
         display: flex;
         align-items: center;
         justify-content: center;

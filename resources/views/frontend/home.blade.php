@@ -108,7 +108,7 @@
               text-transform: uppercase;
               font-weight: 500;
               border: none;
-              cursor: none;
+              
               text-decoration: none;
               display: inline-block;
               position: relative;
@@ -501,7 +501,7 @@
           .cat-card {
               position: relative;
               overflow: hidden;
-              cursor: none;
+              
           }
 
           .cat-card:first-child {
@@ -595,7 +595,7 @@
               background: transparent;
               border: 1px solid var(--accent);
               color: var(--primary);
-              cursor: none;
+              
               transition: all 0.3s ease;
           }
 
@@ -615,7 +615,7 @@
           .product-card {
               background: white;
               position: relative;
-              cursor: none;
+              
               overflow: hidden;
           }
 
@@ -678,7 +678,7 @@
               text-transform: uppercase;
               font-weight: 500;
               border: none;
-              cursor: none;
+              
               transition: background 0.3s;
           }
 
@@ -693,7 +693,7 @@
               display: flex;
               align-items: center;
               justify-content: center;
-              cursor: none;
+              
               transition: all 0.3s;
               flex-shrink: 0;
           }
@@ -826,7 +826,7 @@
               text-decoration: none;
               position: relative;
               overflow: hidden;
-              cursor: none;
+              
               transition: color 0.3s ease;
           }
 
@@ -1089,7 +1089,7 @@
               padding: 12px 16px;
               min-width: 300px;
               transition: background 0.3s;
-              cursor: none;
+              
           }
 
           .countdown-product-row:hover {
@@ -1572,7 +1572,7 @@
               letter-spacing: 0.14em;
               text-transform: uppercase;
               font-weight: 500;
-              cursor: none;
+              
               transition: background 0.3s ease;
               white-space: nowrap;
           }

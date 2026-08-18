@@ -211,7 +211,7 @@
             font-weight: 600;
             text-decoration: none;
             border: none;
-            cursor: none;
+            
             white-space: nowrap;
             transition: background 0.25s ease, transform 0.2s ease;
         }
@@ -256,7 +256,7 @@
             font-weight: 600;
             text-decoration: none;
             border: none;
-            cursor: none;
+            
             transition: background 0.25s ease;
         }
 

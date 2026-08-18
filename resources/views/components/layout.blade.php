@@ -45,55 +45,8 @@
             color: var(--primary);
             font-family: 'DM Sans', sans-serif;
             overflow-x: hidden;
-            cursor: none;
             width: 100%;
             max-width: 100%;
-        }
-
-        /* ─── CUSTOM CURSOR ─── */
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--primary);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease;
-        }
-
-        .cursor-ring {
-            width: 36px;
-            height: 36px;
-            border: 1.5px solid var(--secondary);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: all 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .cursor-ring.hovering {
-            width: 60px;
-            height: 60px;
-            background: rgba(171, 136, 109, 0.08);
-            border-color: var(--primary);
-        }
-
-        .cursor-dot,
-        .cursor-ring {
-            opacity: 0;
-        }
-
-        .cursor-dot.is-active,
-        .cursor-ring.is-active {
-            opacity: 1;
         }
 
         /* ─── NOISE TEXTURE OVERLAY ─── */
@@ -133,23 +86,10 @@
             background: var(--secondary);
             border-radius: 4px;
         }
-
-        @media (pointer: coarse), (max-width: 768px) {
-            body {
-                cursor: auto;
-            }
-
-            .cursor-dot,
-            .cursor-ring {
-                display: none !important;
-            }
-        }
     </style>
 </head>
 
 <body>
-    <div class="cursor-dot" id="cursorDot"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
     @include('sweetalert::alert')
 
     <x-navbar />
@@ -158,59 +98,6 @@
 
     <x-footer />
     <x-chat-widget />
-
-    <script>
-        (function initCustomCursor() {
-            if (window.__customCursorInitialized) {
-                return;
-            }
-            window.__customCursorInitialized = true;
-
-            const dot = document.getElementById('cursorDot');
-            const ring = document.getElementById('cursorRing');
-            if (!dot || !ring) {
-                return;
-            }
-
-            if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 768) {
-                document.body.style.cursor = 'auto';
-                dot.style.display = 'none';
-                ring.style.display = 'none';
-                return;
-            }
-
-            let mouseX = 0;
-            let mouseY = 0;
-            let ringX = 0;
-            let ringY = 0;
-
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                dot.classList.add('is-active');
-                ring.classList.add('is-active');
-                dot.style.left = mouseX + 'px';
-                dot.style.top = mouseY + 'px';
-            });
-
-            function animateRing() {
-                ringX += (mouseX - ringX) * 0.14;
-                ringY += (mouseY - ringY) * 0.14;
-                ring.style.left = ringX + 'px';
-                ring.style.top = ringY + 'px';
-                requestAnimationFrame(animateRing);
-            }
-
-            animateRing();
-
-            document.querySelectorAll(
-                'a, button, input, label, select, textarea, [role="button"], .product-interactive'
-            ).forEach((el) => {
-                el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
-                el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
-            });
-        })();
-    </script>
 
 </body>
 

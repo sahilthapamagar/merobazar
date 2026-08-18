@@ -180,7 +180,7 @@
             text-transform: uppercase;
             font-weight: 600;
             font-family: 'DM Sans', sans-serif;
-            cursor: none;
+            
             transition: background 0.3s ease, transform 0.2s ease;
         }
 
@@ -234,7 +234,7 @@
             text-decoration: underline;
             text-underline-offset: 3px;
             font-size: 0.82rem;
-            cursor: none;
+            
             transition: color 0.2s;
         }
 
@@ -317,7 +317,7 @@
             text-transform: uppercase;
             font-weight: 500;
             font-family: 'DM Sans', sans-serif;
-            cursor: none;
+            
             transition: all 0.25s ease;
         }
 

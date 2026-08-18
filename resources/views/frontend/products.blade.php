@@ -54,7 +54,7 @@
         background: transparent;
         border: 1px solid var(--accent);
         color: var(--primary);
-        cursor: none;
+        
         transition: all 0.3s ease;
     }
 
@@ -80,7 +80,7 @@
     .product-card {
         background: #fff;
         position: relative;
-        cursor: none;
+        
         overflow: hidden;
         border: 1px solid rgba(171, 136, 109, 0.12);
         transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -155,7 +155,7 @@
         text-transform: uppercase;
         font-weight: 500;
         border: none;
-        cursor: none;
+        
         transition: background 0.3s;
     }
 
@@ -170,7 +170,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: none;
+        
         transition: all 0.3s;
         flex-shrink: 0;
     }
@@ -305,7 +305,7 @@
         border: none;
         text-decoration: none;
         transition: all 0.2s ease;
-        cursor: none;
+        
         position: relative;
     }
 

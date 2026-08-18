@@ -38,7 +38,7 @@
             color: var(--secondary);
             text-decoration: none;
             transition: color 0.3s ease;
-            cursor: none;
+            
         }
 
         .product-breadcrumb a:hover {
@@ -113,7 +113,7 @@
             border: 2px solid transparent;
             padding: 0;
             background: none;
-            cursor: none;
+            
             transition: border-color 0.3s ease, transform 0.25s ease;
         }
 
@@ -255,7 +255,7 @@
             background: transparent;
             color: var(--primary);
             font-size: 1.25rem;
-            cursor: none;
+            
             transition: background 0.2s ease;
         }
 
@@ -295,7 +295,7 @@
             font-size: 0.8rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            cursor: none;
+            
             border-radius: 8px;
             transition: background 0.3s ease, transform 0.2s ease;
         }
@@ -442,7 +442,7 @@
             color: var(--primary);
             display: grid;
             place-items: center;
-            cursor: none;
+            
             transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
         }
 
@@ -479,7 +479,7 @@
             display: block;
             text-decoration: none;
             color: inherit;
-            cursor: none;
+            
             text-align: center;
             background: #fff;
             border: 1px solid rgba(171, 136, 109, 0.18);

@@ -31,7 +31,6 @@
         position: relative;
         z-index: 1001;
         flex-shrink: 0;
-        cursor: none;
     }
 
     .nav-links {
@@ -49,7 +48,6 @@
         text-decoration: none;
         position: relative;
         padding-bottom: 3px;
-        cursor: none;
         white-space: nowrap;
     }
 
@@ -75,7 +73,6 @@
     }
 
     .nav-icon {
-        cursor: none;
         position: relative;
         border: none;
         background: none;
@@ -153,7 +150,6 @@
         text-align: left;
         background: none;
         border: none;
-        cursor: none;
         transition: background 0.2s ease, color 0.2s ease;
     }
 
@@ -192,7 +188,6 @@
 
     .mobile-menu-btn {
         display: none;
-        cursor: none;
         align-items: center;
         justify-content: center;
     }
@@ -224,7 +219,6 @@
         border-bottom: 1px solid rgba(171, 136, 109, 0.15);
         display: block;
         transition: color 0.3s, padding-left 0.3s;
-        cursor: none;
     }
 
     .mobile-menu a:hover {
@@ -264,7 +258,6 @@
     }
 
     .search-close-btn {
-        cursor: none;
         border: none;
         background: none;
         font-size: 0.8rem;
@@ -384,7 +377,6 @@
         padding: 14px 0;
         width: 100%;
         text-align: left;
-        cursor: none;
         transition: color 0.3s, padding-left 0.3s;
     }
 

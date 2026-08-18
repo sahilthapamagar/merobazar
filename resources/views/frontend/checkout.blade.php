@@ -128,7 +128,7 @@
             outline: none;
             resize: none;
             transition: border-color 0.2s;
-            cursor: none;
+            
         }
 
         .field input:focus,
@@ -160,7 +160,7 @@
             padding: 1rem 1.1rem;
             border: 1px solid rgba(171, 136, 109, 0.25);
             background: var(--background);
-            cursor: none;
+            
             transition: border-color 0.2s, background 0.2s;
         }
 
@@ -348,7 +348,7 @@
             font-weight: 600;
             text-align: center;
             border: none;
-            cursor: none;
+            
             transition: background 0.25s ease;
         }
 

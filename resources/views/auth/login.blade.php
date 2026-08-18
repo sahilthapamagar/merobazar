@@ -299,7 +299,7 @@
             box-shadow: none;
             appearance: none;
             -webkit-appearance: none;
-            cursor: none;
+            
         }
 
         .form-input::placeholder {
@@ -345,7 +345,7 @@
             padding: 4px;
             margin: 0;
             line-height: 0;
-            cursor: none;
+            
             color: rgba(73, 54, 40, 0.35);
             transition: color 0.2s ease;
             display: flex;
@@ -369,7 +369,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            cursor: none;
+            
         }
 
         .custom-checkbox {
@@ -411,7 +411,7 @@
             text-decoration: none;
             letter-spacing: 0.3px;
             transition: color 0.2s ease;
-            cursor: none;
+            
         }
 
         .forgot-link:hover {
@@ -430,7 +430,7 @@
             font-weight: 500;
             letter-spacing: 3.5px;
             text-transform: uppercase;
-            cursor: none;
+            
             position: relative;
             overflow: hidden;
             transition: letter-spacing 0.35s ease, transform 0.15s ease;
@@ -507,7 +507,7 @@
             font-size: 12px;
             font-weight: 400;
             color: var(--primary);
-            cursor: none;
+            
             transition: border-color 0.25s ease, background 0.25s ease;
             letter-spacing: 0.3px;
         }
@@ -533,7 +533,7 @@
             color: var(--secondary);
             text-decoration: none;
             font-weight: 500;
-            cursor: none;
+            
             transition: color 0.2s ease;
         }
 

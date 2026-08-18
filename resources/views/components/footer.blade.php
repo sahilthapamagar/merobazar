@@ -46,7 +46,6 @@
         color: var(--accent);
         transition: all 0.3s;
         text-decoration: none;
-        cursor: none;
     }
 
     .social-link:hover {

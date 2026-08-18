@@ -158,7 +158,7 @@
             font-weight: 600;
             text-decoration: none;
             border: none;
-            cursor: none;
+            
             transition: background 0.25s ease;
         }
 
@@ -284,7 +284,7 @@
             font-size: 0.72rem;
             letter-spacing: 0.06em;
             color: rgba(154, 74, 74, 0.85);
-            cursor: none;
+            
             text-decoration: underline;
             text-underline-offset: 3px;
             transition: color 0.2s ease;
@@ -320,7 +320,7 @@
             background: transparent;
             color: var(--primary);
             font-size: 1rem;
-            cursor: none;
+            
             transition: background 0.2s ease;
         }
 
@@ -436,7 +436,7 @@
             text-align: center;
             text-decoration: none;
             border: none;
-            cursor: none;
+            
             transition: background 0.25s ease;
         }
 
@@ -458,7 +458,7 @@
             text-align: center;
             text-decoration: none;
             border: none;
-            cursor: none;
+            
             transition: color 0.2s ease;
         }
 

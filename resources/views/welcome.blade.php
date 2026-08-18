@@ -29,7 +29,7 @@
       color: var(--primary);
       font-family: 'DM Sans', sans-serif;
       overflow-x: hidden;
-      cursor: none;
+      
     }
 
     /* ─── CUSTOM CURSOR ─── */
@@ -117,7 +117,7 @@
       transition: width 0.3s ease;
     }
     .nav-links a:hover::after { width: 100%; }
-    .nav-icon { cursor: none; position: relative; }
+    .nav-icon {  position: relative; }
     .cart-badge {
       position: absolute; top: -6px; right: -8px;
       width: 16px; height: 16px;
@@ -127,7 +127,7 @@
       display: flex; align-items: center; justify-content: center;
       color: white; font-weight: 600;
     }
-    .mobile-menu-btn { display: none; cursor: none; }
+    .mobile-menu-btn { display: none;  }
 
     /* ─── ANNOUNCEMENT BAR ─── */
     .announcement {
@@ -200,7 +200,7 @@
       text-transform: uppercase;
       font-weight: 500;
       border: none;
-      cursor: none;
+      
       text-decoration: none;
       display: inline-block;
       position: relative;
@@ -338,7 +338,7 @@
     .cat-card {
       position: relative;
       overflow: hidden;
-      cursor: none;
+      
     }
     .cat-card:first-child { grid-row: 1 / 3; }
     .cat-card img {
@@ -395,7 +395,7 @@
       background: transparent;
       border: 1px solid var(--accent);
       color: var(--primary);
-      cursor: none;
+      
       transition: all 0.3s ease;
     }
     .filter-btn.active, .filter-btn:hover {
@@ -411,7 +411,7 @@
     .product-card {
       background: white;
       position: relative;
-      cursor: none;
+      
       overflow: hidden;
     }
     .product-img-wrap {
@@ -454,7 +454,7 @@
       text-transform: uppercase;
       font-weight: 500;
       border: none;
-      cursor: none;
+      
       transition: background 0.3s;
     }
     .add-cart-btn:hover { background: var(--secondary); }
@@ -463,7 +463,7 @@
       background: white;
       border: 1px solid var(--accent);
       display: flex; align-items: center; justify-content: center;
-      cursor: none;
+      
       transition: all 0.3s;
       flex-shrink: 0;
     }
@@ -556,7 +556,7 @@
       text-decoration: none;
       position: relative;
       overflow: hidden;
-      cursor: none;
+      
       transition: color 0.3s ease;
     }
     .btn-light::before {
@@ -727,7 +727,7 @@
       padding: 12px 16px;
       min-width: 300px;
       transition: background 0.3s;
-      cursor: none;
+      
     }
     .countdown-product-row:hover { background: rgba(255,255,255,0.09); }
     .cp-img {
@@ -862,7 +862,7 @@
       width: 280px;
       scroll-snap-align: start;
       background: white;
-      cursor: none;
+      
       position: relative;
       overflow: hidden;
     }
@@ -891,7 +891,7 @@
       background: var(--primary);
       border: none;
       display: flex; align-items: center; justify-content: center;
-      cursor: none;
+      
       transition: background 0.3s, transform 0.2s;
     }
     .bs-add:hover { background: var(--secondary); transform: scale(1.08); }
@@ -902,7 +902,7 @@
       background: white;
       border: 1px solid var(--accent);
       display: flex; align-items: center; justify-content: center;
-      cursor: none;
+      
       z-index: 10;
       transition: all 0.3s;
       box-shadow: 0 4px 20px rgba(73,54,40,0.12);
@@ -925,7 +925,7 @@
     .look-cell {
       position: relative;
       overflow: hidden;
-      cursor: none;
+      
     }
     .look-cell:nth-child(1) { grid-column: span 2; grid-row: span 2; }
     .look-cell:nth-child(4) { grid-column: span 2; }
@@ -1011,7 +1011,7 @@
       opacity: 0.35;
       filter: sepia(100%);
       transition: opacity 0.3s, filter 0.3s;
-      cursor: none;
+      
     }
     .press-logo-item:hover { opacity: 0.75; filter: none; }
     .press-logo-text {
@@ -1133,7 +1133,7 @@
       text-transform: uppercase;
       font-weight: 500;
       text-decoration: none;
-      cursor: none;
+      
       transition: all 0.3s;
     }
     .loyalty-btn-outline {
@@ -1181,7 +1181,7 @@
       padding: 12px 20px 12px 12px;
       background: white;
       border: 1px solid rgba(171,136,109,0.15);
-      cursor: none;
+      
       transition: all 0.3s;
       min-width: 200px;
     }
@@ -1200,7 +1200,7 @@
     }
     .blog-card {
       overflow: hidden;
-      cursor: none;
+      
       background: white;
     }
     .blog-img-wrap { overflow: hidden; aspect-ratio: 16/10; }
@@ -1400,7 +1400,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       font-weight: 500;
-      cursor: none;
+      
       transition: background 0.3s ease;
       white-space: nowrap;
     }
@@ -1478,7 +1478,7 @@
       color: var(--accent);
       transition: all 0.3s;
       text-decoration: none;
-      cursor: none;
+      
     }
     .social-link:hover {
       background: var(--secondary);
@@ -1591,7 +1591,7 @@
       position: absolute; top: 16px; right: 16px;
       width: 36px; height: 36px;
       background: var(--primary);
-      border: none; cursor: none;
+      border: none; 
       display: flex; align-items: center; justify-content: center;
       color: white;
     }
@@ -1602,7 +1602,7 @@
       background: none;
       font-size: 0.75rem; font-weight: 500;
       color: var(--primary);
-      cursor: none;
+      
       transition: all 0.2s;
     }
     .size-btn.active, .size-btn:hover {
@@ -1708,7 +1708,7 @@
   <div id="searchBar" style="position:fixed;top:0;left:0;right:0;z-index:1100;background:var(--cream);padding:0 8%;height:72px;display:none;align-items:center;gap:16px;border-bottom:1px solid rgba(171,136,109,0.2);animation:slideDown 0.3s ease">
     <svg width="18" height="18" fill="none" stroke="var(--secondary)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L22 22"/></svg>
     <input type="text" placeholder="Search for products, brands..." style="flex:1;border:none;background:none;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--primary);outline:none;" autofocus id="searchInput">
-    <button onclick="toggleSearch()" style="cursor:none;border:none;background:none;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--secondary);">Close</button>
+    <button onclick="toggleSearch()" style="border:none;background:none;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--secondary);">Close</button>
   </div>
   <style>@keyframes slideDown { from { transform:translateY(-100%); } to { transform:translateY(0); } }</style>
 
@@ -2824,8 +2824,8 @@
           <button class="size-btn" onclick="selectSize(this)">XL</button>
         </div>
         <div style="display:flex;gap:10px;margin-top:22px">
-          <button class="add-cart-btn" style="flex:1;padding:14px;cursor:none" onclick="addToCart(this);closeModal()">Add to Cart</button>
-          <button class="wishlist-btn" style="width:50px;cursor:none">
+          <button class="add-cart-btn" style="flex:1;padding:14px;" onclick="addToCart(this);closeModal()">Add to Cart</button>
+          <button class="wishlist-btn" style="width:50px;">
             <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
               <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
             </svg>
