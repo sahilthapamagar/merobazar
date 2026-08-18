@@ -31,6 +31,17 @@
         position: relative;
         z-index: 1001;
         flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .nav-logo-icon {
+        height: 36px;
+        width: 36px;
+        object-fit: cover;
+        object-position: left center;
+        border-radius: 4px;
     }
 
     .nav-links {
@@ -389,7 +400,7 @@
 <section>
     <!-- ─── NAVBAR ─── -->
     <nav id="navbar">
-        <a href="{{ route('home') }}" class="nav-logo">MeroBazar</a>
+        <a href="{{ route('home') }}" class="nav-logo">MeroBazar<img src="/images/logo.png" class="nav-logo-icon" alt="MeroBazar icon"></a>
 
         <div class="nav-links">
             <a href="{{ route('home') }}">Home</a>
