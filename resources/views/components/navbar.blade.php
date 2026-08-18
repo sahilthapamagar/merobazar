@@ -393,9 +393,9 @@
 
         <div class="nav-links">
             <a href="{{ route('home') }}">Home</a>
+            <a href="{{ route('products') }}">Shop</a>
             <a href="{{ route('categories') }}">Category</a>
-            <a href="{{ route('products') }}">Product</a>
-
+            <a href="{{ route('seller.index') }}">Become a Vendor</a>
         </div>
 
         <div class="nav-actions">
@@ -477,9 +477,9 @@
     <!-- ─── MOBILE MENU ─── -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
         <a href="{{ route('home') }} " onclick="toggleMobileMenu()">Home</a>
+        <a href="{{ route('products') }}" onclick="toggleMobileMenu()">Shop</a>
         <a href="{{ route('categories') }}" onclick="toggleMobileMenu()">Category</a>
-        <a href="{{ route('products') }}" onclick="toggleMobileMenu()">Product</a>
-
+        <a href="{{ route('seller.index') }}" onclick="toggleMobileMenu()">Become a Vendor</a>
         <a href="{{ route('cart.index') }}" onclick="toggleMobileMenu()">Cart</a>
         @if ($user = Auth::guard('web')->user())
             <a href="{{ route('profile.edit') }}" onclick="toggleMobileMenu()">Profile</a>

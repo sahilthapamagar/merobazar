@@ -246,8 +246,6 @@
             <ul class="footer-links">
                 <li><a href="{{ route('our-story') }}">Our Story</a></li>
                 <li><a href="#">Contact</a></li>
-                <li><a href="{{ route('seller.index') }}">Become a Vendor</a></li>
-
             </ul>
         </div>
 
