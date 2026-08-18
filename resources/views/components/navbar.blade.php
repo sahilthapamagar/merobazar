@@ -21,12 +21,10 @@
     }
 
     .nav-logo {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.6rem;
-        font-weight: 600;
-        letter-spacing: 0.3em;
-        color: var(--primary);
-        text-transform: uppercase;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
         text-decoration: none;
         position: relative;
         z-index: 1001;
@@ -36,11 +34,18 @@
         gap: 8px;
     }
 
+    .logo-mero {
+        color: #1a2538;
+    }
+
+    .logo-bazar {
+        color: #f47920;
+    }
+
     .nav-logo-icon {
-        height: 36px;
-        width: 36px;
-        object-fit: cover;
-        object-position: left center;
+        height: 44px;
+        width: 44px;
+        object-fit: contain;
         border-radius: 4px;
     }
 
@@ -400,7 +405,7 @@
 <section>
     <!-- ─── NAVBAR ─── -->
     <nav id="navbar">
-        <a href="{{ route('home') }}" class="nav-logo">MeroBazar<img src="/images/logo.png" class="nav-logo-icon" alt="MeroBazar icon"></a>
+        <a href="{{ route('home') }}" class="nav-logo"><img src="/images/logo.png" class="nav-logo-icon" alt="MeroBazar icon"><span class="logo-mero">Mero</span><span class="logo-bazar">Bazar</span></a>
 
         <div class="nav-links">
             <a href="{{ route('home') }}">Home</a>
