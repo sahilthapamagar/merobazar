@@ -6,6 +6,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -33,6 +34,8 @@ class SellerForm
                                     ->required(),
                                 TextInput::make('registration_number')
                                     ->label('Registration Number')
+                                    ->columnSpanFull(),
+                                View::make('filament.components.pan-verify')
                                     ->columnSpanFull(),
                             ])->columns(2),
                         Section::make('Upload Documents')
