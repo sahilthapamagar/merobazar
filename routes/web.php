@@ -49,6 +49,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/buying-history', [BuyingHistoryController::class, 'index'])->name('buying-history');
     Route::get('/buying-history/{order}', [BuyingHistoryController::class, 'show'])->name('buying-history.show');
 
+    Route::get('/wishlist', [App\Http\Controllers\Frontend\WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/{product}/toggle', [App\Http\Controllers\Frontend\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::delete('/wishlist/{wishlist}', [App\Http\Controllers\Frontend\WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+
     Route::post('/order/{order}/item/{orderItem}/review', [ReviewController::class, 'store'])->name('review.store');
 });
 
