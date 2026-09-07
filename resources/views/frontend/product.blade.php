@@ -997,6 +997,12 @@
                                 Add to Cart
                             </button>
                         </form>
+                        <form action="{{ route('wishlist.toggle', ->id) }}" method="POST" style="margin-top: 0.8rem;">
+                            @csrf
+                            <button type="submit" class="product-add-btn product-interactive" style="background: transparent; color: var(--primary); border-color: rgba(171, 136, 109, 0.4);">
+                                Add to Wishlist
+                            </button>
+                        </form>
                     </div>
 
                     <div class="product-benefits">
@@ -1345,3 +1351,4 @@
         })();
     </script>
 </x-layout>
+
