@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
@@ -21,10 +22,30 @@ class CheckoutController extends Controller
     {
         $seller = Seller::findOrFail($id);
         $user = Auth::guard('web')->user();
+
         $carts = Cart::with('product')
-            ->where('user_id', $user->id)
+            ->when($user, function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }, function ($query) {
+                $query->where(function ($q) {
+                    if (session()->has('guest_cart_session_id')) {
+                        $q->where('user_id', null)
+                            ->where('guest_session_id', session('guest_cart_session_id'));
+                    } else {
+                        $sessionId = Str::uuid()->toString();
+                        session(['guest_cart_session_id' => $sessionId]);
+                        $q->where('user_id', null)
+                            ->where('guest_session_id', $sessionId);
+                    }
+                });
+            })
             ->where('seller_id', $id)
             ->get();
+
+        if ($carts->isEmpty()) {
+            toast('Your cart is empty for this seller.', 'error');
+            return redirect()->route('cart.index');
+        }
 
         return view('frontend.checkout', compact('seller', 'carts'));
     }
