@@ -53,15 +53,32 @@ class CheckoutController extends Controller
     public function store(Request $request, $id)
     {
         $validated = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
             'address_detail' => 'required|string|max:500',
-            'contact' => 'required|string|max:10',
+            'contact' => 'required|string|max:15',
             'payment_method' => 'required|in:cod,khalti',
         ]);
 
         $seller = Seller::findOrFail($id);
         $user = Auth::guard('web')->user();
+
         $carts = Cart::with('product')
-            ->where('user_id', $user->id)
+            ->when($user, function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }, function ($query) {
+                $query->where(function ($q) {
+                    if (session()->has('guest_cart_session_id')) {
+                        $q->where('user_id', null)
+                            ->where('guest_session_id', session('guest_cart_session_id'));
+                    } else {
+                        $sessionId = Str::uuid()->toString();
+                        session(['guest_cart_session_id' => $sessionId]);
+                        $q->where('user_id', null)
+                            ->where('guest_session_id', $sessionId);
+                    }
+                });
+            })
             ->where('seller_id', $id)
             ->get();
 
@@ -71,22 +88,34 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index');
         }
 
-        // Use the correct relationship name: deliveryAddresses (hasOne)
-        if (! $user->deliveryAddresses) {
-            $delivery_address = new DeliveryAddress;
-            $delivery_address->user_id = $user->id;
-            $delivery_address->address_detail = $request->address_detail;
-            $delivery_address->contact = $request->contact;
-            $delivery_address->save();
-        } else {
-            $delivery_address = $user->deliveryAddresses;
-            $delivery_address->address_detail = $request->address_detail;
-            $delivery_address->contact = $request->contact;
-            $delivery_address->save();
+        // Save delivery address for logged in user
+        if ($user) {
+            if (! $user->deliveryAddresses) {
+                $delivery_address = new DeliveryAddress;
+                $delivery_address->user_id = $user->id;
+                $delivery_address->address_detail = $request->address_detail;
+                $delivery_address->contact = $request->contact;
+                $delivery_address->save();
+            } else {
+                $delivery_address = $user->deliveryAddresses;
+                $delivery_address->address_detail = $request->address_detail;
+                $delivery_address->contact = $request->contact;
+                $delivery_address->save();
+            }
         }
 
         $order = new Order;
-        $order->user_id = $user->id;
+        if ($user) {
+            $order->user_id = $user->id;
+        } else {
+            $order->user_id = null;
+            $order->billing_name = $request->name;
+            $order->billing_email = $request->email;
+            $order->billing_phone = $request->contact;
+            $order->billing_address = $request->address_detail;
+            $order->shipping_address = $request->address_detail;
+            $order->guest_token = Str::uuid()->toString();
+        }
         $order->seller_id = $seller->id;
         $order->total_amount = $carts->sum('amount');
         $order->payment_method = $request->payment_method;
@@ -111,14 +140,22 @@ class CheckoutController extends Controller
 
         if ($request->payment_method == 'cod') {
             try {
-                Mail::to($user->email)->send(new OrderPlacementMail($order, 'Cash on Delivery'));
+                if ($order->user && $order->user->email) {
+                    Mail::to($order->user->email)->send(new OrderPlacementMail($order, 'Cash on Delivery'));
+                } elseif ($order->billing_email) {
+                    Mail::to($order->billing_email)->send(new OrderPlacementMail($order, 'Cash on Delivery'));
+                }
             } catch (\Throwable $e) {
                 Log::error('Order placement mail error: '.$e->getMessage());
             }
 
             toast('Order placed successfully! Thank you for your purchase.', 'success');
 
-            return redirect()->route('buying-history.show', $order->id)->with('success', 'Order placed successfully! Thank you for your purchase.');
+            if ($order->user) {
+                return redirect()->route('buying-history.show', $order->id)->with('success', 'Order placed successfully! Thank you for your purchase.');
+            }
+
+            return redirect()->route('home')->with('success', 'Order placed successfully!');
         }
 
         $response = Http::withHeaders([
@@ -164,9 +201,13 @@ class CheckoutController extends Controller
         $order->save();
 
         // Only confirm (email) the order once the Khalti payment is completed.
-        if ($isSuccess && $order->user) {
+        if ($isSuccess) {
             try {
-                Mail::to($order->user->email)->send(new OrderPlacementMail($order, 'Khalti'));
+                if ($order->user && $order->user->email) {
+                    Mail::to($order->user->email)->send(new OrderPlacementMail($order, 'Khalti'));
+                } elseif ($order->billing_email) {
+                    Mail::to($order->billing_email)->send(new OrderPlacementMail($order, 'Khalti'));
+                }
             } catch (\Throwable $e) {
                 Log::error('Khalti order mail error: '.$e->getMessage());
             }
@@ -179,9 +220,16 @@ class CheckoutController extends Controller
 
         // A cancelled payment must not open the (now hidden) order detail page.
         if (! $isSuccess) {
-            return redirect()->route('buying-history');
+            if ($order->user) {
+                return redirect()->route('buying-history');
+            }
+            return redirect()->route('home');
         }
 
-        return redirect()->route('buying-history.show', $order->id)->with('success', $message);
+        if ($order->user) {
+            return redirect()->route('buying-history.show', $order->id)->with('success', $message);
+        }
+
+        return redirect()->route('home')->with('success', $message);
     }
 }
