@@ -37,6 +37,7 @@ class Cart extends Model
         'product_id',
         'quantity',
         'amount',
+        'guest_session_id',
     ];
 
     public function user()
