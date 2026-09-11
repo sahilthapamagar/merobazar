@@ -7,6 +7,7 @@ use App\Models\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class CartController extends Controller
@@ -15,14 +16,22 @@ class CartController extends Controller
     {
         $user = Auth::guard('web')->user();
 
-        if (! $user) {
-            toast('Please login to view your cart!', 'error');
-
-            return redirect()->route('login');
-        }
-
         $cartItems = Cart::with(['product', 'seller'])
-            ->where('user_id', $user->id)
+            ->when($user, function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }, function ($query) {
+                $query->where(function ($q) {
+                    if (session()->has('guest_cart_session_id')) {
+                        $q->where('user_id', null)
+                            ->where('guest_session_id', session('guest_cart_session_id'));
+                    } else {
+                        $sessionId = Str::uuid()->toString();
+                        session(['guest_cart_session_id' => $sessionId]);
+                        $q->where('user_id', null)
+                            ->where('guest_session_id', $sessionId);
+                    }
+                });
+            })
             ->latest()
             ->get();
 
