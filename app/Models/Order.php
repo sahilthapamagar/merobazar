@@ -47,7 +47,19 @@ class Order extends Model
         'billing_address',
         'shipping_address',
         'guest_token',
+        'tracking_number',
+        'shipped_at',
+        'delivered_at',
+        'notes',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'shipped_at' => 'datetime',
+            'delivered_at' => 'datetime',
+        ];
+    }
 
     public function user()
     {
