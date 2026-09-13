@@ -51,6 +51,9 @@ class Order extends Model
         'shipped_at',
         'delivered_at',
         'notes',
+        'coupon_id',
+        'discount_amount',
+        'subtotal_amount',
     ];
 
     protected function casts(): array
@@ -58,6 +61,8 @@ class Order extends Model
         return [
             'shipped_at' => 'datetime',
             'delivered_at' => 'datetime',
+            'discount_amount' => 'float',
+            'subtotal_amount' => 'float',
         ];
     }
 
@@ -74,6 +79,11 @@ class Order extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
     }
 
     /**
