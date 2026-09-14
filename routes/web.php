@@ -37,22 +37,26 @@ Route::post('/seller/shop', [SellerController::class, 'seller_request'])->name('
 
 Route::post('/cart/store', [AddToCart::class, 'addtocart'])->name('cart.store');
 
+// Cart and checkout are reachable by guests; the controllers fall back to a
+// session-scoped guest cart when there is no authenticated user.
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
+
+Route::get('/checkout/seller/{id}', [CheckoutController::class, 'checkout'])->name('checkout.seller');
+Route::post('/order/store/{id}', [CheckoutController::class, 'store'])->name('order.store');
+Route::get('/khalti/callback/{id}', [CheckoutController::class, 'khalti_callback'])->name('khalti.callback');
+
+Route::post('/coupon/apply', [\App\Http\Controllers\Frontend\CouponController::class, 'apply'])->name('coupon.apply');
+Route::post('/coupon/clear', [\App\Http\Controllers\Frontend\CouponController::class, 'clear'])->name('coupon.clear');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
-
-    Route::get('/checkout/seller/{id}', [CheckoutController::class, 'checkout'])->name('checkout.seller');
-    Route::post('/order/store/{id}', [CheckoutController::class, 'store'])->name('order.store');
-    Route::get('/khalti/callback/{id}', [CheckoutController::class, 'khalti_callback'])->name('khalti.callback');
-
     Route::get('/buying-history', [BuyingHistoryController::class, 'index'])->name('buying-history');
     Route::get('/buying-history/{order}', [BuyingHistoryController::class, 'show'])->name('buying-history.show');
 
-    Route::get('/wishlist', [App\Http\Controllers\Frontend\WishlistController::class, 'index'])->name('wishlist.index');
-    Route::post('/wishlist/{product}/toggle', [App\Http\Controllers\Frontend\WishlistController::class, 'toggle'])->name('wishlist.toggle');
-    Route::delete('/wishlist/{wishlist}', [App\Http\Controllers\Frontend\WishlistController::class, 'destroy'])->name('wishlist.destroy');
-
+    Route::get('/wishlist', [\App\Http\Controllers\Frontend\WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/{product}/toggle', [\App\Http\Controllers\Frontend\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::delete('/wishlist/{wishlist}', [\App\Http\Controllers\Frontend\WishlistController::class, 'destroy'])->name('wishlist.destroy');
 
     Route::post('/order/{order}/item/{orderItem}/review', [ReviewController::class, 'store'])->name('review.store');
 });
