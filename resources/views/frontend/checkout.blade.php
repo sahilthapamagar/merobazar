@@ -3,6 +3,22 @@
         $savedAddress = auth()->user()?->deliveryAddresses;
         $subtotal = $carts->sum('amount');
         $itemCount = $carts->sum('quantity');
+        $appliedCoupon = null;
+        $appliedDiscount = 0.0;
+
+        if ($code = session('coupon_code')) {
+            $candidate = \App\Models\Coupon::whereRaw('UPPER(code) = ?', [strtoupper($code)])
+                ->where('active', true)
+                ->first();
+            $candidateDiscount = $candidate?->discountFor((float) $subtotal) ?? 0.0;
+
+            if ($candidateDiscount > 0) {
+                $appliedCoupon = $candidate;
+                $appliedDiscount = $candidateDiscount;
+            }
+        }
+
+        $total = max(0, round((float) $subtotal - $appliedDiscount, 2));
     @endphp
 
     <style>
@@ -307,6 +323,80 @@
             flex-shrink: 0;
         }
 
+        .coupon-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .coupon-input {
+            display: flex;
+            flex: 1;
+            border: 1px solid rgba(171, 136, 109, 0.3);
+            background: var(--background);
+        }
+
+        .coupon-input input {
+            flex: 1;
+            min-width: 0;
+            padding: 0.6rem 0.75rem;
+            border: none;
+            background: transparent;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            color: var(--primary);
+            outline: none;
+            text-transform: uppercase;
+        }
+
+        .coupon-input button {
+            padding: 0.6rem 1rem;
+            border: none;
+            background: var(--primary);
+            color: var(--cream);
+            font-size: 0.65rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .coupon-applied {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            flex: 1;
+            padding: 0.6rem 0.75rem;
+            border: 1px dashed rgba(171, 136, 109, 0.5);
+            background: var(--cream);
+        }
+
+        .coupon-code {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: var(--primary);
+        }
+
+        .coupon-save {
+            font-size: 0.78rem;
+            color: #2f7a4f;
+            font-weight: 600;
+        }
+
+        .coupon-remove {
+            border: 1px solid rgba(171, 136, 109, 0.3);
+            background: transparent;
+            padding: 0.55rem 0.8rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
         .checkout-divider {
             height: 1px;
             background: rgba(171, 136, 109, 0.2);
@@ -563,10 +653,33 @@
                             </div>
 
                             <div class="checkout-divider"></div>
+
+                            <div class="coupon-box">
+                                @if ($appliedCoupon)
+                                    <div class="coupon-applied">
+                                        <span class="coupon-code">{{ $appliedCoupon->code }}</span>
+                                        <span class="coupon-save">- Rs.
+                                            {{ number_format((float) $appliedDiscount, 2) }}</span>
+                                    </div>
+                                    <button type="submit" form="couponClearForm" class="coupon-remove">Remove</button>
+                                @else
+                                    <div class="coupon-input">
+                                        <input type="text" name="code" placeholder="Discount code" maxlength="64">
+                                        <button type="submit" form="couponApplyForm">Apply</button>
+                                    </div>
+                                @endif
+                            </div>
+
                             <div class="checkout-row">
                                 <span>Items ({{ $itemCount }})</span>
                                 <span>Rs. {{ number_format((float) $subtotal, 2) }}</span>
                             </div>
+                            @if ($appliedDiscount > 0)
+                                <div class="checkout-row">
+                                    <span>Discount</span>
+                                    <span>- Rs. {{ number_format((float) $appliedDiscount, 2) }}</span>
+                                </div>
+                            @endif
                             <div class="checkout-row">
                                 <span>Shipping</span>
                                 <span>Calculated later</span>
@@ -574,7 +687,7 @@
                             <div class="checkout-divider"></div>
                             <div class="checkout-row total">
                                 <span>Total</span>
-                                <span>Rs. {{ number_format((float) $subtotal, 2) }}</span>
+                                <span>Rs. {{ number_format((float) $total, 2) }}</span>
                             </div>
 
                             <button type="submit" class="checkout-place-btn">Place Order</button>
@@ -584,4 +697,14 @@
             @endif
         </div>
     </section>
+
+    @if (! $carts->isEmpty())
+        <form id="couponApplyForm" action="{{ route('coupon.apply') }}" method="POST" class="hidden">
+            @csrf
+            <input type="hidden" name="amount" value="{{ $subtotal }}">
+        </form>
+        <form id="couponClearForm" action="{{ route('coupon.clear') }}" method="POST" class="hidden">
+            @csrf
+        </form>
+    @endif
 </x-layout>
