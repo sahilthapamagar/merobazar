@@ -488,8 +488,11 @@
                             <a href="{{ route('profile.edit') }}" class="account-menu-item" role="menuitem">
                                 Profile
                             </a>
-                            <a href="{{ route('buying-history') }}" class="account-menu-item" role="menuitem">
+<a href="{{ route('buying-history') }}" class="account-menu-item" role="menuitem">
                                 Buying History
+                            </a>
+                            <a href="{{ route('wishlist.index') }}" class="account-menu-item" role="menuitem">
+                                Wishlist
                             </a>
                             <form method="POST" action="{{ route('logout') }}" role="none">
                                 @csrf
@@ -504,8 +507,12 @@
             @else
                 <a href="{{ route('register') }}" class="nav-signup-btn">Sign Up</a>
             @endif
-            @php
-                $cartCount = Auth::guard('web')->check() ? Auth::guard('web')->user()->carts()->count() : 0;
+@php
+                $cartCount = Auth::guard('web')->check()
+                    ? Auth::guard('web')->user()->carts()->count()
+                    : \App\Models\Cart::whereNull('user_id')
+                        ->where('guest_session_id', session('guest_cart_session_id'))
+                        ->count();
             @endphp
             <a href="{{ $cartCount > 0 ? route('cart.index') : route('products') }}" class="nav-icon cart-wrap"
                 aria-label="Cart">
