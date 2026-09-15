@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderPlacementMail;
 use App\Models\Cart;
+use App\Models\Coupon;
 use App\Models\DeliveryAddress;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -104,6 +105,20 @@ class CheckoutController extends Controller
             }
         }
 
+        $subtotal = (float) $carts->sum('amount');
+        $discount = 0.0;
+        $coupon = null;
+
+        if ($code = session('coupon_code')) {
+            $coupon = Coupon::whereRaw('UPPER(code) = ?', [strtoupper($code)])->where('active', true)->first();
+            $discount = $coupon?->discountFor($subtotal) ?? 0.0;
+
+            if ($discount <= 0) {
+                $coupon = null;
+                session()->forget('coupon_code');
+            }
+        }
+
         $order = new Order;
         if ($user) {
             $order->user_id = $user->id;
@@ -117,9 +132,21 @@ class CheckoutController extends Controller
             $order->guest_token = Str::uuid()->toString();
         }
         $order->seller_id = $seller->id;
-        $order->total_amount = $carts->sum('amount');
+        $order->subtotal_amount = $subtotal;
+        $order->discount_amount = $discount;
+        $order->total_amount = max(0, round($subtotal - $discount, 2));
         $order->payment_method = $request->payment_method;
+
+        if ($coupon) {
+            $order->coupon_id = $coupon->id;
+        }
+
         $order->save();
+
+        if ($coupon) {
+            $coupon->increment('uses_count');
+            session()->forget('coupon_code');
+        }
 
         foreach ($carts as $cart) {
             $orderItem = new OrderItem;
