@@ -53,9 +53,12 @@ class CheckoutController extends Controller
 
     public function store(Request $request, $id)
     {
+        // Guests have no account to read the details from, so they must supply them.
+        $isGuest = ! Auth::guard('web')->check();
+
         $validated = $request->validate([
-            'name' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255',
+            'name' => [$isGuest ? 'required' : 'nullable', 'string', 'max:255'],
+            'email' => [$isGuest ? 'required' : 'nullable', 'email', 'max:255'],
             'address_detail' => 'required|string|max:500',
             'contact' => 'required|string|max:15',
             'payment_method' => 'required|in:cod,khalti',
