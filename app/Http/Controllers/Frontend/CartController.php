@@ -89,6 +89,48 @@ class CartController extends Controller
     }
 
     /**
+     * Move anything the visitor added before signing in onto their account cart,
+     * so a guest cart is never silently abandoned at login.
+     */
+    public function mergeGuestCart(): RedirectResponse
+    {
+        $user = Auth::guard('web')->user();
+        abort_if(! $user, 403);
+
+        $guestSessionId = session('guest_cart_session_id');
+
+        if ($guestSessionId) {
+            Cart::whereNull('user_id')
+                ->where('guest_session_id', $guestSessionId)
+                ->get()
+                ->each(function (Cart $guestCart) use ($user) {
+                    $existing = Cart::where('user_id', $user->id)
+                        ->where('product_id', $guestCart->product_id)
+                        ->first();
+
+                    if ($existing) {
+                        $quantity = $existing->quantity + $guestCart->quantity;
+                        $existing->quantity = $quantity;
+                        $existing->amount = ($existing->product?->effective_price ?? 0) * $quantity;
+                        $existing->save();
+
+                        $guestCart->delete();
+
+                        return;
+                    }
+
+                    $guestCart->user_id = $user->id;
+                    $guestCart->guest_session_id = null;
+                    $guestCart->save();
+                });
+
+            session()->forget('guest_cart_session_id');
+        }
+
+        return redirect()->route('cart.index');
+    }
+
+    /**
      * A cart line belongs either to the signed-in customer or to the guest
      * session that created it. Anything else is a 403.
      */

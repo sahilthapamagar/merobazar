@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/wishlist/{product}/toggle', [\App\Http\Controllers\Frontend\WishlistController::class, 'toggle'])->name('wishlist.toggle');
     Route::delete('/wishlist/{wishlist}', [\App\Http\Controllers\Frontend\WishlistController::class, 'destroy'])->name('wishlist.destroy');
 
+    Route::post('/cart/merge-guest', [CartController::class, 'mergeGuestCart'])->name('cart.mergeGuestCart');
+
     Route::post('/order/{order}/item/{orderItem}/review', [ReviewController::class, 'store'])->name('review.store');
 });
 
