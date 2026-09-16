@@ -11,7 +11,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
+use function Pest\Laravel\patch;
 use function Pest\Laravel\post;
 
 beforeEach(function () {
@@ -289,4 +291,60 @@ it('ignores an inactive coupon', function () {
     post(route('coupon.apply'), ['code' => 'EXPIRED', 'amount' => 1000]);
 
     expect(session('coupon_code'))->toBeNull();
+});
+
+it('lets a guest update the quantity of their own cart line', function () {
+    [$seller, $product] = guestCheckoutFixture();
+
+    post(route('cart.store'), ['product_id' => $product->id, 'quantity' => 1]);
+
+    $cart = Cart::whereNull('user_id')->first();
+
+    patch(route('cart.update', $cart->id), ['quantity' => 3])
+        ->assertRedirect(route('cart.index'));
+
+    expect((int) $cart->fresh()->quantity)->toBe(3)
+        ->and((float) $cart->fresh()->amount)->toBe(6000.0);
+});
+
+it('lets a guest remove their own cart line', function () {
+    [$seller, $product] = guestCheckoutFixture();
+
+    post(route('cart.store'), ['product_id' => $product->id, 'quantity' => 1]);
+
+    $cart = Cart::whereNull('user_id')->first();
+
+    delete(route('cart.destroy', $cart->id))->assertRedirect(route('cart.index'));
+
+    expect(Cart::whereNull('user_id')->count())->toBe(0);
+});
+
+it('forbids touching a cart line that belongs to another guest session', function () {
+    [$seller, $product] = guestCheckoutFixture();
+
+    $foreignCart = addGuestCartItem($seller, $product, 'someone-elses-session');
+
+    post(route('cart.store'), ['product_id' => $product->id, 'quantity' => 1]);
+
+    patch(route('cart.update', $foreignCart->id), ['quantity' => 9])->assertForbidden();
+    delete(route('cart.destroy', $foreignCart->id))->assertForbidden();
+
+    expect(Cart::find($foreignCart->id))->not->toBeNull();
+});
+
+it('merges the guest cart into the account cart after logging in', function () {
+    [$seller, $product] = guestCheckoutFixture();
+    $user = User::factory()->create();
+
+    post(route('cart.store'), ['product_id' => $product->id, 'quantity' => 2]);
+
+    $guestCart = Cart::whereNull('user_id')->first();
+    expect($guestCart)->not->toBeNull();
+
+    post(route('login'), ['email' => $user->email, 'password' => 'password']);
+
+    $this->post(route('cart.mergeGuestCart'));
+
+    expect(Cart::whereNull('user_id')->count())->toBe(0)
+        ->and(Cart::where('user_id', $user->id)->count())->toBe(1);
 });
