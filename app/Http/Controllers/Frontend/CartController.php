@@ -51,11 +51,7 @@ class CartController extends Controller
 
     public function destroy(Request $request, Cart $cart): RedirectResponse
     {
-        $user = Auth::guard('web')->user();
-
-        if (! $user || $cart->user_id !== $user->id) {
-            abort(403);
-        }
+        $this->authorizeCart($cart);
 
         $cart->delete();
 
@@ -66,11 +62,7 @@ class CartController extends Controller
 
     public function update(Request $request, Cart $cart): RedirectResponse
     {
-        $user = Auth::guard('web')->user();
-
-        if (! $user || $cart->user_id !== $user->id) {
-            abort(403);
-        }
+        $this->authorizeCart($cart);
 
         $product = $cart->product;
 
@@ -94,5 +86,27 @@ class CartController extends Controller
         toast('Cart quantity updated.', 'success');
 
         return redirect()->route('cart.index');
+    }
+
+    /**
+     * A cart line belongs either to the signed-in customer or to the guest
+     * session that created it. Anything else is a 403.
+     */
+    private function authorizeCart(Cart $cart): void
+    {
+        $user = Auth::guard('web')->user();
+
+        if ($user) {
+            abort_unless((int) $cart->user_id === (int) $user->id, 403);
+
+            return;
+        }
+
+        abort_unless(
+            $cart->user_id === null
+                && $cart->guest_session_id !== null
+                && $cart->guest_session_id === session('guest_cart_session_id'),
+            403
+        );
     }
 }
