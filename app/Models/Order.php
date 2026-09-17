@@ -87,6 +87,25 @@ class Order extends Model
     }
 
     /**
+     * Phone number to reach the customer about this order: the saved delivery
+     * address for accounts, the guest-provided number for guest checkouts.
+     */
+    public function getCustomerContactAttribute(): ?string
+    {
+        return $this->user?->deliveryAddresses?->contact ?? $this->billing_phone;
+    }
+
+    /**
+     * Delivery address for the order, falling back to what the guest entered.
+     */
+    public function getCustomerAddressAttribute(): ?string
+    {
+        return $this->user?->deliveryAddresses?->address_detail
+            ?? $this->shipping_address
+            ?? $this->billing_address;
+    }
+
+    /**
      * Orders whose Khalti payment was cancelled / expired / failed before completion.
      * These are never real orders, so they are hidden from customers and sellers
      * (the admin panel still sees them).
