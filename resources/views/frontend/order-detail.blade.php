@@ -552,7 +552,115 @@
                 grid-row: 1;
             }
 
-            .detail-address {
+.track-number {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.85rem 1.1rem;
+            margin-bottom: 1.25rem;
+            background: var(--cream);
+            border: 1px solid rgba(171, 136, 109, 0.2);
+        }
+
+        .track-number span {
+            font-size: 0.68rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(73, 54, 40, 0.55);
+        }
+
+        .track-number strong {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--primary);
+            letter-spacing: 0.04em;
+        }
+
+        .track-steps {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .track-step {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            padding-bottom: 1.15rem;
+        }
+
+        .track-step:last-child {
+            padding-bottom: 0;
+        }
+
+        .track-step:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 14px;
+            bottom: 0;
+            width: 1px;
+            background: rgba(171, 136, 109, 0.3);
+        }
+
+        .track-dot {
+            width: 11px;
+            height: 11px;
+            margin-top: 4px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid rgba(171, 136, 109, 0.5);
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .track-step.is-done .track-dot {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .track-step.is-cancelled .track-dot {
+            background: #c0392b;
+            border-color: #c0392b;
+        }
+
+        .track-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .track-meta strong {
+            font-size: 0.88rem;
+            color: rgba(73, 54, 40, 0.45);
+            font-weight: 600;
+        }
+
+        .track-step.is-done .track-meta strong {
+            color: var(--primary);
+        }
+
+        .track-step.is-cancelled .track-meta strong {
+            color: #c0392b;
+        }
+
+        .track-meta small {
+            font-size: 0.72rem;
+            color: rgba(73, 54, 40, 0.5);
+        }
+
+        .track-note {
+            margin-top: 1.1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(171, 136, 109, 0.2);
+            font-size: 0.85rem;
+            color: var(--primary);
+            line-height: 1.7;
+        }
+
+        .detail-address {
                 padding: 1.25rem 20px;
             }
         }
@@ -636,10 +744,61 @@
                     <p>{{ $order->orderItems->sum('quantity') }}
                         {{ Str::plural('item', $order->orderItems->sum('quantity')) }}</p>
                     <div class="detail-total">
+                        @if ((float) $order->discount_amount > 0)
+                            <span>Subtotal</span>
+                            <span>Rs. {{ number_format((float) $order->subtotal_amount, 2) }}</span>
+                        @endif
                         <span>Total Amount</span>
                         <strong>Rs. {{ number_format((float) $order->total_amount, 2) }}</strong>
                     </div>
                 </div>
+            </div>
+
+            <div class="detail-panel">
+                <p class="panel-heading">Delivery Tracking</p>
+
+                @if ($order->tracking_number)
+                    <div class="track-number">
+                        <span>Tracking Number</span>
+                        <strong>{{ $order->tracking_number }}</strong>
+                    </div>
+                @endif
+
+                <ol class="track-steps">
+                    @php
+                        $isCancelled = $order->status === 'cancelled';
+                        $steps = [
+                            ['label' => 'Order Placed', 'done' => true, 'at' => $order->created_at],
+                            ['label' => 'Shipped', 'done' => ! $isCancelled && ($order->status === 'processing' || $order->status === 'delivered'), 'at' => $order->shipped_at],
+                            ['label' => 'Delivered', 'done' => ! $isCancelled && $order->status === 'delivered', 'at' => $order->delivered_at],
+                        ];
+                    @endphp
+
+                    @foreach ($steps as $step)
+                        <li class="track-step{{ $step['done'] ? ' is-done' : '' }}">
+                            <span class="track-dot"></span>
+                            <div class="track-meta">
+                                <strong>{{ $step['label'] }}</strong>
+                                @if ($step['at'])
+                                    <small>{{ \Illuminate\Support\Carbon::parse($step['at'])->format('M d, Y · h:i A') }}</small>
+                                @endif
+                            </div>
+                        </li>
+                    @endforeach
+
+                    @if ($isCancelled)
+                        <li class="track-step is-cancelled">
+                            <span class="track-dot"></span>
+                            <div class="track-meta">
+                                <strong>Cancelled</strong>
+                            </div>
+                        </li>
+                    @endif
+                </ol>
+
+                @if ($order->notes)
+                    <p class="track-note">{{ $order->notes }}</p>
+                @endif
             </div>
 
             <!-- ─── Review modal ─── -->
