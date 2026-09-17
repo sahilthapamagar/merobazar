@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Orders\Schemas;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
@@ -21,11 +22,12 @@ class OrderForm
                     ->columns(2)
                     ->components([
                         TextEntry::make('user.name')
-                            ->label('User'),
-                        TextEntry::make('user.deliveryAddresses.contact')
-                            ->label('User Contact'),
-                        TextEntry::make('user.deliveryAddresses.address_detail')
-                            ->label('User Address'),
+                            ->label('User')
+                            ->placeholder('Guest checkout'),
+                        TextEntry::make('customer_contact')
+                            ->label('Customer Contact'),
+                        TextEntry::make('customer_address')
+                            ->label('Customer Address'),
                         Select::make('status')
                             ->options([
                                 'pending' => 'Pending (Order Placed)',
@@ -48,6 +50,34 @@ class OrderForm
                         TextInput::make('payment_status')
                             ->required()
                             ->default('pending'),
+                    ]),
+                Section::make('Delivery Tracking')
+                    ->columns(2)
+                    ->components([
+                        TextInput::make('tracking_number')
+                            ->label('Tracking Number'),
+                        TextInput::make('shipped_at')
+                            ->label('Shipped At')
+                            ->type('datetime-local'),
+                        TextInput::make('delivered_at')
+                            ->label('Delivered At')
+                            ->type('datetime-local'),
+                        Textarea::make('notes')
+                            ->label('Order Notes')
+                            ->columnSpanFull(),
+                    ]),
+                Section::make('Discount')
+                    ->columns(3)
+                    ->components([
+                        TextEntry::make('coupon.code')
+                            ->label('Coupon Code')
+                            ->placeholder('None'),
+                        TextInput::make('subtotal_amount')
+                            ->label('Subtotal')
+                            ->numeric(),
+                        TextInput::make('discount_amount')
+                            ->label('Discount')
+                            ->numeric(),
                     ]),
                 Section::make('Order Items')
                     ->schema(function (?Order $record) {
