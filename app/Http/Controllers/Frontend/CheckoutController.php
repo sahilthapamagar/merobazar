@@ -45,6 +45,7 @@ class CheckoutController extends Controller
 
         if ($carts->isEmpty()) {
             toast('Your cart is empty for this seller.', 'error');
+
             return redirect()->route('cart.index');
         }
 
@@ -253,6 +254,7 @@ class CheckoutController extends Controller
             if ($order->user) {
                 return redirect()->route('buying-history');
             }
+
             return redirect()->route('home');
         }
 

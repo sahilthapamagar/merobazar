@@ -6,9 +6,11 @@ use App\Http\Controllers\Frontend\BuyingHistoryController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\CouponController;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\SellerController;
+use App\Http\Controllers\Frontend\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -47,16 +49,16 @@ Route::get('/checkout/seller/{id}', [CheckoutController::class, 'checkout'])->na
 Route::post('/order/store/{id}', [CheckoutController::class, 'store'])->name('order.store');
 Route::get('/khalti/callback/{id}', [CheckoutController::class, 'khalti_callback'])->name('khalti.callback');
 
-Route::post('/coupon/apply', [\App\Http\Controllers\Frontend\CouponController::class, 'apply'])->name('coupon.apply');
-Route::post('/coupon/clear', [\App\Http\Controllers\Frontend\CouponController::class, 'clear'])->name('coupon.clear');
+Route::post('/coupon/apply', [CouponController::class, 'apply'])->name('coupon.apply');
+Route::post('/coupon/clear', [CouponController::class, 'clear'])->name('coupon.clear');
 
 Route::middleware('auth')->group(function () {
     Route::get('/buying-history', [BuyingHistoryController::class, 'index'])->name('buying-history');
     Route::get('/buying-history/{order}', [BuyingHistoryController::class, 'show'])->name('buying-history.show');
 
-    Route::get('/wishlist', [\App\Http\Controllers\Frontend\WishlistController::class, 'index'])->name('wishlist.index');
-    Route::post('/wishlist/{product}/toggle', [\App\Http\Controllers\Frontend\WishlistController::class, 'toggle'])->name('wishlist.toggle');
-    Route::delete('/wishlist/{wishlist}', [\App\Http\Controllers\Frontend\WishlistController::class, 'destroy'])->name('wishlist.destroy');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/{product}/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
 
     Route::post('/cart/merge-guest', [CartController::class, 'mergeGuestCart'])->name('cart.mergeGuestCart');
 

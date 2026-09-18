@@ -63,7 +63,7 @@ class AddToCart extends Controller
             $cart->quantity += $quantity;
         } else {
             $cart->seller_id = $seller->id;
-            $cart->quantity  = $quantity;
+            $cart->quantity = $quantity;
         }
 
         $cart->amount = $product->effective_price * $cart->quantity;
