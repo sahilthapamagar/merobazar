@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -15,9 +17,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property array<array-key, mixed>|null $images
  * @property int $seller_id
  * @property int $category_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cart> $carts
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Cart> $carts
  * @property-read int|null $carts_count
  * @property-read float $effective_price
  * @property-read bool $is_discounted
@@ -25,10 +27,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read bool $is_new
  * @property-read string|null $main_image_url
  * @property-read array<array-key, string> $image_urls
- * @property-read \App\Models\Category $category
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $orderItems
+ * @property-read Category $category
+ * @property-read Collection<int, OrderItem> $orderItems
  * @property-read int|null $order_items_count
- * @property-read \App\Models\Seller $seller
+ * @property-read Seller $seller
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product query()
@@ -44,6 +47,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereSellerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Product extends Model

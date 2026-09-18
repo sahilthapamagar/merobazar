@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -11,11 +12,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $product_id
  * @property int $quantity
  * @property float $amount
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Product $product
- * @property-read \App\Models\Seller $seller
- * @property-read \App\Models\User $user
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Product $product
+ * @property-read Seller $seller
+ * @property-read User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart query()
@@ -27,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereSellerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Cart extends Model
@@ -54,6 +57,4 @@ class Cart extends Model
     {
         return $this->belongsTo(Product::class);
     }
-
-
 }
