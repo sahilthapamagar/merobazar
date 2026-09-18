@@ -2,6 +2,12 @@
 
 namespace App\Filament\Resources\Coupons;
 
+use App\Filament\Resources\Coupons\Pages\CreateCoupon;
+use App\Filament\Resources\Coupons\Pages\EditCoupon;
+use App\Filament\Resources\Coupons\Pages\ListCoupons;
+use App\Filament\Resources\Coupons\Schemas\CouponForm;
+use App\Filament\Resources\Coupons\Tables\CouponsTable;
+use App\Models\Coupon;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -9,12 +15,6 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
-use App\Filament\Resources\Coupons\Pages\CreateCoupon;
-use App\Filament\Resources\Coupons\Pages\EditCoupon;
-use App\Filament\Resources\Coupons\Pages\ListCoupons;
-use App\Filament\Resources\Coupons\Schemas\CouponForm;
-use App\Filament\Resources\Coupons\Tables\CouponsTable;
-use App\Models\Coupon;
 
 class CouponResource extends Resource
 {
