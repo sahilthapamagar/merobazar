@@ -3,14 +3,13 @@
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Seller;
-use App\Models\Wishlist;
 use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
-use function Pest\Laravel\post;
 
 beforeEach(function () {
     // Product and Category use mass assignment without $fillable in this project.
