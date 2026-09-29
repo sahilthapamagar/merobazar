@@ -31,7 +31,14 @@ class ProductForm
                                     ->numeric()
                                     ->prefix('Rs.')
                                     ->placeholder('Leave empty if no discount')
-                                    ->rule('lt:price')
+                                    ->rules([
+                                        fn ($get) => function (string $attribute, $value, \Closure $fail) use ($get) {
+                                            $regularPrice = $get('price');
+                                            if (filled($value) && filled($regularPrice) && (float) $value >= (float) $regularPrice) {
+                                                $fail('The discounted price must be less than the regular price (Rs. ' . $regularPrice . ').');
+                                            }
+                                        },
+                                    ])
                                     ->helperText('Sale price shown to customers (must be lower than the regular price).'),
                                 TextInput::make('title')
                                     ->required()
@@ -47,8 +54,11 @@ class ProductForm
                         Section::make('Upload Images')
                             ->schema([
                                 FileUpload::make('main_image')
+                                    ->label('Main Product Image')
                                     ->image()
+                                    ->required()
                                     ->directory('products/images')
+                                    ->helperText('Primary cover image shown on the storefront.')
                                     ->acceptedFileTypes(
                                         [
                                             'image/jpeg',

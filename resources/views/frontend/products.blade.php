@@ -54,7 +54,7 @@
         background: transparent;
         border: 1px solid var(--accent);
         color: var(--primary);
-        cursor: none;
+        cursor: pointer;
         transition: all 0.3s ease;
     }
 
@@ -72,15 +72,22 @@
     }
 
     .product-card-link {
-        text-decoration: none;
-        color: inherit;
+        text-decoration: none !important;
+        color: inherit !important;
         display: block;
+    }
+
+    .product-card-link:hover,
+    .product-card-link:focus,
+    .product-card-link:visited {
+        text-decoration: none !important;
+        color: inherit !important;
     }
 
     .product-card {
         background: #fff;
         position: relative;
-        cursor: none;
+        cursor: pointer;
         overflow: hidden;
         border: 1px solid rgba(171, 136, 109, 0.12);
         transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -155,7 +162,7 @@
         text-transform: uppercase;
         font-weight: 500;
         border: none;
-        cursor: none;
+        cursor: pointer;
         transition: background 0.3s;
     }
 
@@ -170,7 +177,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: none;
+        cursor: pointer;
         transition: all 0.3s;
         flex-shrink: 0;
     }
@@ -305,7 +312,7 @@
         border: none;
         text-decoration: none;
         transition: all 0.2s ease;
-        cursor: none;
+        cursor: pointer;
         position: relative;
     }
 
@@ -469,7 +476,7 @@
 
                                 <div class="product-actions">
                                     <button type="button" class="add-cart-btn product-interactive"
-                                        onclick="event.preventDefault(); event.stopPropagation();">Add to
+                                        onclick="event.preventDefault(); event.stopPropagation(); submitAddToCart({{ $product->id }})">Add to
                                         Cart</button>
                                     <button type="button" class="wishlist-btn product-interactive"
                                         onclick="event.preventDefault(); event.stopPropagation();"
@@ -569,5 +576,32 @@
         </div>
     </section>
 
+    <script>
+        function submitAddToCart(productId) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route("cart.store") }}';
 
+            const csrf = document.createElement('input');
+            csrf.type = 'hidden';
+            csrf.name = '_token';
+            csrf.value = '{{ csrf_token() }}';
+            form.appendChild(csrf);
+
+            const pid = document.createElement('input');
+            pid.type = 'hidden';
+            pid.name = 'product_id';
+            pid.value = productId;
+            form.appendChild(pid);
+
+            const qty = document.createElement('input');
+            qty.type = 'hidden';
+            qty.name = 'quantity';
+            qty.value = '1';
+            form.appendChild(qty);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
 </x-layout>

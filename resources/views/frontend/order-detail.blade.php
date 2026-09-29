@@ -573,7 +573,15 @@
                 </span>
             </header>
 
-
+            @if(session('success'))
+                <div style="display: flex; align-items: center; gap: 14px; background: rgba(106, 154, 91, 0.12); border: 1px solid rgba(106, 154, 91, 0.35); border-left: 4px solid #6a9a5b; border-radius: 4px; padding: 16px 20px; margin-bottom: 1.5rem;">
+                    <span style="font-size: 1.5rem;">🎉</span>
+                    <div>
+                        <div style="font-weight: 600; color: #2d4c24; font-size: 0.95rem;">{{ session('success') }}</div>
+                        <div style="color: #4a6d40; font-size: 0.82rem; margin-top: 3px;">Your order has been recorded and will be fulfilled by <strong>{{ $order->seller?->shop_name ?? 'the seller' }}</strong>.</div>
+                    </div>
+                </div>
+            @endif
 
             <div class="detail-panel">
                 <p class="panel-heading">Items</p>

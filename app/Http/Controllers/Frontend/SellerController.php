@@ -16,7 +16,7 @@ class SellerController extends Controller
             'email' => 'required|email|unique:sellers,email',
             'shop_name' => 'required|string|max:255',
             'contact' => 'required|string|max:20',
-            'registration_number' => 'required|string|max:255',
+            'pan_number' => 'required|string|max:255',
             'citizenship_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -38,7 +38,7 @@ class SellerController extends Controller
         $seller->email = $request->email;
         $seller->shop_name = $request->shop_name;
         $seller->contact = $request->contact;
-        $seller->registration_number = $request->registration_number;
+        $seller->pan_number = $request->pan_number;
         $seller->citizenship_photo = $citizenshipPhotoPath;
         $seller->image = $imagePath;
         $seller->save();

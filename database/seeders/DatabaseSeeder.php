@@ -22,6 +22,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
+        \App\Models\Admin::firstOrCreate(
+            ['email' => 'admin@merobazar.com'],
+            ['name' => 'Admin User', 'password' => \Illuminate\Support\Facades\Hash::make('password')]
+        );
+
         $this->call([
             CategorySeeder::class,
             SellerSeeder::class,

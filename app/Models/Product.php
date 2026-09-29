@@ -57,6 +57,19 @@ class Product extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::saving(function (Product $product) {
+            // Auto fallback: if main_image is empty but gallery images exist, pick the first gallery image
+            if (blank($product->main_image) && ! empty($product->images) && is_array($product->images)) {
+                $first = reset($product->images);
+                if (is_string($first) && filled($first)) {
+                    $product->main_image = $first;
+                }
+            }
+        });
+    }
+
     /**
      * Resolve an image value (full URL or stored path) into a usable URL.
      *
@@ -101,28 +114,40 @@ class Product extends Model
     }
 
     /**
-     * The effective price a customer pays (discounted price when available).
+     * The effective price a customer pays (flash sale price if active, else discounted price, else regular price).
      */
     public function getEffectivePriceAttribute(): float
     {
+        if ($this->has_active_flash_sale) {
+            return (float) $this->active_flash_sale->flash_price;
+        }
+
         return $this->is_discounted ? (float) $this->discounted_price : (float) $this->price;
     }
 
     /**
-     * Whether this product currently has an active discount.
+     * Whether this product currently has an active discount or flash sale.
      */
     public function getIsDiscountedAttribute(): bool
     {
+        if ($this->has_active_flash_sale) {
+            return true;
+        }
+
         return $this->discounted_price !== null
             && (float) $this->discounted_price > 0
             && (float) $this->discounted_price < (float) $this->price;
     }
 
     /**
-     * Discount percentage (rounded), e.g. 10 for 10% off.
+     * Discount percentage (rounded), e.g. 20 for 20% off.
      */
     public function getDiscountPercentAttribute(): int
     {
+        if ($this->has_active_flash_sale) {
+            return $this->active_flash_sale->discount_percent;
+        }
+
         if (! $this->is_discounted) {
             return 0;
         }
@@ -131,11 +156,37 @@ class Product extends Model
     }
 
     /**
+     * Check if product currently has an active, approved flash sale.
+     */
+    public function getHasActiveFlashSaleAttribute(): bool
+    {
+        return $this->active_flash_sale !== null;
+    }
+
+    /**
+     * Retrieve the currently active approved flash sale instance (if any).
+     */
+    public function getActiveFlashSaleAttribute(): ?FlashSale
+    {
+        // If relation was preloaded, find the first matching active flash sale
+        if ($this->relationLoaded('flashSales')) {
+            return $this->flashSales->first(fn (FlashSale $fs) => $fs->is_active);
+        }
+
+        return $this->flashSales()->active()->first();
+    }
+
+    /**
      * Whether the product is "new" (created within the last 7 days).
      */
     public function getIsNewAttribute(): bool
     {
         return $this->created_at !== null && $this->created_at->gt(now()->subDays(7));
+    }
+
+    public function flashSales()
+    {
+        return $this->hasMany(FlashSale::class);
     }
 
     public function seller()

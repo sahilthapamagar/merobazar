@@ -57,12 +57,33 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Seller whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-#[Fillable(['name', 'email', 'password', 'shop_name', 'contact', 'khalti_secrect_key', 'status', 'expired_date', 'registration_number', 'citizenship_photo', 'image', 'rejected_reason'])]
+#[Fillable(['name', 'email', 'password', 'shop_name', 'contact', 'khalti_secrect_key', 'status', 'expired_date', 'pan_number', 'citizenship_photo', 'image', 'rejected_reason'])]
 #[Hidden(['password', 'remember_token'])]
 class Seller extends Authenticatable
 {
     // /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    /**
+     * Ephemeral plain-text password for sending approval email.
+     */
+    public ?string $_plain_password = null;
+
+    /**
+     * Backward compatibility accessor for registration_number.
+     */
+    public function getRegistrationNumberAttribute()
+    {
+        return $this->pan_number;
+    }
+
+    /**
+     * Backward compatibility mutator for registration_number.
+     */
+    public function setRegistrationNumberAttribute($value)
+    {
+        $this->attributes['pan_number'] = $value;
+    }
 
     /**
      * Get the attributes that should be cast.

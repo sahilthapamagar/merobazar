@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\FlashSale;
 use App\Models\Product;
 use App\Models\Seller;
-
-// use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
@@ -27,9 +26,42 @@ class PageController extends Controller
             ->inRandomOrder()
             ->get();
 
+        // ⚡ Approved & Active Flash Sales (strictly within time window and with stock left)
+        $activeFlashSales = FlashSale::active()
+            ->whereHas('product.seller', fn ($s) => $s->where('status', 'active'))
+            ->with(['product.seller', 'product.category', 'product' => fn ($q) => $q->withAvg('reviews', 'rating')->withCount('reviews')])
+            ->orderBy('end_time', 'asc')
+            ->get();
+
+        // ⚡ Fallback fresh drops if no active flash sales exist
+        $flashProducts = Product::whereHas('seller', function ($query) {
+            $query->where('status', 'active');
+        })
+            ->with(['seller', 'category'])
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->latest()
+            ->take(8)
+            ->get();
+
+        $latestFlashDrop = $activeFlashSales->isNotEmpty()
+            ? $activeFlashSales->first()->product
+            : $flashProducts->first();
+
+        // 🌟 Hero Carousel: Products with active flash sales or latest fresh uploads
+        $heroSlides = Product::whereHas('seller', function ($query) {
+            $query->where('status', 'active');
+        })
+            ->with(['seller', 'category'])
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->latest('created_at')
+            ->take(8)
+            ->get();
+
         $sellercount = Seller::count();
 
-        return view('frontend.home', compact('categories', 'products', 'sellercount'));
+        return view('frontend.home', compact('categories', 'products', 'flashProducts', 'latestFlashDrop', 'sellercount', 'heroSlides', 'activeFlashSales'));
     }
 
     public function categories()
@@ -68,7 +100,11 @@ class PageController extends Controller
 
     public function product($id)
     {
-        $product = Product::with(['seller', 'reviews' => fn ($q) => $q->with('user')->latest()])
+        $product = Product::with([
+            'seller',
+            'flashSales' => fn ($q) => $q->active(),
+            'reviews' => fn ($q) => $q->with('user')->latest(),
+        ])
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
             ->findOrFail($id);

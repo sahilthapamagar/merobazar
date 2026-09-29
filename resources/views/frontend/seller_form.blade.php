@@ -4,7 +4,7 @@
         /* ─── seller / MEMBERSHIP ─── */
         .seller-contact-section {
             width: 100%;
-            padding: 80px 1.5rem;
+            padding: 124px 1.5rem 80px;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -523,28 +523,26 @@
                         @enderror
                     </div>
 
-                    <!-- Two-column row: Shop Name + Contact -->
+                    <!-- Two-column row: PAN Number + Contact -->
                     <div class="seller-contact-form-row">
-                        <!-- Registration Number -->
+                        <!-- PAN Number -->
                         <div class="input-group animate-slide-up delay-550">
-                            <input type="text" name="registration_number" id="registration_number"
-                                placeholder="Registration Number" autocomplete="off" class="custom-input pr-10"
-                                required />
-                            <label for="registration_number">Registration Number</label>
+                            <input type="text" name="pan_number" id="pan_number"
+                                placeholder="PAN Number" autocomplete="off" class="custom-input pr-10"
+                                value="{{ old('pan_number') }}" required />
+                            <label for="pan_number">PAN Number</label>
                             <span class="icon-wrap">
-                                <i class="fa-solid fa-file-lines text-sm"></i>
+                                <i class="fa-solid fa-id-card text-sm"></i>
                             </span>
-                            @error('registration_number')
+                            @error('pan_number')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-
-
                         <!-- Contact -->
                         <div class="input-group animate-slide-up delay-500">
                             <input type="tel" name="contact" id="contact" placeholder="Contact Number"
-                                autocomplete="tel" class="custom-input pr-10" required />
+                                autocomplete="tel" class="custom-input pr-10" value="{{ old('contact') }}" required />
                             <label for="contact">Contact Number</label>
                             <span class="icon-wrap">
                                 <i class="fa-solid fa-phone text-sm"></i>
@@ -558,7 +556,7 @@
                     <!-- Shop Name -->
                     <div class="input-group animate-slide-up delay-500">
                         <input type="text" name="shop_name" id="shop_name" placeholder="Shop Name"
-                            autocomplete="organization" class="custom-input pr-10" required />
+                            autocomplete="organization" class="custom-input pr-10" value="{{ old('shop_name') }}" required />
                         <label for="shop_name">Shop Name</label>
                         <span class="icon-wrap">
                             <i class="fa-solid fa-store text-sm"></i>
@@ -568,7 +566,7 @@
                         @enderror
                     </div>
 
-                    <!-- Two-column row: Citizenship Photo + PAN/Company Image -->
+                    <!-- Two-column row: Citizenship Photo + PAN Card Photo -->
                     <div class="seller-contact-form-row">
 
                         <!-- Citizenship Photo -->
@@ -597,24 +595,24 @@
                             @enderror
                         </div>
 
-                        <!-- Company / PAN Registration -->
+                        <!-- PAN Card Photo -->
                         <div class="input-group file-group animate-slide-up delay-600">
                             <div class="file-drop">
                                 <input type="file" name="image" id="image"
                                     accept="image/jpeg,image/png,image/jpg,image/gif" required
-                                    onchange="previewUpload(this, 'pan_label', 'pan_preview', 'pan_preview_img', 'Upload PAN / registration')" />
+                                    onchange="previewUpload(this, 'pan_label', 'pan_preview', 'pan_preview_img', 'Upload PAN card photo')" />
                                 <div class="custom-input file-drop-ui">
-                                    <span id="pan_label" class="file-name">Upload PAN / registration</span>
+                                    <span id="pan_label" class="file-name">Upload PAN card photo</span>
                                 </div>
                                 <span class="icon-wrap">
-                                    <i class="fa-regular fa-file-lines text-sm"></i>
+                                    <i class="fa-solid fa-id-card text-sm"></i>
                                 </span>
                             </div>
-                            <label for="image">PAN / Company Registration</label>
+                            <label for="image">PAN Card Photo</label>
                             <div id="pan_preview" class="file-preview">
-                                <img id="pan_preview_img" alt="PAN / company registration preview" />
+                                <img id="pan_preview_img" alt="PAN card photo preview" />
                                 <button type="button" class="file-preview-clear" aria-label="Remove PAN image"
-                                    onclick="clearUpload('image', 'pan_label', 'pan_preview', 'pan_preview_img', 'Upload PAN / registration')">
+                                    onclick="clearUpload('image', 'pan_label', 'pan_preview', 'pan_preview_img', 'Upload PAN card photo')">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
                             </div>

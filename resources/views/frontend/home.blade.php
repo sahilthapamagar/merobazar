@@ -11,21 +11,25 @@
               display: flex;
               flex-wrap: wrap;
               align-items: center;
-              gap: 2rem;
-              margin-top: 3rem;
+              gap: 1.75rem;
+              margin-top: 0;
+              padding-top: 1.25rem;
+              border-top: 1px solid rgba(171, 136, 109, 0.2);
           }
 
           .hero-stat-divider {
               width: 1px;
-              background: var(--accent);
-              align-self: stretch;
+              height: 36px;
+              background: rgba(171, 136, 109, 0.3);
+              align-self: center;
           }
 
           .hero-stat-value {
               font-family: 'Cormorant Garamond', serif;
-              font-size: 1.875rem;
-              font-weight: 500;
+              font-size: 1.65rem;
+              font-weight: 600;
               color: var(--primary);
+              line-height: 1;
           }
 
           .hero-stat-value span {
@@ -33,51 +37,56 @@
           }
 
           .hero-stat-label {
-              font-size: 0.72rem;
+              font-size: 0.68rem;
               letter-spacing: 0.12em;
               text-transform: uppercase;
               color: #7a6858;
-              margin-top: 3px;
+              margin-top: 4px;
           }
 
           /* ─── HERO ─── */
           .hero {
-              min-height: 100vh;
-              padding-top: 72px;
+              height: 100vh;
+              min-height: 560px;
+              max-height: 820px;
+              padding-top: 104px;
               display: grid;
-              grid-template-columns: 1fr 1fr;
+              grid-template-columns: 1.05fr 0.95fr;
               position: relative;
               overflow: hidden;
               background: var(--cream);
+              box-sizing: border-box;
           }
 
           .hero-left {
               display: flex;
               flex-direction: column;
               justify-content: center;
-              padding: 6% 5% 6% 8%;
+              padding: 1.5rem 5% 1.5rem 7%;
               position: relative;
               z-index: 2;
+              height: 100%;
+              box-sizing: border-box;
           }
 
           .hero-eyebrow {
               font-size: 0.72rem;
-              letter-spacing: 0.28em;
+              letter-spacing: 0.26em;
               text-transform: uppercase;
               color: var(--secondary);
-              font-weight: 500;
-              margin-bottom: 24px;
+              font-weight: 600;
+              margin-bottom: 12px;
               opacity: 0;
-              transform: translateY(20px);
+              transform: translateY(15px);
           }
 
           .hero-headline {
               font-family: 'Cormorant Garamond', serif;
-              font-size: clamp(3.2rem, 6vw, 6rem);
-              line-height: 1.0;
+              font-size: clamp(2.4rem, 4.2vw, 4.2rem);
+              line-height: 1.06;
               font-weight: 300;
               color: var(--primary);
-              margin-bottom: 28px;
+              margin-bottom: 14px;
           }
 
           .hero-headline em {
@@ -86,34 +95,36 @@
           }
 
           .hero-sub {
-              font-size: 0.88rem;
-              line-height: 1.8;
+              font-size: 0.85rem;
+              line-height: 1.65;
               color: #6b5c4e;
-              max-width: 360px;
-              margin-bottom: 40px;
+              max-width: 440px;
+              margin-bottom: 22px;
           }
 
           .hero-cta-group {
               display: flex;
-              gap: 16px;
+              gap: 14px;
               align-items: center;
+              margin-bottom: 24px;
           }
 
           .btn-primary {
               background: var(--primary);
               color: var(--accent);
-              padding: 14px 36px;
-              font-size: 0.78rem;
-              letter-spacing: 0.14em;
+              padding: 12px 30px;
+              font-size: 0.75rem;
+              letter-spacing: 0.12em;
               text-transform: uppercase;
               font-weight: 500;
               border: none;
-              cursor: none;
+              cursor: pointer;
               text-decoration: none;
               display: inline-block;
               position: relative;
               overflow: hidden;
               transition: color 0.3s ease;
+              border-radius: 2px;
           }
 
           .btn-primary::before {
@@ -136,7 +147,7 @@
 
           .btn-ghost {
               color: var(--primary);
-              font-size: 0.78rem;
+              font-size: 0.75rem;
               letter-spacing: 0.1em;
               text-transform: uppercase;
               font-weight: 500;
@@ -145,6 +156,7 @@
               align-items: center;
               gap: 8px;
               transition: gap 0.3s ease;
+              cursor: pointer;
           }
 
           .btn-ghost:hover {
@@ -154,6 +166,258 @@
           .hero-right {
               position: relative;
               overflow: hidden;
+              background: #2b1f14;
+              height: 100%;
+              width: 100%;
+          }
+
+          .hero-slider-container {
+              position: relative;
+              width: 100%;
+              height: 100%;
+              overflow: hidden;
+          }
+
+          .hero-slider-track {
+              display: flex;
+              width: 100%;
+              height: 100%;
+              transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+              will-change: transform;
+          }
+
+          .hero-slide {
+              flex: 0 0 100%;
+              min-width: 100%;
+              width: 100%;
+              height: 100%;
+              position: relative;
+              overflow: hidden;
+          }
+
+          .hero-slide img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: center;
+              transition: transform 1.2s ease-out;
+          }
+
+          .hero-slide.active img {
+              animation: kenBurns 4s ease-in-out infinite alternate;
+          }
+
+          @keyframes kenBurns {
+              0% { transform: scale(1.0); }
+              100% { transform: scale(1.06); }
+          }
+
+          .hero-slide-overlay {
+              position: absolute;
+              inset: 0;
+              background: linear-gradient(180deg, rgba(43,31,20,0.15) 0%, rgba(43,31,20,0.05) 45%, rgba(43,31,20,0.8) 100%);
+              pointer-events: none;
+          }
+
+          .hero-slide-card {
+              position: absolute;
+              bottom: 20px;
+              left: 20px;
+              right: 20px;
+              background: rgba(255, 255, 255, 0.95);
+              backdrop-filter: blur(14px);
+              -webkit-backdrop-filter: blur(14px);
+              border: 1px solid rgba(171, 136, 109, 0.35);
+              padding: 13px 18px;
+              border-radius: 8px;
+              box-shadow: 0 14px 36px rgba(43, 31, 20, 0.24);
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              gap: 14px;
+              transform: translateY(14px);
+              opacity: 0;
+              transition: all 0.35s ease 0.1s;
+              z-index: 5;
+          }
+
+          .hero-slide.active .hero-slide-card {
+              transform: translateY(0);
+              opacity: 1;
+          }
+
+          .hero-slide-header {
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              margin-bottom: 4px;
+              flex-wrap: wrap;
+          }
+
+          .hero-slide-tag {
+              display: inline-flex;
+              align-items: center;
+              gap: 4px;
+              background: #e63946;
+              color: #fff;
+              font-size: 0.62rem;
+              font-weight: 700;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              padding: 2px 7px;
+              border-radius: 3px;
+          }
+
+          .hero-slide-discount-badge {
+              display: inline-flex;
+              align-items: center;
+              background: rgba(43, 31, 20, 0.9);
+              color: #f5f0eb;
+              font-size: 0.62rem;
+              font-weight: 700;
+              letter-spacing: 0.06em;
+              padding: 2px 7px;
+              border-radius: 3px;
+          }
+
+          .hero-slide-title {
+              font-family: 'Cormorant Garamond', serif;
+              font-size: 1.18rem;
+              font-weight: 600;
+              color: var(--primary);
+              line-height: 1.2;
+              margin-bottom: 2px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 270px;
+          }
+
+          .hero-slide-vendor {
+              font-size: 0.72rem;
+              color: #7a6858;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+          }
+
+          .hero-slide-vendor strong {
+              color: var(--secondary);
+              font-weight: 600;
+          }
+
+          .hero-slide-pricing {
+              display: flex;
+              align-items: baseline;
+              gap: 8px;
+              margin-top: 2px;
+          }
+
+          .hero-slide-price {
+              font-size: 1.08rem;
+              font-weight: 700;
+              color: var(--primary);
+          }
+
+          .hero-slide-oldprice {
+              font-size: 0.8rem;
+              color: #a89485;
+              text-decoration: line-through;
+          }
+
+          .hero-slide-action {
+              flex-shrink: 0;
+          }
+
+          .hero-slide-btn {
+              background: var(--primary);
+              color: var(--accent);
+              padding: 9px 16px;
+              font-size: 0.72rem;
+              font-weight: 600;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              text-decoration: none;
+              border-radius: 4px;
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+              white-space: nowrap;
+          }
+
+          .hero-slide-btn:hover {
+              background: var(--secondary);
+              color: #fff;
+              transform: translateX(2px);
+          }
+
+          .hero-slider-nav {
+              position: absolute;
+              top: 16px;
+              right: 16px;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              z-index: 6;
+          }
+
+          .hero-nav-btn {
+              width: 34px;
+              height: 34px;
+              border-radius: 50%;
+              background: rgba(255, 255, 255, 0.88);
+              backdrop-filter: blur(6px);
+              border: 1px solid rgba(171, 136, 109, 0.35);
+              color: var(--primary);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+              transition: all 0.2s ease;
+          }
+
+          .hero-nav-btn:hover {
+              background: var(--primary);
+              color: #fff;
+              border-color: var(--primary);
+              transform: scale(1.05);
+          }
+
+          .hero-slider-dots {
+              position: absolute;
+              top: 20px;
+              left: 20px;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              z-index: 6;
+          }
+
+          .hero-dot {
+              width: 22px;
+              height: 4px;
+              background: rgba(255, 255, 255, 0.45);
+              border-radius: 2px;
+              overflow: hidden;
+              position: relative;
+              cursor: pointer;
+              transition: width 0.3s ease, background 0.3s ease;
+          }
+
+          .hero-dot.active {
+              width: 36px;
+              background: rgba(255, 255, 255, 0.6);
+          }
+
+          .hero-dot-progress {
+              position: absolute;
+              left: 0;
+              top: 0;
+              bottom: 0;
+              width: 0%;
+              background: #e63946;
           }
 
           .hero-img-container {
@@ -166,7 +430,7 @@
               width: 100%;
               height: 100%;
               object-fit: cover;
-              transform: scale(1.08);
+              transform: scale(1.05);
               transition: transform 8s ease;
           }
 
@@ -281,6 +545,322 @@
               border-radius: 50%;
           }
 
+          /* ─── LIVE FLASH TICKER ─── */
+          .flash-ticker-bar {
+              background: linear-gradient(90deg, #2b1f14 0%, #493628 50%, #2b1f14 100%);
+              color: var(--accent);
+              padding: 10px 8%;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              border-bottom: 1px solid rgba(171, 136, 109, 0.25);
+              font-size: 0.8rem;
+              gap: 16px;
+              flex-wrap: wrap;
+          }
+
+          .flash-ticker-content {
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              flex-wrap: wrap;
+          }
+
+          .flash-live-pill {
+              background: #e63946;
+              color: #fff;
+              font-size: 0.65rem;
+              font-weight: 700;
+              letter-spacing: 0.12em;
+              text-transform: uppercase;
+              padding: 3px 10px;
+              border-radius: 999px;
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              box-shadow: 0 0 12px rgba(230, 57, 70, 0.5);
+          }
+
+          .flash-live-dot {
+              width: 6px;
+              height: 6px;
+              background: #fff;
+              border-radius: 50%;
+              animation: flashPulse 1.2s ease-in-out infinite;
+          }
+
+          @keyframes flashPulse {
+              0%, 100% { opacity: 1; transform: scale(1); }
+              50% { opacity: 0.3; transform: scale(0.6); }
+          }
+
+          .flash-ticker-link {
+              color: var(--accent);
+              font-size: 0.75rem;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              text-decoration: none;
+              font-weight: 600;
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              padding: 4px 12px;
+              border: 1px solid rgba(214, 192, 179, 0.3);
+              border-radius: 4px;
+              transition: all 0.25s ease;
+          }
+
+          .flash-ticker-link:hover {
+              background: var(--secondary);
+              color: #fff;
+              border-color: var(--secondary);
+          }
+
+          /* ─── FLASH SALE / FRESH DROPS SECTION ─── */
+          .flash-section {
+              padding: 70px 8%;
+              background: #faf7f2;
+              border-bottom: 1px solid rgba(171, 136, 109, 0.15);
+              overflow: hidden;
+          }
+
+          .flash-section-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-end;
+              margin-bottom: 24px;
+              gap: 20px;
+              flex-wrap: wrap;
+          }
+
+          .flash-header-actions {
+              display: flex;
+              align-items: center;
+              gap: 14px;
+          }
+
+          .flash-nav-controls {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+          }
+
+          .flash-nav-btn {
+              width: 36px;
+              height: 36px;
+              border-radius: 50%;
+              background: #ffffff;
+              border: 1px solid rgba(171, 136, 109, 0.35);
+              color: var(--primary);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: all 0.2s ease;
+          }
+
+          .flash-nav-btn:hover {
+              background: var(--primary);
+              color: #ffffff;
+              border-color: var(--primary);
+          }
+
+          .flash-heading-badge {
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              background: rgba(230, 57, 70, 0.1);
+              color: #c1121f;
+              border: 1px solid rgba(230, 57, 70, 0.25);
+              padding: 4px 12px;
+              border-radius: 999px;
+              font-size: 0.72rem;
+              font-weight: 700;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              margin-bottom: 8px;
+          }
+
+          .flash-flow-wrapper {
+              position: relative;
+              width: 100%;
+              overflow-x: auto;
+              overflow-y: hidden;
+              scroll-behavior: smooth;
+              scrollbar-width: none;
+              -ms-overflow-style: none;
+              padding: 10px 2px 24px;
+          }
+
+          .flash-flow-wrapper::-webkit-scrollbar {
+              display: none;
+          }
+
+          .flash-flow-track {
+              display: flex;
+              gap: 20px;
+              width: max-content;
+              transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+          }
+
+          .flash-card {
+              flex: 0 0 270px;
+              width: 270px;
+              background: #ffffff;
+              border: 1px solid rgba(171, 136, 109, 0.2);
+              border-radius: 6px;
+              overflow: hidden;
+              display: flex;
+              flex-direction: column;
+              text-decoration: none;
+              color: inherit;
+              transition: transform 0.35s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+          }
+
+          .flash-card:hover {
+              transform: translateY(-8px);
+              box-shadow: 0 20px 40px rgba(73, 54, 40, 0.15);
+              border-color: var(--secondary);
+          }
+
+          .flash-img-container {
+              position: relative;
+              width: 100%;
+              aspect-ratio: 1 / 1;
+              overflow: hidden;
+              background: #f4ede6;
+          }
+
+          .flash-img-container img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+          }
+
+          .flash-card:hover .flash-img-container img {
+              transform: scale(1.06);
+          }
+
+          .flash-tag-pill {
+              position: absolute;
+              top: 10px;
+              left: 10px;
+              background: rgba(43, 31, 20, 0.85);
+              backdrop-filter: blur(4px);
+              color: #fff;
+              font-size: 0.62rem;
+              font-weight: 600;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              padding: 3px 8px;
+              border-radius: 3px;
+              z-index: 2;
+          }
+
+          .flash-time-badge {
+              position: absolute;
+              bottom: 10px;
+              right: 10px;
+              background: rgba(255, 255, 255, 0.92);
+              backdrop-filter: blur(4px);
+              color: #493628;
+              font-size: 0.65rem;
+              font-weight: 600;
+              padding: 3px 8px;
+              border-radius: 3px;
+              display: flex;
+              align-items: center;
+              gap: 4px;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+              z-index: 2;
+          }
+
+          .flash-card-info {
+              padding: 16px;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              flex-grow: 1;
+              background: #ffffff;
+          }
+
+          .flash-vendor-row {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              font-size: 0.72rem;
+              color: #8c7361;
+              margin-bottom: 6px;
+          }
+
+          .flash-vendor-name {
+              display: inline-flex;
+              align-items: center;
+              gap: 4px;
+              font-weight: 600;
+              color: var(--secondary);
+              max-width: 140px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+          }
+
+          .flash-card-title {
+              font-family: 'Cormorant Garamond', serif;
+              font-size: 1.15rem;
+              font-weight: 600;
+              color: var(--primary);
+              line-height: 1.25;
+              margin-bottom: 10px;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+              min-height: 2.8em;
+          }
+
+          .flash-card-pricing {
+              display: flex;
+              align-items: baseline;
+              gap: 8px;
+              margin-bottom: 12px;
+          }
+
+          .flash-price-main {
+              font-size: 1.05rem;
+              font-weight: 700;
+              color: var(--primary);
+          }
+
+          .flash-price-old {
+              font-size: 0.8rem;
+              color: #a89485;
+              text-decoration: line-through;
+          }
+
+          .flash-card-bottom {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding-top: 10px;
+              border-top: 1px solid rgba(171, 136, 109, 0.15);
+          }
+
+          .flash-btn-add {
+              font-size: 0.72rem;
+              font-weight: 600;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              color: var(--secondary);
+              transition: transform 0.2s ease, color 0.2s ease;
+          }
+
+          .flash-card:hover .flash-btn-add {
+              color: var(--primary);
+              transform: translateX(3px);
+          }
+
           /* ─── SECTION LAYOUT ─── */
           .section {
               padding: 100px 8%;
@@ -330,7 +910,7 @@
           .cat-card {
               position: relative;
               overflow: hidden;
-              cursor: none;
+              cursor: pointer;
           }
 
           .cat-card:first-child {
@@ -424,7 +1004,7 @@
               background: transparent;
               border: 1px solid var(--accent);
               color: var(--primary);
-              cursor: none;
+              cursor: pointer;
               transition: all 0.3s ease;
           }
 
@@ -441,11 +1021,26 @@
               gap: 24px;
           }
 
+          .product-card-link {
+              text-decoration: none !important;
+              color: inherit !important;
+              display: block;
+          }
+
+          .product-card-link:hover,
+          .product-card-link:focus,
+          .product-card-link:visited {
+              text-decoration: none !important;
+              color: inherit !important;
+          }
+
           .product-card {
               background: white;
               position: relative;
-              cursor: none;
+              cursor: pointer;
               overflow: hidden;
+              color: var(--primary);
+              text-decoration: none;
           }
 
           .product-img-wrap {
@@ -507,7 +1102,7 @@
               text-transform: uppercase;
               font-weight: 500;
               border: none;
-              cursor: none;
+              cursor: pointer;
               transition: background 0.3s;
           }
 
@@ -522,7 +1117,7 @@
               display: flex;
               align-items: center;
               justify-content: center;
-              cursor: none;
+              cursor: pointer;
               transition: all 0.3s;
               flex-shrink: 0;
           }
@@ -655,7 +1250,7 @@
               text-decoration: none;
               position: relative;
               overflow: hidden;
-              cursor: none;
+              cursor: pointer;
               transition: color 0.3s ease;
           }
 
@@ -918,7 +1513,7 @@
               padding: 12px 16px;
               min-width: 300px;
               transition: background 0.3s;
-              cursor: none;
+              cursor: pointer;
           }
 
           .countdown-product-row:hover {
@@ -1401,7 +1996,7 @@
               letter-spacing: 0.14em;
               text-transform: uppercase;
               font-weight: 500;
-              cursor: none;
+              cursor: pointer;
               transition: background 0.3s ease;
               white-space: nowrap;
           }
@@ -1463,6 +2058,26 @@
 
           /* ─── RESPONSIVE ─── */
           @media (max-width: 1024px) {
+              .hero {
+                  height: auto;
+                  min-height: calc(100vh - 104px);
+                  max-height: none;
+                  grid-template-columns: 1fr 1fr;
+              }
+
+              .hero-left {
+                  padding: 2rem 4%;
+              }
+
+              .hero-headline {
+                  font-size: clamp(2.2rem, 4vw, 3.4rem);
+              }
+
+              .flash-grid {
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 18px;
+              }
+
               .products-grid {
                   grid-template-columns: repeat(3, 1fr);
               }
@@ -1485,33 +2100,42 @@
           @media (max-width: 768px) {
               .hero {
                   grid-template-columns: 1fr;
+                  height: auto;
                   min-height: auto;
-                  padding-top: 0;
+                  max-height: none;
+                  padding-top: 104px;
               }
 
               .hero-right {
-                  height: 55vw;
+                  height: 380px;
+                  min-height: 320px;
+                  order: -1;
               }
 
               .hero-left {
-                  padding: 40px 5%;
+                  padding: 24px 5% 32px;
               }
 
               .hero-headline {
-                  font-size: clamp(2.4rem, 10vw, 3.4rem);
+                  font-size: clamp(2rem, 8vw, 2.8rem);
+                  margin-bottom: 12px;
               }
 
               .hero-sub {
                   max-width: none;
+                  margin-bottom: 18px;
               }
 
               .hero-cta-group {
                   flex-wrap: wrap;
+                  gap: 12px;
+                  margin-bottom: 20px;
               }
 
               .hero-stats {
                   justify-content: space-between;
                   gap: 1rem;
+                  padding-top: 1rem;
               }
 
               .hero-stat-divider {
@@ -1520,6 +2144,31 @@
 
               .hero-floating-card {
                   display: none;
+              }
+
+              .hero-slide-card {
+                  bottom: 12px;
+                  left: 12px;
+                  right: 12px;
+                  padding: 10px 14px;
+              }
+
+              .hero-slide-title {
+                  max-width: 200px;
+                  font-size: 1.1rem;
+              }
+
+              .flash-section {
+                  padding: 48px 5%;
+              }
+
+              .flash-ticker-bar {
+                  padding: 10px 5%;
+              }
+
+              .flash-grid {
+                  grid-template-columns: repeat(2, 1fr);
+                  gap: 14px;
               }
 
               .products-grid {
@@ -1607,6 +2256,44 @@
           }
 
           @media (max-width: 480px) {
+              .hero {
+                  padding-top: 96px;
+              }
+
+              .hero-right {
+                  height: 310px;
+                  min-height: 290px;
+              }
+
+              .hero-slide-card {
+                  bottom: 8px;
+                  left: 8px;
+                  right: 8px;
+                  padding: 9px 11px;
+                  gap: 8px;
+              }
+
+              .hero-slide-title {
+                  max-width: 160px;
+                  font-size: 1rem;
+              }
+
+              .hero-slide-btn {
+                  padding: 7px 11px;
+                  font-size: 0.68rem;
+              }
+
+              .flash-grid {
+                  grid-template-columns: 1fr;
+                  gap: 14px;
+              }
+
+              .flash-ticker-bar {
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 8px;
+              }
+
               .products-grid {
                   grid-template-columns: 1fr;
                   width: 100%;
@@ -1688,10 +2375,80 @@
               </div>
 
               <div class="hero-right">
-                  <div class="hero-img-container">
-                      <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&q=80&auto=format"
-                          alt="Hero fashion" />
-                      <div class="hero-img-overlay"></div>
+                  <div class="hero-slider-container" id="heroSlider">
+                      @php
+                          $slidesToUse = (isset($heroSlides) && $heroSlides->count() > 0) ? $heroSlides : ((isset($flashProducts) && $flashProducts->count() > 0) ? $flashProducts : null);
+                      @endphp
+
+                      @if($slidesToUse && $slidesToUse->count() > 0)
+                          <div class="hero-slider-dots">
+                              @foreach ($slidesToUse as $index => $slide)
+                                  <div class="hero-dot {{ $index === 0 ? 'active' : '' }}" onclick="goToHeroSlide({{ $index }})">
+                                      <div class="hero-dot-progress"></div>
+                                  </div>
+                              @endforeach
+                          </div>
+
+                          <div class="hero-slider-nav">
+                              <button type="button" class="hero-nav-btn" onclick="prevHeroSlide()" aria-label="Previous slide">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                      <path d="M15 18l-6-6 6-6" />
+                                  </svg>
+                              </button>
+                              <button type="button" class="hero-nav-btn" onclick="nextHeroSlide()" aria-label="Next slide">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                      <path d="M9 18l6-6-6-6" />
+                                  </svg>
+                              </button>
+                          </div>
+
+                          <div class="hero-slider-track" id="heroSliderTrack">
+                              @foreach ($slidesToUse as $index => $slide)
+                                  <div class="hero-slide {{ $index === 0 ? 'active' : '' }}" data-slide-index="{{ $index }}">
+                                      <img src="{{ $slide->main_image_url }}" alt="{{ $slide->name }}" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" />
+                                      <div class="hero-slide-overlay"></div>
+                                      <div class="hero-slide-card">
+                                           <div>
+                                               <div class="hero-slide-header">
+                                                   <span class="hero-slide-tag">⚡ Flash Sale • Live</span>
+                                                   @if ($slide->is_discounted)
+                                                       <span class="hero-slide-discount-badge">-{{ $slide->discount_percent }}% OFF</span>
+                                                   @endif
+                                               </div>
+                                               <div class="hero-slide-title" title="{{ $slide->name }}">{{ $slide->name }}</div>
+                                               <div class="hero-slide-vendor">
+                                                   <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                                       <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                                   </svg>
+                                                   By <strong>{{ $slide->seller->shop_name ?? $slide->seller->name ?? 'Verified Merchant' }}</strong>
+                                               </div>
+                                               <div class="hero-slide-pricing">
+                                                   <span class="hero-slide-price">Rs. {{ number_format($slide->effective_price, 2) }}</span>
+                                                   @if ($slide->is_discounted)
+                                                       <span class="hero-slide-oldprice">Rs. {{ number_format($slide->price, 2) }}</span>
+                                                   @endif
+                                               </div>
+                                           </div>
+                                           <div class="hero-slide-action">
+                                               <a href="{{ route('product', $slide->id) }}" class="hero-slide-btn">
+                                                   View Drop
+                                                   <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                       <path d="M5 12h14M13 6l6 6-6 6" />
+                                                   </svg>
+                                               </a>
+                                           </div>
+                                       </div>
+                                  </div>
+                              @endforeach
+                          </div>
+                      @else
+                          <div class="hero-img-container">
+                              <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&q=80&auto=format"
+                                  alt="Hero fashion" />
+                              <div class="hero-img-overlay"></div>
+                          </div>
+                      @endif
                   </div>
               </div>
           </section>
@@ -1714,6 +2471,225 @@
               </div>
           </div>
 
+          {{-- ⚡ LIVE FLASH DROPS & FLASH SALES FROM VENDORS --}}
+          @if(isset($activeFlashSales) && $activeFlashSales->count() > 0)
+              @php
+                  $earliestEnd = $activeFlashSales->min('end_time');
+              @endphp
+              <div class="flash-ticker-bar">
+                  <div class="flash-ticker-content">
+                      <span class="flash-live-pill"><span class="flash-live-dot"></span> ⚡ FLASH SALE LIVE</span>
+                      <span>
+                          <strong>Limited Time Offers!</strong>
+                          Special discounted prices from approved merchants. Next deal ends in: <strong class="global-flash-countdown" data-countdown="{{ $earliestEnd ? $earliestEnd->toIso8601String() : '' }}">Calculating...</strong>
+                      </span>
+                  </div>
+                  <a href="#flash-deals" class="flash-ticker-link">
+                      View All Deals
+                      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M5 12h14M13 6l6 6-6 6" />
+                      </svg>
+                  </a>
+              </div>
+
+              <section class="flash-section" id="flash-deals">
+                  <div class="flash-section-header">
+                      <div>
+                          <div class="flash-heading-badge reveal">
+                              <span>⚡ Limited Time • Flash Deals</span>
+                          </div>
+                          <h2 class="section-title reveal reveal-delay-1" style="margin-bottom:4px">
+                              Exclusive <em>Flash Sales</em>
+                          </h2>
+                          <p style="font-size:0.85rem;color:#7a6858;" class="reveal reveal-delay-2">
+                              Special low prices directly from verified merchants. Prices automatically revert when timer expires!
+                          </p>
+                      </div>
+                      <div class="flash-header-actions reveal reveal-delay-2">
+                          <div class="flash-nav-controls">
+                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(-1)" aria-label="Scroll left">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                      <path d="M15 18l-6-6 6-6" />
+                                  </svg>
+                              </button>
+                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(1)" aria-label="Scroll right">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                      <path d="M9 18l6-6-6-6" />
+                                  </svg>
+                              </button>
+                          </div>
+                          <a href="{{ route('products') }}" class="btn-ghost" style="margin-bottom:2px">
+                              All Products
+                              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                  <path d="M5 12h14M13 6l6 6-6 6" />
+                              </svg>
+                          </a>
+                      </div>
+                  </div>
+
+                  <div class="flash-flow-wrapper" id="flashFlowWrapper">
+                      <div class="flash-flow-track" id="flashFlowTrack">
+                          @foreach ($activeFlashSales as $flashSale)
+                              @php
+                                  $item = $flashSale->product;
+                                  $pctSold = $flashSale->flash_stock > 0 ? min(100, round(($flashSale->sold_quantity / $flashSale->flash_stock) * 100)) : 0;
+                              @endphp
+                              <a href="{{ route('product', $item->id) }}" class="flash-card reveal product-card-link">
+                                  <div class="flash-img-container">
+                                      <img src="{{ $item->main_image_url }}" alt="{{ $item->name }}" loading="lazy" />
+                                      <div class="flash-tag-pill" style="background:#e63946;color:#fff;">
+                                          ⚡ -{{ $flashSale->discount_percent }}% OFF
+                                      </div>
+                                      <div class="flash-time-badge item-countdown" data-countdown="{{ $flashSale->end_time->toIso8601String() }}">
+                                          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                              <circle cx="12" cy="12" r="10"></circle>
+                                              <path d="M12 6v6l4 2"></path>
+                                          </svg>
+                                          <span>Ending soon</span>
+                                      </div>
+                                  </div>
+
+                                  <div class="flash-card-info">
+                                      <div>
+                                          <div class="flash-vendor-row">
+                                              <span class="flash-vendor-name" title="{{ $flashSale->seller->store_name ?? $flashSale->seller->name ?? 'Merchant' }}">
+                                                  <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                                      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                                  </svg>
+                                                  {{ $flashSale->seller->store_name ?? $flashSale->seller->name ?? 'Merchant' }}
+                                              </span>
+                                              @if($item->category)
+                                                  <span style="font-size:0.68rem;opacity:0.85;">{{ $item->category->name }}</span>
+                                              @endif
+                                          </div>
+
+                                          <div class="flash-card-title">{{ $item->name }}</div>
+
+                                          <div class="flash-card-pricing">
+                                              <span class="flash-price-main">Rs. {{ number_format($flashSale->flash_price, 2) }}</span>
+                                              <span class="flash-price-old">Rs. {{ number_format($item->price, 2) }}</span>
+                                          </div>
+
+                                          <div style="margin-top:8px;">
+                                              <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:#7a6858; margin-bottom:3px;">
+                                                  <span>Sold: {{ $flashSale->sold_quantity }}/{{ $flashSale->flash_stock }}</span>
+                                                  <span>{{ $flashSale->remaining_stock }} left</span>
+                                              </div>
+                                              <div style="width:100%; height:4px; background:rgba(73,54,40,0.1); border-radius:2px; overflow:hidden;">
+                                                  <div style="width:{{ $pctSold }}%; height:100%; background:#e63946; border-radius:2px;"></div>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <div class="flash-card-bottom" style="margin-top:10px;">
+                                          <div class="product-rating" style="margin-bottom:0;">
+                                              <span class="stars" style="font-size:0.75rem;">★</span>
+                                              <span style="font-size:0.72rem;font-weight:600;">{{ number_format($item->reviews_avg_rating ?? 5.0, 1) }}</span>
+                                          </div>
+                                          <span class="flash-btn-add">Grab Deal →</span>
+                                      </div>
+                                  </div>
+                              </a>
+                          @endforeach
+                      </div>
+                  </div>
+              </section>
+          @elseif(isset($flashProducts) && $flashProducts->count() > 0)
+
+              <section class="flash-section" id="flash-arrivals">
+                  <div class="flash-section-header">
+                      <div>
+                          <div class="flash-heading-badge reveal">
+                              <span>⚡ Just In • Live Flow</span>
+                          </div>
+                          <h2 class="section-title reveal reveal-delay-1" style="margin-bottom:4px">
+                              Vendor <em>Fresh Drops</em>
+                          </h2>
+                          <p style="font-size:0.85rem;color:#7a6858;" class="reveal reveal-delay-2">
+                              Newly listed items by approved artisans and independent merchants across Nepal.
+                          </p>
+                      </div>
+                      <div class="flash-header-actions reveal reveal-delay-2">
+                          <div class="flash-nav-controls">
+                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(-1)" aria-label="Scroll left">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                      <path d="M15 18l-6-6 6-6" />
+                                  </svg>
+                              </button>
+                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(1)" aria-label="Scroll right">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                      <path d="M9 18l6-6-6-6" />
+                                  </svg>
+                              </button>
+                          </div>
+                          <a href="{{ route('products') }}" class="btn-ghost" style="margin-bottom:2px">
+                              Explore All
+                              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                  <path d="M5 12h14M13 6l6 6-6 6" />
+                              </svg>
+                          </a>
+                      </div>
+                  </div>
+
+                  <div class="flash-flow-wrapper" id="flashFlowWrapper">
+                      <div class="flash-flow-track" id="flashFlowTrack">
+                          @foreach ($flashProducts as $flashItem)
+                              <a href="{{ route('product', $flashItem->id) }}" class="flash-card reveal product-card-link">
+                                  <div class="flash-img-container">
+                                      <img src="{{ $flashItem->main_image_url }}" alt="{{ $flashItem->name }}" loading="lazy" />
+                                      <div class="flash-tag-pill">
+                                          ⚡ Fresh Drop
+                                      </div>
+                                      <div class="flash-time-badge">
+                                          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                              <circle cx="12" cy="12" r="10"></circle>
+                                              <path d="M12 6v6l4 2"></path>
+                                          </svg>
+                                          {{ $flashItem->created_at ? $flashItem->created_at->diffForHumans() : 'Recent' }}
+                                      </div>
+                                  </div>
+
+                                  <div class="flash-card-info">
+                                      <div>
+                                          <div class="flash-vendor-row">
+                                              <span class="flash-vendor-name" title="{{ $flashItem->seller->store_name ?? $flashItem->seller->name ?? 'Vendor' }}">
+                                                  <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                                      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                                  </svg>
+                                                  {{ $flashItem->seller->store_name ?? $flashItem->seller->name ?? 'Vendor' }}
+                                              </span>
+                                              @if($flashItem->category)
+                                                  <span style="font-size:0.68rem;opacity:0.85;">{{ $flashItem->category->name }}</span>
+                                              @endif
+                                          </div>
+
+                                          <div class="flash-card-title">{{ $flashItem->name }}</div>
+
+                                          <div class="flash-card-pricing">
+                                              <span class="flash-price-main">Rs. {{ number_format($flashItem->effective_price, 2) }}</span>
+                                              @if ($flashItem->is_discounted)
+                                                  <span class="flash-price-old">Rs. {{ number_format($flashItem->price, 2) }}</span>
+                                              @endif
+                                          </div>
+                                      </div>
+
+                                      <div class="flash-card-bottom">
+                                          <div class="product-rating" style="margin-bottom:0;">
+                                              <span class="stars" style="font-size:0.75rem;">★</span>
+                                              <span style="font-size:0.72rem;font-weight:600;">{{ number_format($flashItem->reviews_avg_rating ?? 5.0, 1) }}</span>
+                                          </div>
+                                          <span class="flash-btn-add">View Item →</span>
+                                      </div>
+                                  </div>
+                              </a>
+                          @endforeach
+                      </div>
+                  </div>
+              </section>
+          @endif
+
           <!-- ─── CATEGORIES ─── -->
           <section class="section" id="categories">
               <div class="section-label reveal">Shop by Category</div>
@@ -1731,12 +2707,7 @@
               <div class="categories-grid reveal reveal-delay-1">
                   @forelse ($categories->take(5) as $category)
                       <a href="{{ route('products', ['category' => $category->slug]) }}" class="cat-card">
-                          @if ($category->image)
-                              <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" />
-                          @else
-                              <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&q=80&auto=format"
-                                  alt="{{ $category->name }}" />
-                          @endif
+                          <img src="{{ $category->image_url }}" alt="{{ $category->name }}" loading="lazy" onerror="this.onerror=null; this.src='{{ $category->fallback_image_url }}';" />
                           <div class="cat-card-overlay">
                               <div class="cat-name">{{ $category->name }}</div>
                               <div class="cat-count">{{ $category->products_count ?? 0 }} products</div>
@@ -1772,7 +2743,7 @@
 
               <div class="products-grid" id="productsGrid">
                   @foreach ($products->take(4) as $product)
-                      <a href="{{ route('product', $product->id) }}">
+                      <a href="{{ route('product', $product->id) }}" class="product-card-link">
                           <div class="product-card reveal" data-tag="new trending">
                               <div class="product-img-wrap">
                                   <img src="{{ $product->main_image_url }}" alt="{{ $product->name }}" />
@@ -1781,7 +2752,7 @@
                                   @endif
                                   <div class="product-actions">
                                       <button class="add-cart-btn"
-                                          onclick="event.preventDefault(); event.stopPropagation(); addToCart(this)">Add
+                                          onclick="event.preventDefault(); event.stopPropagation(); submitAddToCart({{ $product->id }})">Add
                                           to Cart</button>
                                       <button class="wishlist-btn"
                                           onclick="event.preventDefault(); event.stopPropagation();">
@@ -1833,7 +2804,7 @@
 
                   <div class="products-grid" id="productsGrid">
                       @foreach ($category->products->take(4) as $product)
-                          <a href="{{ route('product', $product->id) }}">
+                          <a href="{{ route('product', $product->id) }}" class="product-card-link">
                               <div class="product-card reveal" data-tag="new trending">
                                   <div class="product-img-wrap">
                                       <img src="{{ $product->main_image_url }}" alt="{{ $product->name }}" />
@@ -1842,7 +2813,7 @@
                                       @endif
                                       <div class="product-actions">
                                           <button class="add-cart-btn"
-                                              onclick="event.preventDefault(); event.stopPropagation(); addToCart(this)">Add
+                                              onclick="event.preventDefault(); event.stopPropagation(); submitAddToCart({{ $product->id }})">Add
                                               to Cart</button>
                                           <button class="wishlist-btn"
                                               onclick="event.preventDefault(); event.stopPropagation();">
@@ -1991,13 +2962,31 @@
                   }, 2800);
               }
 
-              function addToCart(btn) {
-                  cartCount++;
-                  document.querySelector('.cart-badge').textContent = cartCount;
-                  const badge = document.querySelector('.cart-badge');
-                  badge.style.transform = 'scale(1.4)';
-                  setTimeout(() => badge.style.transform = '', 300);
-                  showToast('Added to cart ✓');
+              function submitAddToCart(productId) {
+                  const form = document.createElement('form');
+                  form.method = 'POST';
+                  form.action = '{{ route("cart.store") }}';
+
+                  const csrf = document.createElement('input');
+                  csrf.type = 'hidden';
+                  csrf.name = '_token';
+                  csrf.value = '{{ csrf_token() }}';
+                  form.appendChild(csrf);
+
+                  const pid = document.createElement('input');
+                  pid.type = 'hidden';
+                  pid.name = 'product_id';
+                  pid.value = productId;
+                  form.appendChild(pid);
+
+                  const qty = document.createElement('input');
+                  qty.type = 'hidden';
+                  qty.name = 'quantity';
+                  qty.value = '1';
+                  form.appendChild(qty);
+
+                  document.body.appendChild(form);
+                  form.submit();
               }
 
               //   // ── QUICK VIEW MODAL
@@ -2135,6 +3124,201 @@
               document.querySelectorAll('.reco-chip').forEach(chip => {
                   chip.addEventListener('click', () => addToCart(chip));
               });
+
+              // ── HERO 2-SECOND HORIZONTAL SLIDING FLOW ──
+              (function() {
+                  let currentHeroSlide = 0;
+                  const track = document.getElementById('heroSliderTrack');
+                  const heroSlides = document.querySelectorAll('.hero-slide');
+                  const heroDots = document.querySelectorAll('.hero-dot');
+                  const totalHeroSlides = heroSlides.length;
+                  let heroSlideTimer = null;
+
+                  if (totalHeroSlides <= 1) return;
+
+                  function updateHeroDots() {
+                      heroDots.forEach((dot, idx) => {
+                          const bar = dot.querySelector('.hero-dot-progress');
+                          if (bar) {
+                              bar.style.transition = 'none';
+                              bar.style.width = '0%';
+                          }
+                          dot.classList.toggle('active', idx === currentHeroSlide);
+                      });
+
+                      const activeDot = heroDots[currentHeroSlide];
+                      if (activeDot) {
+                          const activeBar = activeDot.querySelector('.hero-dot-progress');
+                          if (activeBar) {
+                              void activeBar.offsetWidth; // Force reflow
+                              activeBar.style.transition = 'width 2s linear';
+                              activeBar.style.width = '100%';
+                          }
+                      }
+                  }
+
+                  function showHeroSlide(index) {
+                      currentHeroSlide = (index + totalHeroSlides) % totalHeroSlides;
+                      if (track) {
+                          track.style.transform = `translateX(-${currentHeroSlide * 100}%)`;
+                      }
+                      heroSlides.forEach((slide, idx) => {
+                          slide.classList.toggle('active', idx === currentHeroSlide);
+                      });
+                      updateHeroDots();
+                  }
+
+                  window.nextHeroSlide = function() {
+                      showHeroSlide(currentHeroSlide + 1);
+                      startHeroAutoTimer();
+                  };
+
+                  window.prevHeroSlide = function() {
+                      showHeroSlide(currentHeroSlide - 1);
+                      startHeroAutoTimer();
+                  };
+
+                  window.goToHeroSlide = function(index) {
+                      showHeroSlide(index);
+                      startHeroAutoTimer();
+                  };
+
+                  function startHeroAutoTimer() {
+                      if (heroSlideTimer) clearInterval(heroSlideTimer);
+                      heroSlideTimer = setInterval(() => {
+                          showHeroSlide(currentHeroSlide + 1);
+                      }, 2000); // ⚡ Auto-slides horizontally every 2 seconds in infinite loop
+                  }
+
+                  // Initial setup
+                  showHeroSlide(0);
+                  startHeroAutoTimer();
+
+                  // Pause on hover
+                  const sliderWrap = document.getElementById('heroSlider');
+                  if (sliderWrap) {
+                      sliderWrap.addEventListener('mouseenter', () => {
+                          if (heroSlideTimer) clearInterval(heroSlideTimer);
+                          const activeDot = heroDots[currentHeroSlide];
+                          if (activeDot) {
+                              const activeBar = activeDot.querySelector('.hero-dot-progress');
+                              if (activeBar) {
+                                  const computedWidth = window.getComputedStyle(activeBar).width;
+                                  activeBar.style.transition = 'none';
+                                  activeBar.style.width = computedWidth;
+                              }
+                          }
+                      });
+                      sliderWrap.addEventListener('mouseleave', () => {
+                          startHeroAutoTimer();
+                          const activeDot = heroDots[currentHeroSlide];
+                          if (activeDot) {
+                              const activeBar = activeDot.querySelector('.hero-dot-progress');
+                              if (activeBar) {
+                                  activeBar.style.transition = 'width 2s linear';
+                                  activeBar.style.width = '100%';
+                              }
+                          }
+                      });
+
+                      // Touch swipe support for mobile
+                      let touchStartX = 0;
+                      let touchEndX = 0;
+
+                      sliderWrap.addEventListener('touchstart', (e) => {
+                          touchStartX = e.changedTouches[0].screenX;
+                      }, { passive: true });
+
+                      sliderWrap.addEventListener('touchend', (e) => {
+                          touchEndX = e.changedTouches[0].screenX;
+                          if (touchStartX - touchEndX > 45) {
+                              nextHeroSlide();
+                          } else if (touchEndX - touchStartX > 45) {
+                              prevHeroSlide();
+                          }
+                      }, { passive: true });
+                  }
+
+                  // Pause when tab is not visible
+                  document.addEventListener('visibilitychange', () => {
+                      if (document.hidden) {
+                          if (heroSlideTimer) clearInterval(heroSlideTimer);
+                      } else {
+                          startHeroAutoTimer();
+                      }
+                  });
+              })();
+
+              // ── VENDOR FRESH DROPS FLOWING CAROUSEL ──
+              (function() {
+                  const flowWrapper = document.getElementById('flashFlowWrapper');
+                  if (!flowWrapper) return;
+
+                  let flowTimer = null;
+                  const scrollStep = 290; // Card width + gap
+
+                  window.scrollFlashFlow = function(dir) {
+                      flowWrapper.scrollBy({
+                          left: dir * scrollStep,
+                          behavior: 'smooth'
+                      });
+                      startFlashAutoFlow();
+                  };
+
+                  function autoFlow() {
+                      const maxScroll = flowWrapper.scrollWidth - flowWrapper.clientWidth;
+                      if (flowWrapper.scrollLeft >= maxScroll - 10) {
+                          flowWrapper.scrollTo({ left: 0, behavior: 'smooth' });
+                      } else {
+                          flowWrapper.scrollBy({ left: scrollStep, behavior: 'smooth' });
+                      }
+                  }
+
+                  function startFlashAutoFlow() {
+                      if (flowTimer) clearInterval(flowTimer);
+                      flowTimer = setInterval(autoFlow, 2500); // Auto-advances every 2.5s
+                  }
+
+                  startFlashAutoFlow();
+
+                  flowWrapper.addEventListener('mouseenter', () => {
+                      if (flowTimer) clearInterval(flowTimer);
+                  });
+
+                  flowWrapper.addEventListener('mouseleave', () => {
+                      startFlashAutoFlow();
+                  });
+              })();
+
+              // ── LIVE FLASH SALE COUNTDOWNS ──
+              (function() {
+                  function updateCountdowns() {
+                      const now = new Date().getTime();
+                      document.querySelectorAll('[data-countdown]').forEach(el => {
+                          const endTimeStr = el.getAttribute('data-countdown');
+                          if (!endTimeStr) return;
+                          const endTime = new Date(endTimeStr).getTime();
+                          const diff = endTime - now;
+
+                          if (diff <= 0) {
+                              const span = el.querySelector('span') || el;
+                              span.textContent = 'Sale Ended';
+                              return;
+                          }
+
+                          const hours = Math.floor(diff / (1000 * 60 * 60));
+                          const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                          const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                          const formatted = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                          const span = el.querySelector('span') || el;
+                          span.textContent = formatted;
+                      });
+                  }
+
+                  updateCountdowns();
+                  setInterval(updateCountdowns, 1000);
+              })();
           </script>
       </div>
   </x-layout>

@@ -328,7 +328,7 @@
             box-shadow: none;
             appearance: none;
             -webkit-appearance: none;
-            cursor: none;
+            cursor: pointer;
         }
 
         .rg-input::placeholder {
@@ -415,7 +415,7 @@
             padding: 4px;
             margin: 0;
             line-height: 0;
-            cursor: none;
+            cursor: pointer;
             color: rgba(73, 54, 40, 0.35);
             transition: color 0.2s ease;
             display: flex;
@@ -433,7 +433,7 @@
             align-items: flex-start;
             gap: 10px;
             margin-bottom: 30px;
-            cursor: none;
+            cursor: pointer;
         }
 
         .reg-checkbox {
@@ -473,7 +473,7 @@
             color: var(--secondary);
             text-decoration: none;
             transition: color 0.2s ease;
-            cursor: none;
+            cursor: pointer;
         }
 
         .reg-terms-text a:hover {
@@ -492,7 +492,7 @@
             font-weight: 500;
             letter-spacing: 3.5px;
             text-transform: uppercase;
-            cursor: none;
+            cursor: pointer;
             position: relative;
             overflow: hidden;
             transition: letter-spacing 0.35s ease, transform 0.15s ease;
@@ -568,7 +568,7 @@
             font-size: 13px;
             font-weight: 400;
             color: var(--primary);
-            cursor: none;
+            cursor: pointer;
             margin-bottom: 28px;
             transition: border-color 0.25s ease, background 0.25s ease;
             letter-spacing: 0.3px;
@@ -591,7 +591,7 @@
             color: var(--secondary);
             text-decoration: none;
             font-weight: 500;
-            cursor: none;
+            cursor: pointer;
             transition: color 0.2s ease;
         }
 

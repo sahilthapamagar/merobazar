@@ -2,7 +2,7 @@
 <x-layout>
     <style>
         .product-page {
-            padding: 32px 5% 80px;
+            padding: 120px 5% 80px;
             background: linear-gradient(180deg, var(--cream) 0%, var(--background) 220px);
         }
 
@@ -13,7 +13,7 @@
 
         .product-breadcrumb {
             position: sticky;
-            top: 72px;
+            top: 110px;
             z-index: 900;
             margin: 0 0 2rem;
             padding: 0.85rem 1.25rem;
@@ -38,7 +38,7 @@
             color: var(--secondary);
             text-decoration: none;
             transition: color 0.3s ease;
-            cursor: none;
+            cursor: pointer;
         }
 
         .product-breadcrumb a:hover {
@@ -113,7 +113,7 @@
             border: 2px solid transparent;
             padding: 0;
             background: none;
-            cursor: none;
+            cursor: pointer;
             transition: border-color 0.3s ease, transform 0.25s ease;
         }
 
@@ -255,7 +255,7 @@
             background: transparent;
             color: var(--primary);
             font-size: 1.25rem;
-            cursor: none;
+            cursor: pointer;
             transition: background 0.2s ease;
         }
 
@@ -295,7 +295,7 @@
             font-size: 0.8rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            cursor: none;
+            cursor: pointer;
             border-radius: 8px;
             transition: background 0.3s ease, transform 0.2s ease;
         }
@@ -442,7 +442,7 @@
             color: var(--primary);
             display: grid;
             place-items: center;
-            cursor: none;
+            cursor: pointer;
             transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
         }
 
@@ -479,7 +479,7 @@
             display: block;
             text-decoration: none;
             color: inherit;
-            cursor: none;
+            cursor: pointer;
             text-align: center;
             background: #fff;
             border: 1px solid rgba(171, 136, 109, 0.18);
@@ -752,6 +752,19 @@
             color: #7a6858;
         }
 
+        .product-related-card {
+            text-decoration: none !important;
+            color: inherit !important;
+            display: block;
+        }
+
+        .product-related-card:hover,
+        .product-related-card:focus,
+        .product-related-card:visited {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+
         @media (max-width: 480px) {
             .product-review-top {
                 flex-wrap: wrap;
@@ -929,6 +942,27 @@
                     {{-- @if ($product->seller)
                         <p class="product-seller">by {{ $product->seller->name }}</p>
                     @endif --}}
+
+                    @if ($product->has_active_flash_sale)
+                        @php
+                            $activeFs = $product->active_flash_sale;
+                        @endphp
+                        <div class="product-flash-deal-banner" style="background: linear-gradient(135deg, #493628 0%, #2B1F14 100%); color: #fff; padding: 12px 16px; border-radius: 8px; margin: 12px 0 16px; border-left: 4px solid #e63946;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <span style="background: #e63946; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.08em; text-transform: uppercase;">⚡ FLASH SALE</span>
+                                    <span style="font-size: 0.8rem; color: #D6C0B3;">-{{ $activeFs->discount_percent }}% OFF Limited Deal</span>
+                                </div>
+                                <div style="font-size: 0.8rem; color: #D6C0B3; display:flex; align-items:center; gap:5px;">
+                                    <span>Ends in:</span>
+                                    <span id="productDetailCountdown" data-countdown="{{ $activeFs->end_time->toIso8601String() }}" style="font-family: monospace; font-size: 0.9rem; font-weight: 700; color: #fdf0d5; background: rgba(0,0,0,0.35); padding: 2px 6px; border-radius: 4px;">Loading...</span>
+                                </div>
+                            </div>
+                            <div style="font-size: 0.72rem; color: #D6C0B3; margin-top: 6px;">
+                                🔥 Only {{ $activeFs->remaining_stock }} units left at this special flash price!
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="product-price-row">
                         <span class="product-price" id="product-price">
@@ -1283,6 +1317,31 @@
                 passive: true
             });
             updateArrows();
+        })();
+
+        // Product Flash Sale Countdown
+        (function() {
+            const countdownEl = document.getElementById('productDetailCountdown');
+            if (!countdownEl) return;
+            const endTimeStr = countdownEl.getAttribute('data-countdown');
+            if (!endTimeStr) return;
+            const endTime = new Date(endTimeStr).getTime();
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const diff = endTime - now;
+                if (diff <= 0) {
+                    countdownEl.textContent = 'Sale Ended';
+                    return;
+                }
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+                countdownEl.textContent = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
         })();
     </script>
 </x-layout>

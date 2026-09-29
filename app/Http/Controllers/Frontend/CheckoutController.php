@@ -79,15 +79,25 @@ class CheckoutController extends Controller
             $orderItem->quantity = $cart->quantity;
             $orderItem->amount = $cart->amount;
             $orderItem->save();
+
+            // If product is on active flash sale, track the sold quantity
+            if ($cart->product && $cart->product->has_active_flash_sale) {
+                $cart->product->active_flash_sale->increment('sold_quantity', (int) $cart->quantity);
+            }
+
             $cart->delete();
         }
 
         if ($request->payment_method == 'cod') {
-            Mail::to($user->email)->send(new OrderPlacementMail($order, 'Cash on Delivery'));
+            try {
+                Mail::to($user->email)->send(new OrderPlacementMail($order, 'Cash on Delivery'));
+            } catch (\Throwable $e) {
+                Log::error('Order placement mail error: '.$e->getMessage());
+            }
 
-            toast('Order placed successfully', 'success');
+            toast('Order placed successfully! Thank you for your purchase.', 'success');
 
-            return redirect()->route('cart.index');
+            return redirect()->route('buying-history.show', $order->id)->with('success', 'Order placed successfully! Thank you for your purchase.');
         }
 
         $response = Http::withHeaders([
@@ -106,9 +116,9 @@ class CheckoutController extends Controller
                 'order_id' => $order->id,
                 'response' => $data,
             ]);
-            toast('Payment initiation failed. Please try again.', 'error');
+            toast('Payment initiation failed. Please try again or choose Cash on Delivery.', 'error');
 
-            return redirect()->route('cart.index');
+            return redirect()->route('checkout.seller', $seller->id);
         }
 
         return redirect($data['payment_url']);
@@ -125,12 +135,17 @@ class CheckoutController extends Controller
 
         // Only confirm (email) the order once the Khalti payment is completed.
         if (strtolower((string) $status) === 'completed' && $order->user) {
-            Mail::to($order->user->email)->send(new OrderPlacementMail($order, 'Khalti'));
+            try {
+                Mail::to($order->user->email)->send(new OrderPlacementMail($order, 'Khalti'));
+            } catch (\Throwable $e) {
+                Log::error('Khalti order mail error: '.$e->getMessage());
+            }
         }
 
-        $message = 'Order '.$status.' successfully';
-        toast($message, $status === 'Completed' ? 'success' : 'info');
+        $isSuccess = strtolower((string) $status) === 'completed';
+        $message = $isSuccess ? 'Payment completed & Order placed successfully!' : 'Payment '.$status;
+        toast($message, $isSuccess ? 'success' : 'info');
 
-        return redirect()->route('home');
+        return redirect()->route('buying-history.show', $order->id)->with('success', $message);
     }
 }
