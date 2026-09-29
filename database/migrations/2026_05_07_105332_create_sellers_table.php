@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password')->nullable();
             $table->string('shop_name')->nullable();
-            $table->string('registration_number')->nullable();
+            $table->string('pan_number')->nullable();
             $table->string('khalti_secrect_key')->nullable();
             $table->enum('status', ['active', 'inactive', 'pending','rejected'])->default('pending');
             $table->date('expired_date')->nullable();

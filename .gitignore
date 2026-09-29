@@ -1,6 +1,8 @@
 *.log
 .DS_Store
 .env
+/CREDENTIALS.md
+/PROJECT_LINKS_AND_CREDENTIALS.md
 .env.backup
 .env.production
 .phpactor.json

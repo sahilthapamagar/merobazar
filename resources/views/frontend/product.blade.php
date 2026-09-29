@@ -2,7 +2,7 @@
 <x-layout>
     <style>
         .product-page {
-            padding: 32px 5% 80px;
+            padding: 120px 5% 80px;
             background: linear-gradient(180deg, var(--cream) 0%, var(--background) 220px);
         }
 
@@ -13,7 +13,7 @@
 
         .product-breadcrumb {
             position: sticky;
-            top: 72px;
+            top: 110px;
             z-index: 900;
             margin: 0 0 2rem;
             padding: 0.85rem 1.25rem;
@@ -38,7 +38,7 @@
             color: var(--secondary);
             text-decoration: none;
             transition: color 0.3s ease;
-            cursor: none;
+            cursor: pointer;
         }
 
         .product-breadcrumb a:hover {
@@ -88,7 +88,7 @@
 
         .product-gallery-main img {
             width: 100%;
-            height: 500px;
+            aspect-ratio: 4 / 5;
             object-fit: cover;
             transition: transform 0.7s ease, opacity 0.3s ease;
         }
@@ -102,19 +102,19 @@
         .product-thumbs {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
+            gap: 0.85rem;
+            margin-top: 1.25rem;
         }
 
         .product-thumb {
             position: relative;
             overflow: hidden;
-            border-radius: 2px;
+            border-radius: 10px;
             border: 2px solid transparent;
             padding: 0;
             background: none;
-            cursor: none;
-            transition: border-color 0.3s ease;
+            cursor: pointer;
+            transition: border-color 0.3s ease, transform 0.25s ease;
         }
 
         .product-thumb.is-active,
@@ -122,9 +122,13 @@
             border-color: var(--primary);
         }
 
+        .product-thumb:hover {
+            transform: translateY(-2px);
+        }
+
         .product-thumb img {
             width: 100%;
-            height: 7rem;
+            aspect-ratio: 4 / 5;
             object-fit: cover;
             display: block;
             transition: transform 0.5s ease;
@@ -251,7 +255,7 @@
             background: transparent;
             color: var(--primary);
             font-size: 1.25rem;
-            cursor: none;
+            cursor: pointer;
             transition: background 0.2s ease;
         }
 
@@ -291,7 +295,7 @@
             font-size: 0.8rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            cursor: none;
+            cursor: pointer;
             border-radius: 8px;
             transition: background 0.3s ease, transform 0.2s ease;
         }
@@ -306,12 +310,43 @@
             cursor: not-allowed;
         }
 
-        .product-description-section {
-            max-width: 760px;
-            margin: 4rem auto 0;
+        /* ─── Trust / benefits strip ─── */
+        .product-benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(171, 136, 109, 0.15);
+        }
+
+        .product-benefit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+            text-align: center;
+            font-size: 0.66rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(73, 54, 40, 0.55);
+        }
+
+        .product-benefit svg {
+            width: 20px;
+            height: 20px;
+            color: var(--secondary);
+        }
+
+        /* Lower section: Description (full row) + Related Products (full row) */
+        .product-lower {
+            margin-top: 4rem;
             padding-top: 2.5rem;
             border-top: 1px solid #d1d5db;
-            text-align: center;
+        }
+
+        .product-description-section {
+            min-width: 0;
         }
 
         .product-description-heading {
@@ -325,6 +360,7 @@
             color: var(--primary);
             line-height: 1.8;
             font-size: 0.95rem;
+            text-align: left;
         }
 
         .product-description-content h1,
@@ -342,18 +378,16 @@
 
         .product-description-content ul,
         .product-description-content ol {
-            margin: 0.75rem auto;
-            display: inline-block;
-            text-align: left;
+            margin: 0.75rem 0;
+            padding-left: 1.25rem;
         }
 
         .product-seller-block {
             margin-top: 2.5rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(171, 136, 109, 0.2);
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: 0.6rem;
         }
 
@@ -366,7 +400,8 @@
 
         .product-seller-block-label {
             color: var(--secondary);
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.2rem;
             letter-spacing: 0.05em;
         }
 
@@ -376,30 +411,75 @@
         }
 
         .product-related {
-            margin-top: 6rem;
-            padding-top: 4rem;
-            border-top: 1px solid #d1d5db;
+            position: relative;
+            margin-top: 3.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(171, 136, 109, 0.2);
         }
 
         .product-related-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
+            font-size: 1.75rem;
             color: var(--primary);
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
 
-        .product-related-grid {
+        .product-related-arrows {
+            position: absolute;
+            top: 2.75rem;
+            right: 0;
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .product-related-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(171, 136, 109, 0.25);
+            background: #fff;
+            color: var(--primary);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
-            justify-content: center;
-            gap: 2rem;
+            place-items: center;
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+        }
+
+        .product-related-arrow:hover:not(:disabled) {
+            background: var(--primary);
+            color: var(--accent);
+            border-color: var(--primary);
+        }
+
+        .product-related-arrow:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .product-related-viewport {
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .product-related-viewport::-webkit-scrollbar {
+            display: none;
+        }
+
+        .product-related-grid {
+            display: flex;
+            gap: 1.5rem;
         }
 
         .product-related-card {
+            flex: 0 0 calc(25% - 18px);
+            min-width: 0;
+            display: block;
             text-decoration: none;
             color: inherit;
-            cursor: none;
+            cursor: pointer;
             text-align: center;
             background: #fff;
             border: 1px solid rgba(171, 136, 109, 0.18);
@@ -416,14 +496,14 @@
 
         .product-related-card-image {
             overflow: hidden;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+            border-radius: 10px;
+            aspect-ratio: 4 / 5;
             background: var(--cream);
         }
 
         .product-related-card img {
             width: 100%;
-            height: 18rem;
+            height: 100%;
             object-fit: cover;
             display: block;
             transition: transform 0.7s ease;
@@ -433,10 +513,16 @@
             transform: scale(1.05);
         }
 
+        .product-related-card-info {
+            margin-top: 0.75rem;
+        }
+
         .product-related-card h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             color: var(--primary);
+            line-height: 1.25;
+            margin-bottom: 0.3rem;
             transition: color 0.3s ease;
         }
 
@@ -446,9 +532,260 @@
 
         .product-related-card p {
             color: var(--secondary);
-            margin-top: 0.35rem;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
+        }
+
+        .product-related-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            margin-top: 0.45rem;
+        }
+
+        .product-related-rating .star {
+            font-size: 0.68rem;
+        }
+
+        .product-related-rating-count {
+            font-size: 0.68rem;
+            color: #7a6858;
+            margin-left: 4px;
+        }
+
+        /* ─── Reviews ─── */
+        .product-reviews {
+            margin-top: 3.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(171, 136, 109, 0.2);
+        }
+
+        .product-reviews-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-reviews-summary {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            background: var(--cream);
+            border: 1px solid rgba(171, 136, 109, 0.15);
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+        }
+
+        .product-reviews-avg {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .product-reviews-stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .product-reviews-count {
+            font-size: 0.78rem;
+            color: #7a6858;
+            border-left: 1px solid rgba(171, 136, 109, 0.25);
+            padding-left: 0.85rem;
+        }
+
+        .product-reviews-distribution {
+            background: #fff;
+            border: 1px solid rgba(171, 136, 109, 0.18);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.75rem;
+            max-width: 480px;
+        }
+
+        .product-rating-bar {
+            display: grid;
+            grid-template-columns: 52px 1fr 30px;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.65rem;
+        }
+
+        .product-rating-bar:last-child {
+            margin-bottom: 0;
+        }
+
+        .product-rating-bar-label {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.78rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .product-rating-bar-label .star {
+            font-size: 0.7rem;
+        }
+
+        .product-rating-bar-track {
+            height: 6px;
+            background: var(--cream);
+            border: 1px solid rgba(171, 136, 109, 0.15);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .product-rating-bar-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--secondary), #c29b40);
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+
+        .product-rating-bar-count {
+            font-size: 0.72rem;
+            color: #7a6858;
+            text-align: right;
+        }
+
+        .product-review {
+            background: #fff;
+            border: 1px solid rgba(171, 136, 109, 0.18);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .product-review:hover {
+            border-color: rgba(171, 136, 109, 0.4);
+            box-shadow: 0 10px 26px rgba(43, 31, 20, 0.05);
+        }
+
+        .product-review-top {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .product-review-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--cream);
+            display: grid;
+            place-items: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .product-review-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            min-width: 0;
+        }
+
+        .product-review-author {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.92rem;
+        }
+
+        .product-review-date {
+            font-size: 0.72rem;
+            color: #7a6858;
+            letter-spacing: 0.05em;
+        }
+
+        .product-review-stars {
+            display: flex;
+            gap: 2px;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .product-review-comment {
+            margin: 0;
+            color: var(--primary);
+            line-height: 1.7;
+            font-size: 0.92rem;
+        }
+
+        .star {
+            color: rgba(171, 136, 109, 0.35);
+            font-size: 0.8rem;
+        }
+
+        .star.is-fill {
+            color: #c29b40;
+        }
+
+        .product-reviews-empty {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background: #fff;
+            border: 1px dashed rgba(171, 136, 109, 0.35);
+            border-radius: 12px;
+        }
+
+        .product-reviews-empty p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .product-reviews-empty span {
+            font-size: 0.85rem;
+            color: #7a6858;
+        }
+
+        .product-related-card {
+            text-decoration: none !important;
+            color: inherit !important;
+            display: block;
+        }
+
+        .product-related-card:hover,
+        .product-related-card:focus,
+        .product-related-card:visited {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+
+        @media (max-width: 480px) {
+            .product-review-top {
+                flex-wrap: wrap;
+                gap: 0.6rem;
+            }
+
+            .product-review-stars {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .product-reviews-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .product-related-card {
+                flex-basis: calc(33.333% - 16px);
+            }
         }
 
         @media (max-width: 768px) {
@@ -465,7 +802,7 @@
             }
 
             .product-gallery-main img {
-                height: 360px;
+                aspect-ratio: 4 / 5;
             }
 
             .product-info {
@@ -498,20 +835,19 @@
                 margin-right: auto;
             }
 
+            .product-related-card {
+                flex-basis: calc(50% - 12px);
+            }
+
             .product-description-section {
                 margin-top: 2.5rem;
                 padding-top: 2rem;
-            }
-
-            .product-related {
-                margin-top: 4rem;
-                padding-top: 3rem;
             }
         }
 
         @media (max-width: 480px) {
             .product-gallery-main img {
-                height: 300px;
+                aspect-ratio: 4 / 5;
             }
 
             .product-title {
@@ -525,6 +861,10 @@
             .product-thumbs {
                 grid-template-columns: repeat(3, 1fr);
             }
+
+            .product-related-card {
+                flex-basis: 100%;
+            }
         }
     </style>
 
@@ -532,8 +872,19 @@
 
         <div class="product-container">
             @php
-                $galleryImages = is_array($product->images) ? $product->images : [];
+                $galleryImages = $product->image_urls;
                 $formatPrice = fn($amount) => 'Rs. ' . number_format((float) $amount, 2);
+                $hasRelated = isset($relatedProducts) && $relatedProducts->count() > 0;
+
+                $totalReviews = (int) ($product->reviews_count ?? 0);
+                $ratingDistribution = [];
+                for ($star = 5; $star >= 1; $star--) {
+                    $count = $product->reviews->where('rating', $star)->count();
+                    $ratingDistribution[$star] = [
+                        'count' => $count,
+                        'percent' => $totalReviews > 0 ? round($count / $totalReviews * 100) : 0,
+                    ];
+                }
             @endphp
 
             {{-- Breadcrumb --}}
@@ -550,23 +901,23 @@
             <div class="product-grid">
                 {{-- Left: Product Images --}}
                 <div class="product-gallery-panel">
-                <div class="product-gallery-main" id="main-image-container">
-                    <img id="main-image" src="{{ $product->main_image }}" alt="{{ $product->name }}">
-                    @if ($product->is_new)
-                        <span class="product-discount-tag"
-                            style="position:absolute;top:14px;left:14px;z-index:2;background:var(--primary);color:var(--accent);">New</span>
-                    @endif
-                    @if ($product->is_discounted)
-                        <span class="product-discount-tag"
-                            style="position:absolute;top:14px;right:14px;z-index:2;">-{{ $product->discount_percent }}%</span>
-                    @endif
-                </div>
+                    <div class="product-gallery-main" id="main-image-container">
+                        <img id="main-image" src="{{ $product->main_image_url }}" alt="{{ $product->name }}">
+                        @if ($product->is_new)
+                            <span class="product-discount-tag"
+                                style="position:absolute;top:14px;left:14px;z-index:2;background:var(--primary);color:var(--accent);">New</span>
+                        @endif
+                        @if ($product->is_discounted)
+                            <span class="product-discount-tag"
+                                style="position:absolute;top:14px;right:14px;z-index:2;">-{{ $product->discount_percent }}%</span>
+                        @endif
+                    </div>
 
                     @if (count($galleryImages) > 0)
                         <div class="product-thumbs" id="thumbnail-gallery">
-                            <button type="button" onclick="changeMainImage('{{ $product->main_image }}', this)"
+                            <button type="button" onclick="changeMainImage('{{ $product->main_image_url }}', this)"
                                 class="product-thumb product-interactive is-active" data-main-thumb>
-                                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                                <img src="{{ $product->main_image_url }}" alt="{{ $product->name }}">
                             </button>
                             @foreach ($galleryImages as $index => $image)
                                 <button type="button" onclick="changeMainImage('{{ $image }}', this)"
@@ -588,8 +939,29 @@
                         @endif
                     </h1>
 
-                    @if ($product->seller)
+                    {{-- @if ($product->seller)
                         <p class="product-seller">by {{ $product->seller->name }}</p>
+                    @endif --}}
+
+                    @if ($product->has_active_flash_sale)
+                        @php
+                            $activeFs = $product->active_flash_sale;
+                        @endphp
+                        <div class="product-flash-deal-banner" style="background: linear-gradient(135deg, #493628 0%, #2B1F14 100%); color: #fff; padding: 12px 16px; border-radius: 8px; margin: 12px 0 16px; border-left: 4px solid #e63946;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <span style="background: #e63946; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.08em; text-transform: uppercase;">⚡ FLASH SALE</span>
+                                    <span style="font-size: 0.8rem; color: #D6C0B3;">-{{ $activeFs->discount_percent }}% OFF Limited Deal</span>
+                                </div>
+                                <div style="font-size: 0.8rem; color: #D6C0B3; display:flex; align-items:center; gap:5px;">
+                                    <span>Ends in:</span>
+                                    <span id="productDetailCountdown" data-countdown="{{ $activeFs->end_time->toIso8601String() }}" style="font-family: monospace; font-size: 0.9rem; font-weight: 700; color: #fdf0d5; background: rgba(0,0,0,0.35); padding: 2px 6px; border-radius: 4px;">Loading...</span>
+                                </div>
+                            </div>
+                            <div style="font-size: 0.72rem; color: #D6C0B3; margin-top: 6px;">
+                                🔥 Only {{ $activeFs->remaining_stock }} units left at this special flash price!
+                            </div>
+                        </div>
                     @endif
 
                     <div class="product-price-row">
@@ -600,6 +972,7 @@
                             <span class="product-price-old" id="product-price-old">
                                 {{ $formatPrice($product->price) }}
                             </span>
+                            <span class="product-discount-tag">-{{ $product->discount_percent }}%</span>
                         @endif
                     </div>
 
@@ -625,61 +998,174 @@
                             </button>
                         </form>
                     </div>
+
+                    <div class="product-benefits">
+                        <div class="product-benefit">
+                            <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                                <path d="M5 12h14" />
+                                <path d="M12 5l7 7-7 7" />
+                            </svg>
+                            Free Delivery
+                        </div>
+                        <div class="product-benefit">
+                            <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                                <rect x="3" y="11" width="18" height="11" rx="2" />
+                                <path d="M7 11V7a5 5 0 0110 0v4" />
+                            </svg>
+                            Secure Payment
+                        </div>
+                        <div class="product-benefit">
+                            <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                                <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
+                                <path d="M3 3v5h5" />
+                            </svg>
+                            Easy Returns
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {{-- Product Description (centered, full width) --}}
-            <div class="product-description-section">
-                <h2 class="product-description-heading">Description</h2>
+            {{-- Product Description row + Related Products row --}}
+            <div class="product-lower">
+                <div class="product-description-section">
+                    <h2 class="product-description-heading">Description</h2>
 
-                <div class="product-description-content">
-                    @if ($product->description)
-                        {!! $product->description !!}
-                    @else
-                        <p>No description available.</p>
+                    <div class="product-description-content">
+                        @if ($product->description)
+                            {!! $product->description !!}
+                        @else
+                            <p>No description available.</p>
+                        @endif
+                    </div>
+
+                    @if ($product->seller)
+                        <div class="product-seller-block">
+                            <div class="product-seller-block-line">
+                                <span class="product-seller-block-label">Seller:</span>
+                                <span class="product-seller-block-value">{{ $product->seller->name }}</span>
+                            </div>
+                            <div class="product-seller-block-line">
+                                <span class="product-seller-block-label">Shop:</span>
+                                <span
+                                    class="product-seller-block-value">{{ $product->seller->shop_name ?? 'N/A' }}</span>
+                            </div>
+                        </div>
                     @endif
                 </div>
 
-                @if ($product->seller)
-                    <div class="product-seller-block">
-                        <div class="product-seller-block-line">
-                            <span class="product-seller-block-label">Seller:</span>
-                            <span class="product-seller-block-value">{{ $product->seller->name }}</span>
-                        </div>
-                        <div class="product-seller-block-line">
-                            <span class="product-seller-block-label">Shop:</span>
-                            <span class="product-seller-block-value">{{ $product->seller->shop_name ?? 'N/A' }}</span>
-                        </div>
+                {{-- Reviews --}}
+                <section class="product-reviews">
+                    <div class="product-reviews-header">
+                        <h2 class="product-description-heading">Customer Reviews</h2>
+
+                        @if ($product->reviews_count)
+                            <div class="product-reviews-summary">
+                                <span class="product-reviews-avg">{{ number_format((float) $product->reviews_avg_rating, 1) }}</span>
+                                <div class="product-reviews-stars">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <span
+                                            class="star{{ $i <= (int) round($product->reviews_avg_rating ?? 0) ? ' is-fill' : '' }}">&starf;</span>
+                                    @endfor
+                                </div>
+                                <span class="product-reviews-count">{{ $product->reviews_count }}
+                                    {{ Str::plural('review', $product->reviews_count) }}</span>
+                            </div>
+                        @endif
                     </div>
+
+                    @if ($product->reviews_count)
+                        <div class="product-reviews-distribution">
+                            @for ($star = 5; $star >= 1; $star--)
+                                <div class="product-rating-bar">
+                                    <span class="product-rating-bar-label">{{ $star }}<span
+                                            class="star is-fill">&starf;</span></span>
+                                    <div class="product-rating-bar-track">
+                                        <div class="product-rating-bar-fill"
+                                            style="width: {{ $ratingDistribution[$star]['percent'] }}%"></div>
+                                    </div>
+                                    <span class="product-rating-bar-count">{{ $ratingDistribution[$star]['count'] }}</span>
+                                </div>
+                            @endfor
+                        </div>
+                    @endif
+
+                    @forelse ($product->reviews->take(6) as $review)
+                        <article class="product-review">
+                            <div class="product-review-top">
+                                <div class="product-review-avatar">{{ Str::upper(Str::substr($review->user->name ?? 'U', 0, 1)) }}</div>
+                                <div class="product-review-meta">
+                                    <span class="product-review-author">{{ $review->user->name ?? 'Verified Buyer' }}</span>
+                                    <span class="product-review-date">{{ $review->created_at->format('M d, Y') }}</span>
+                                </div>
+                                <div class="product-review-stars">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <span class="star{{ $i <= $review->rating ? ' is-fill' : '' }}">&starf;</span>
+                                    @endfor
+                                </div>
+                            </div>
+                            <p class="product-review-comment">{{ $review->comment }}</p>
+                        </article>
+                    @empty
+                        <div class="product-reviews-empty">
+                            <p>No reviews yet</p>
+                            <span>Share your experience once your order is delivered.</span>
+                        </div>
+                    @endforelse
+                </section>
+
+                @if ($hasRelated)
+                    <aside class="product-related">
+                        <h2 class="product-related-title">You May Also Like</h2>
+                        <div class="product-related-arrows">
+                            <button type="button" class="product-related-arrow prev product-interactive"
+                                aria-label="Previous products" disabled>
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    width="18" height="18">
+                                    <path d="M15 18l-6-6 6-6" />
+                                </svg>
+                            </button>
+                            <button type="button" class="product-related-arrow next product-interactive"
+                                aria-label="Next products">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    width="18" height="18">
+                                    <path d="M9 18l6-6-6-6" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="product-related-viewport">
+                            <div class="product-related-grid">
+                                @foreach ($relatedProducts as $related)
+                                    <a href="{{ route('product', $related->id) }}"
+                                        class="product-related-card product-interactive">
+                                        <div class="product-related-card-image">
+                                            <img src="{{ $related->main_image_url }}" alt="{{ $related->name }}">
+                                        </div>
+                                        <div class="product-related-card-info">
+                                            <h3>{{ $related->name }}</h3>
+                                            <p>
+                                                {{ $formatPrice($related->effective_price ?? 0) }}
+                                                @if ($related->is_discounted)
+                                                    <span
+                                                        style="text-decoration:line-through;opacity:0.55;margin-left:6px;font-size:0.82rem;">{{ $formatPrice($related->price) }}</span>
+                                                @endif
+                                            </p>
+                                            <div class="product-related-rating">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <span
+                                                        class="star{{ $i <= (int) round($related->reviews_avg_rating ?? 0) ? ' is-fill' : '' }}">&starf;</span>
+                                                @endfor
+                                                @if ($related->reviews_count)
+                                                    <span class="product-related-rating-count">({{ $related->reviews_count }})</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </aside>
                 @endif
             </div>
-
-            @if (isset($relatedProducts) && $relatedProducts->count() > 0)
-                <div class="product-related">
-                    <h2 class="product-related-title">You May Also Like</h2>
-                    <div class="product-related-grid">
-                        @foreach ($relatedProducts as $related)
-                            <a href="{{ route('product', $related->id) }}"
-                                class="product-related-card product-interactive">
-                                @php
-                                    $relatedImage = $related->main_image;
-                                @endphp
-                                <div class="product-related-card-image">
-                                    <img src="{{ $relatedImage }}" alt="{{ $related->name }}">
-                                </div>
-                                <h3>{{ $related->name }}</h3>
-                                <p>
-                                    {{ $formatPrice($related->effective_price ?? 0) }}
-                                    @if ($related->is_discounted)
-                                        <span
-                                            style="text-decoration:line-through;opacity:0.55;margin-left:6px;font-size:0.82rem;">{{ $formatPrice($related->price) }}</span>
-                                    @endif
-                                </p>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
         </div>
     </section>
 
@@ -786,5 +1272,76 @@
             this.value = value;
             document.getElementById('form-quantity').value = value;
         });
+
+        // Related products carousel (4 visible at a time, arrows slide the rest)
+        (function initRelatedCarousel() {
+            const viewport = document.querySelector('.product-related-viewport');
+            const track = document.querySelector('.product-related-grid');
+            const arrows = document.querySelector('.product-related-arrows');
+            const prevBtn = document.querySelector('.product-related-arrow.prev');
+            const nextBtn = document.querySelector('.product-related-arrow.next');
+            if (!viewport || !track || !arrows || !prevBtn || !nextBtn) return;
+
+            const gap = () => parseFloat(getComputedStyle(track).columnGap) || 24;
+
+            const updateArrows = () => {
+                const maxScroll = viewport.scrollWidth - viewport.clientWidth;
+                arrows.style.display = maxScroll <= 1 ? 'none' : 'flex';
+                prevBtn.disabled = viewport.scrollLeft <= 1;
+                nextBtn.disabled = viewport.scrollLeft >= maxScroll - 1;
+            };
+
+            const step = () => {
+                const card = track.querySelector('.product-related-card');
+                return card ? card.getBoundingClientRect().width + gap() : viewport.clientWidth;
+            };
+
+            prevBtn.addEventListener('click', () => {
+                viewport.scrollBy({
+                    left: -step(),
+                    behavior: 'smooth'
+                });
+            });
+
+            nextBtn.addEventListener('click', () => {
+                viewport.scrollBy({
+                    left: step(),
+                    behavior: 'smooth'
+                });
+            });
+
+            viewport.addEventListener('scroll', updateArrows, {
+                passive: true
+            });
+            window.addEventListener('resize', updateArrows, {
+                passive: true
+            });
+            updateArrows();
+        })();
+
+        // Product Flash Sale Countdown
+        (function() {
+            const countdownEl = document.getElementById('productDetailCountdown');
+            if (!countdownEl) return;
+            const endTimeStr = countdownEl.getAttribute('data-countdown');
+            if (!endTimeStr) return;
+            const endTime = new Date(endTimeStr).getTime();
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const diff = endTime - now;
+                if (diff <= 0) {
+                    countdownEl.textContent = 'Sale Ended';
+                    return;
+                }
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+                countdownEl.textContent = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        })();
     </script>
 </x-layout>

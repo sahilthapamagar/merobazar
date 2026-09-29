@@ -31,8 +31,8 @@ class SellerForm
                                     ->required(),
                                 TextInput::make('contact')
                                     ->required(),
-                                TextInput::make('registration_number')
-                                    ->label('Registration Number')
+                                TextInput::make('pan_number')
+                                    ->label('PAN Number')
                                     ->columnSpanFull(),
                             ])->columns(2),
                         Section::make('Upload Documents')
@@ -44,7 +44,7 @@ class SellerForm
                                     ->directory('seller-documents/citizenship')
                                     ->visibility('public'),
                                 FileUpload::make('image')
-                                    ->label('Profile Image')
+                                    ->label('PAN Card Photo')
                                     ->image()
                                     ->directory('seller-documents/registration')
                                     ->visibility('public'),

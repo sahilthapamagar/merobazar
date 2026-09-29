@@ -33,14 +33,29 @@ class AddToCart extends Controller
             return redirect()->back();
         }
 
+        if ($seller->status !== 'active') {
+            toast('This product is no longer available!', 'error');
+
+            return redirect()->back();
+        }
+
         $quantity = (int) $request->input('quantity', 1);
 
-        $cart = new Cart;
-        $cart->user_id = $user->id;
-        $cart->seller_id = $seller->id;
-        $cart->product_id = $product->id;
-        $cart->quantity = $quantity;
-        $cart->amount = $product->effective_price * $quantity;
+        // Find an existing cart entry for this user + product, or create a new one
+        $cart = Cart::firstOrNew([
+            'user_id'    => $user->id,
+            'product_id' => $product->id,
+        ]);
+
+        // If it already exists, accumulate the quantity; otherwise set seller_id for the new row
+        if ($cart->exists) {
+            $cart->quantity += $quantity;
+        } else {
+            $cart->seller_id = $seller->id;
+            $cart->quantity  = $quantity;
+        }
+
+        $cart->amount = $product->effective_price * $cart->quantity;
         $cart->save();
 
         toast('Product added to cart successfully!', 'success');

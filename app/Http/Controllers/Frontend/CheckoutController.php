@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderPlacementMail;
 use App\Models\Cart;
 use App\Models\DeliveryAddress;
 use App\Models\Order;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -77,13 +79,25 @@ class CheckoutController extends Controller
             $orderItem->quantity = $cart->quantity;
             $orderItem->amount = $cart->amount;
             $orderItem->save();
+
+            // If product is on active flash sale, track the sold quantity
+            if ($cart->product && $cart->product->has_active_flash_sale) {
+                $cart->product->active_flash_sale->increment('sold_quantity', (int) $cart->quantity);
+            }
+
             $cart->delete();
         }
 
         if ($request->payment_method == 'cod') {
-            toast('Order placed successfully', 'success');
+            try {
+                Mail::to($user->email)->send(new OrderPlacementMail($order, 'Cash on Delivery'));
+            } catch (\Throwable $e) {
+                Log::error('Order placement mail error: '.$e->getMessage());
+            }
 
-            return redirect()->route('cart.index');
+            toast('Order placed successfully! Thank you for your purchase.', 'success');
+
+            return redirect()->route('buying-history.show', $order->id)->with('success', 'Order placed successfully! Thank you for your purchase.');
         }
 
         $response = Http::withHeaders([
@@ -102,9 +116,9 @@ class CheckoutController extends Controller
                 'order_id' => $order->id,
                 'response' => $data,
             ]);
-            toast('Payment initiation failed. Please try again.', 'error');
+            toast('Payment initiation failed. Please try again or choose Cash on Delivery.', 'error');
 
-            return redirect()->route('cart.index');
+            return redirect()->route('checkout.seller', $seller->id);
         }
 
         return redirect($data['payment_url']);
@@ -119,9 +133,19 @@ class CheckoutController extends Controller
         $order->payment_status = $status;
         $order->save();
 
-        $message = 'Order '.$status.' successfully';
-        toast($message, $status === 'Completed' ? 'success' : 'info');
+        // Only confirm (email) the order once the Khalti payment is completed.
+        if (strtolower((string) $status) === 'completed' && $order->user) {
+            try {
+                Mail::to($order->user->email)->send(new OrderPlacementMail($order, 'Khalti'));
+            } catch (\Throwable $e) {
+                Log::error('Khalti order mail error: '.$e->getMessage());
+            }
+        }
 
-        return redirect()->route('home');
+        $isSuccess = strtolower((string) $status) === 'completed';
+        $message = $isSuccess ? 'Payment completed & Order placed successfully!' : 'Payment '.$status;
+        toast($message, $isSuccess ? 'success' : 'info');
+
+        return redirect()->route('buying-history.show', $order->id)->with('success', $message);
     }
 }

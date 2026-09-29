@@ -212,7 +212,7 @@
     .cat-mosaic-card {
         position: relative;
         overflow: hidden;
-        cursor: none;
+        cursor: pointer;
         background: var(--cream);
     }
 
@@ -445,12 +445,7 @@
                 @forelse ($categories as $category)
                     <a href="{{ route('products', ['category' => $category->slug]) }}"
                         class="cat-mosaic-card cat-reveal cat-reveal-delay-{{ min($loop->index + 1, 4) }}">
-                        @if ($category->image)
-                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" />
-                        @else
-                            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&q=80&auto=format"
-                                alt="{{ $category->name }}" />
-                        @endif
+                        <img src="{{ $category->image_url }}" alt="{{ $category->name }}" loading="lazy" onerror="this.onerror=null; this.src='{{ $category->fallback_image_url }}';" />
                         <div class="cat-mosaic-overlay">
                             <div class="cat-mosaic-name">{{ $category->name }}</div>
                             <div class="cat-mosaic-count">{{ $category->products_count ?? 0 }} products</div>

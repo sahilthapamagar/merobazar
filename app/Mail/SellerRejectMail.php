@@ -27,7 +27,7 @@ class SellerRejectMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Seller Reject Mail',
+            subject: 'MeroBazar - Seller Application Status Update',
         );
     }
 

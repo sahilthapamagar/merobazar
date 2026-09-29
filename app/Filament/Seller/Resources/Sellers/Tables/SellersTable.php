@@ -22,8 +22,8 @@ class SellersTable
                     ->searchable(),
                 TextColumn::make('shop_name')
                     ->searchable(),
-                TextColumn::make('registration_number')
-                    ->label('Reg. No.')
+                TextColumn::make('pan_number')
+                    ->label('PAN No.')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 ImageColumn::make('citizenship_photo')
@@ -32,7 +32,7 @@ class SellersTable
                     ->size(40)
                     ->toggleable(isToggledHiddenByDefault: true),
                 ImageColumn::make('image')
-                    ->label('PAN / Company')
+                    ->label('PAN Card')
                     ->circular()
                     ->size(40)
                     ->toggleable(isToggledHiddenByDefault: true),

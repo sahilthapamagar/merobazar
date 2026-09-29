@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read bool $is_discounted
  * @property-read int $discount_percent
  * @property-read bool $is_new
+ * @property-read string|null $main_image_url
+ * @property-read array<array-key, string> $image_urls
  * @property-read \App\Models\Category $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $orderItems
  * @property-read int|null $order_items_count
@@ -55,29 +57,97 @@ class Product extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::saving(function (Product $product) {
+            // Auto fallback: if main_image is empty but gallery images exist, pick the first gallery image
+            if (blank($product->main_image) && ! empty($product->images) && is_array($product->images)) {
+                $first = reset($product->images);
+                if (is_string($first) && filled($first)) {
+                    $product->main_image = $first;
+                }
+            }
+        });
+    }
+
     /**
-     * The effective price a customer pays (discounted price when available).
+     * Resolve an image value (full URL or stored path) into a usable URL.
+     *
+     * Values that are already absolute URLs are returned unchanged. Values
+     * stored by the file uploader (e.g. "products/images/abc.jpg") are resolved
+     * to their public URL under the storage disk.
+     */
+    public static function resolveImageUrl(?string $path): ?string
+    {
+        if (blank($path)) {
+            return null;
+        }
+
+        // Already a full URL (http/https), protocol-relative (//host), or data URI.
+        if (preg_match('#^(?:https?:)?//|^data:|^blob:#i', $path)) {
+            return $path;
+        }
+
+        // Stored path on the public disk — prefix if not already present.
+        $relative = str_starts_with($path, 'storage/') ? $path : 'storage/'.ltrim($path, '/');
+
+        return asset($relative);
+    }
+
+    /**
+     * Fully-qualified URL for the main product image.
+     */
+    public function getMainImageUrlAttribute(): ?string
+    {
+        return static::resolveImageUrl($this->main_image);
+    }
+
+    /**
+     * Fully-qualified URLs for the additional gallery images.
+     */
+    public function getImageUrlsAttribute(): array
+    {
+        return array_values(array_filter(array_map(
+            static fn ($image): ?string => static::resolveImageUrl(is_string($image) ? $image : null),
+            is_array($this->images) ? $this->images : [],
+        )));
+    }
+
+    /**
+     * The effective price a customer pays (flash sale price if active, else discounted price, else regular price).
      */
     public function getEffectivePriceAttribute(): float
     {
+        if ($this->has_active_flash_sale) {
+            return (float) $this->active_flash_sale->flash_price;
+        }
+
         return $this->is_discounted ? (float) $this->discounted_price : (float) $this->price;
     }
 
     /**
-     * Whether this product currently has an active discount.
+     * Whether this product currently has an active discount or flash sale.
      */
     public function getIsDiscountedAttribute(): bool
     {
+        if ($this->has_active_flash_sale) {
+            return true;
+        }
+
         return $this->discounted_price !== null
             && (float) $this->discounted_price > 0
             && (float) $this->discounted_price < (float) $this->price;
     }
 
     /**
-     * Discount percentage (rounded), e.g. 10 for 10% off.
+     * Discount percentage (rounded), e.g. 20 for 20% off.
      */
     public function getDiscountPercentAttribute(): int
     {
+        if ($this->has_active_flash_sale) {
+            return $this->active_flash_sale->discount_percent;
+        }
+
         if (! $this->is_discounted) {
             return 0;
         }
@@ -86,11 +156,37 @@ class Product extends Model
     }
 
     /**
+     * Check if product currently has an active, approved flash sale.
+     */
+    public function getHasActiveFlashSaleAttribute(): bool
+    {
+        return $this->active_flash_sale !== null;
+    }
+
+    /**
+     * Retrieve the currently active approved flash sale instance (if any).
+     */
+    public function getActiveFlashSaleAttribute(): ?FlashSale
+    {
+        // If relation was preloaded, find the first matching active flash sale
+        if ($this->relationLoaded('flashSales')) {
+            return $this->flashSales->first(fn (FlashSale $fs) => $fs->is_active);
+        }
+
+        return $this->flashSales()->active()->first();
+    }
+
+    /**
      * Whether the product is "new" (created within the last 7 days).
      */
     public function getIsNewAttribute(): bool
     {
         return $this->created_at !== null && $this->created_at->gt(now()->subDays(7));
+    }
+
+    public function flashSales()
+    {
+        return $this->hasMany(FlashSale::class);
     }
 
     public function seller()
@@ -111,5 +207,10 @@ class Product extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

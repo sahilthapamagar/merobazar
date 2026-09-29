@@ -9,26 +9,28 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-
 class SellerApprovalMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public  $seller;
+    public $seller;
     public $password;
+    public $khaltiKey;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($seller, $password )
+    public function __construct($seller, $password, $khaltiKey = null)
     {
-
         $this->seller = $seller;
         $this->password = $password;
+        $this->khaltiKey = $khaltiKey ?? ($seller->khalti_secrect_key ?? null);
     }
+
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Seller Approval Mail',
+            subject: 'MeroBazar - Seller Account Details & Login Credentials',
         );
     }
 
@@ -39,6 +41,11 @@ class SellerApprovalMail extends Mailable
     {
         return new Content(
             view: 'mail.seller-approval',
+            with: [
+                'seller' => $this->seller,
+                'password' => $this->password,
+                'khaltiKey' => $this->khaltiKey,
+            ],
         );
     }
 
