@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\AddToCart;
 use App\Http\Controllers\Frontend\BuyingHistoryController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\SellerController;
@@ -21,6 +22,8 @@ Route::get('/our-story', [PageController::class, 'ourStory'])->name('our-story')
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/flash-sales', [PageController::class, 'flashSales'])->name('flash-sales');
 

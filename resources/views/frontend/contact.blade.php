@@ -198,6 +198,11 @@
             color: #fff;
         }
 
+        .contact-error {
+            font-size: 0.75rem;
+            color: #c1121f;
+        }
+
         @media (max-width: 768px) {
             .contact-page {
                 padding: 120px 5% 72px;
@@ -275,24 +280,27 @@
             <h2 class="contact-form-title">Send Us a Message</h2>
             <p class="contact-form-sub">Fill out the form below and we'll get back to you as soon as possible.</p>
 
-            <form action="#" method="POST" class="contact-form">
+            <form action="{{ route('contact.store') }}" method="POST" class="contact-form">
                 @csrf
                 <div class="contact-field">
                     <label class="contact-label" for="contact-name">Your Name <span>*</span></label>
                     <input class="contact-input" type="text" id="contact-name" name="name" required
                         placeholder="Full name" value="{{ old('name') }}">
+                    @error('name')<span class="contact-error">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="contact-field">
                     <label class="contact-label" for="contact-email">Email Address <span>*</span></label>
                     <input class="contact-input" type="email" id="contact-email" name="email" required
                         placeholder="you@example.com" value="{{ old('email') }}">
+                    @error('email')<span class="contact-error">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="contact-field contact-field--full">
                     <label class="contact-label" for="contact-subject">Subject <span>*</span></label>
                     <input class="contact-input" name="subject" id="contact-subject" required
-                        placeholder="What's this about?">
+                        placeholder="What's this about?" value="{{ old('subject') }}">
+                    @error('subject')<span class="contact-error">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="contact-field contact-field--full">
@@ -300,6 +308,7 @@
                     </label>
                     <textarea class="contact-textarea" id="contact-message" name="message" required
                         placeholder="Tell us how we can help...">{{ old('message') }}</textarea>
+                    @error('message')<span class="contact-error">{{ $message }}</span>@enderror
                 </div>
 
                 <button type="submit" class="contact-submit">Send Message</button>
