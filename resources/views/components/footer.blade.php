@@ -246,7 +246,7 @@
             <div class="footer-col-title">Company</div>
             <ul class="footer-links">
                 <li><a href="{{ route('our-story') }}">Our Story</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="{{ route('contact') }}">Contact</a></li>
             </ul>
         </div>
 

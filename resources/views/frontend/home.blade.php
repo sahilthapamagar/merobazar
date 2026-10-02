@@ -56,6 +56,8 @@
               overflow: hidden;
               background: var(--cream);
               box-sizing: border-box;
+              --hero-img-h: 100%;
+              --hero-pad-top: 104px;
           }
 
           .hero-left {
@@ -208,14 +210,19 @@
           }
 
           @keyframes kenBurns {
-              0% { transform: scale(1.0); }
-              100% { transform: scale(1.06); }
+              0% {
+                  transform: scale(1.0);
+              }
+
+              100% {
+                  transform: scale(1.06);
+              }
           }
 
           .hero-slide-overlay {
               position: absolute;
               inset: 0;
-              background: linear-gradient(180deg, rgba(43,31,20,0.15) 0%, rgba(43,31,20,0.05) 45%, rgba(43,31,20,0.8) 100%);
+              background: linear-gradient(180deg, rgba(43, 31, 20, 0.15) 0%, rgba(43, 31, 20, 0.05) 45%, rgba(43, 31, 20, 0.8) 100%);
               pointer-events: none;
           }
 
@@ -521,6 +528,27 @@
               transition: opacity 0.9s ease, visibility 0.9s ease;
           }
 
+          /* Tablet & below: stack slides in normal flow so the hero keeps its natural height */
+          @media (max-width: 1024px) {
+              .hero-slides {
+                  position: relative;
+                  inset: auto;
+                  display: grid;
+                  height: calc(100vh - var(--hero-pad-top));
+              }
+
+              .hero-slide {
+                  position: relative;
+                  inset: auto;
+                  grid-column: 1;
+                  grid-row: 1;
+              }
+
+              .hero-slide .hero-left {
+                  height: auto;
+              }
+          }
+
           .hero-slide.active {
               opacity: 1;
               visibility: visible;
@@ -652,13 +680,23 @@
           }
 
           @media (max-width: 768px) {
+              .hero {
+                  --hero-img-h: 340px;
+              }
+
               .hero-slide {
                   grid-template-columns: 1fr;
               }
 
+              .hero-slides {
+                  height: auto;
+              }
+
+              /* Pin controls over the image area (image is on top on mobile) */
               .hero-arrow {
                   width: 36px;
                   height: 36px;
+                  top: calc(var(--hero-pad-top) + var(--hero-img-h) / 2);
               }
 
               .hero-arrow.prev {
@@ -670,7 +708,42 @@
               }
 
               .hero-dots {
-                  bottom: 12px;
+                  top: calc(var(--hero-pad-top) + var(--hero-img-h) + 12px);
+                  bottom: auto;
+              }
+          }
+
+          @media (max-width: 480px) {
+              .hero {
+                  --hero-img-h: 280px;
+                  --hero-pad-top: 96px;
+              }
+
+              .hero-arrow {
+                  width: 32px;
+                  height: 32px;
+              }
+
+              .hero-arrow.prev {
+                  left: 8px;
+              }
+
+              .hero-arrow.next {
+                  right: 8px;
+              }
+
+              .hero-dots {
+                  top: calc(var(--hero-pad-top) + var(--hero-img-h) + 10px);
+                  gap: 7px;
+              }
+
+              .hero-dot {
+                  width: 7px;
+                  height: 7px;
+              }
+
+              .hero-dot.active {
+                  width: 22px;
               }
           }
 
@@ -761,8 +834,17 @@
           }
 
           @keyframes flashPulse {
-              0%, 100% { opacity: 1; transform: scale(1); }
-              50% { opacity: 0.3; transform: scale(0.6); }
+
+              0%,
+              100% {
+                  opacity: 1;
+                  transform: scale(1);
+              }
+
+              50% {
+                  opacity: 0.3;
+                  transform: scale(0.6);
+              }
           }
 
           .flash-ticker-link {
@@ -2278,7 +2360,7 @@
               }
 
               .hero-right {
-                  height: 380px;
+                  height: var(--hero-img-h);
                   min-height: 320px;
                   order: -1;
               }
@@ -2432,7 +2514,7 @@
               }
 
               .hero-right {
-                  height: 310px;
+                  height: var(--hero-img-h);
                   min-height: 290px;
               }
 
@@ -2523,8 +2605,8 @@
                               <a href="{{ route('products') }}" class="btn-primary"><span>Explore Collection</span></a>
                               <a href="{{ route('our-story') }}" class="btn-ghost">
                                   Our Story
-                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                      viewBox="0 0 24 24">
+                                  <svg width="16" height="16" fill="none" stroke="currentColor"
+                                      stroke-width="1.5" viewBox="0 0 24 24">
                                       <path d="M5 12h14M13 6l6 6-6 6" />
                                   </svg>
                               </a>
@@ -2537,12 +2619,14 @@
                               </div>
                               <div class="hero-stat-divider"></div>
                               <div>
-                                  <div class="hero-stat-value" data-count="{{ $products->count() }}" data-suffix="+">{{ $products->count() }}+</div>
+                                  <div class="hero-stat-value" data-count="{{ $products->count() }}" data-suffix="+">
+                                      {{ $products->count() }}+</div>
                                   <div class="hero-stat-label">Products</div>
                               </div>
                               <div class="hero-stat-divider"></div>
                               <div>
-                                  <div class="hero-stat-value" data-count="{{ $sellercount }}" data-suffix="+">{{ $sellercount }}+</div>
+                                  <div class="hero-stat-value" data-count="{{ $sellercount }}" data-suffix="+">
+                                      {{ $sellercount }}+</div>
                                   <div class="hero-stat-label">Seller</div>
                               </div>
                           </div>
@@ -2557,54 +2641,8 @@
                       </div>
                   </div>
 
-                  <!-- Slide 2 : Electronics -->
-                  <div class="hero-slide" data-index="1">
-                      <div class="hero-left">
-                          <span class="hero-eyebrow">Electronics</span>
-                          <h1 class="hero-headline">
-                              Smart Living,<br>Easy <em>Shopping</em>
-                          </h1>
-                          <p class="hero-sub">Phones, laptops, audio and gadgets — discover the latest tech from
-                              verified local sellers at the best prices.</p>
-                          <div class="hero-cta-group">
-                              <a href="{{ route('products') }}" class="btn-primary"><span>Shop Electronics</span></a>
-                              <a href="{{ route('categories') }}" class="btn-ghost">
-                                  All Categories
-                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                      viewBox="0 0 24 24">
-                                      <path d="M5 12h14M13 6l6 6-6 6" />
-                                  </svg>
-                              </a>
-                          </div>
 
-                          <div class="hero-stats">
-                              <div>
-                                  <div class="hero-stat-value" data-count="300" data-suffix="+">300+</div>
-                                  <div class="hero-stat-label">Gadgets</div>
-                              </div>
-                              <div class="hero-stat-divider"></div>
-                              <div>
-                                  <div class="hero-stat-value" data-count="40" data-suffix="+">40+</div>
-                                  <div class="hero-stat-label">Brands</div>
-                              </div>
-                              <div class="hero-stat-divider"></div>
-                              <div>
-                                  <div class="hero-stat-value" data-count="24" data-suffix="h">24h</div>
-                                  <div class="hero-stat-label">Express Delivery</div>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="hero-right">
-                          <div class="hero-img-container">
-                              <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=900&q=80&auto=format"
-                                  alt="Electronics" />
-                              <div class="hero-img-overlay"></div>
-                          </div>
-                      </div>
-                  </div>
-
-                  <!-- Slide 3 : Fashion -->
+                  <!-- Slide 2 : Fashion -->
                   <div class="hero-slide" data-index="2">
                       <div class="hero-left">
                           <span class="hero-eyebrow">Fashion</span>
@@ -2614,11 +2652,12 @@
                           <p class="hero-sub">Men's and women's wear, shoes and accessories — curated looks from
                               fashion brands you can trust.</p>
                           <div class="hero-cta-group">
-                              <a href="{{ route('products', ['category' => 'mens-wear']) }}" class="btn-primary"><span>Shop Fashion</span></a>
+                              <a href="{{ route('products', ['category' => 'mens-wear']) }}"
+                                  class="btn-primary"><span>Shop Fashion</span></a>
                               <a href="{{ route('products', ['category' => 'accessories']) }}" class="btn-ghost">
                                   Accessories
-                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                      viewBox="0 0 24 24">
+                                  <svg width="16" height="16" fill="none" stroke="currentColor"
+                                      stroke-width="1.5" viewBox="0 0 24 24">
                                       <path d="M5 12h14M13 6l6 6-6 6" />
                                   </svg>
                               </a>
@@ -2651,101 +2690,7 @@
                       </div>
                   </div>
 
-                  <!-- Slide 4 : Packaged Food -->
-                  <div class="hero-slide" data-index="3">
-                      <div class="hero-left">
-                          <span class="hero-eyebrow">Packaged Food</span>
-                          <h1 class="hero-headline">
-                              Packaged Goodness,<br>Ready to <em>Go</em>
-                          </h1>
-                          <p class="hero-sub">Snacks, instant meals, beverages and pantry staples — long-lasting
-                              packaged food from trusted brands, delivered to your door.</p>
-                          <div class="hero-cta-group">
-                              <a href="{{ route('products') }}" class="btn-primary"><span>Shop Packaged Food</span></a>
-                              <a href="{{ route('our-story') }}" class="btn-ghost">
-                                  Our Story
-                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                      viewBox="0 0 24 24">
-                                      <path d="M5 12h14M13 6l6 6-6 6" />
-                                  </svg>
-                              </a>
-                          </div>
-
-                          <div class="hero-stats">
-                              <div>
-                                  <div class="hero-stat-value" data-count="800" data-suffix="+">800+</div>
-                                  <div class="hero-stat-label">Items</div>
-                              </div>
-                              <div class="hero-stat-divider"></div>
-                              <div>
-                                  <div class="hero-stat-value" data-count="60" data-suffix="+">60+</div>
-                                  <div class="hero-stat-label">Brands</div>
-                              </div>
-                              <div class="hero-stat-divider"></div>
-                              <div>
-                                  <div class="hero-stat-value" data-count="24" data-suffix="h">24h</div>
-                                  <div class="hero-stat-label">Fast Delivery</div>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="hero-right">
-                          <div class="hero-img-container">
-                              <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=900&q=80&auto=format"
-                                  alt="Packaged Food" />
-                              <div class="hero-img-overlay"></div>
-                          </div>
-                      </div>
-                  </div>
-
-                  <!-- Slide 5 : Home & Kitchen -->
-                  <div class="hero-slide" data-index="4">
-                      <div class="hero-left">
-                          <span class="hero-eyebrow">Home & Kitchen</span>
-                          <h1 class="hero-headline">
-                              Make Every<br>Corner <em>Count</em>
-                          </h1>
-                          <p class="hero-sub">Cookware, decor and appliances — everything you need to make your home
-                              feel like you.</p>
-                          <div class="hero-cta-group">
-                              <a href="{{ route('products') }}" class="btn-primary"><span>Shop Home & Kitchen</span></a>
-                              <a href="{{ route('categories') }}" class="btn-ghost">
-                                  All Categories
-                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                      viewBox="0 0 24 24">
-                                      <path d="M5 12h14M13 6l6 6-6 6" />
-                                  </svg>
-                              </a>
-                          </div>
-
-                          <div class="hero-stats">
-                              <div>
-                                  <div class="hero-stat-value" data-count="400" data-suffix="+">400+</div>
-                                  <div class="hero-stat-label">Items</div>
-                              </div>
-                              <div class="hero-stat-divider"></div>
-                              <div>
-                                  <div class="hero-stat-value" data-count="30" data-suffix="+">30+</div>
-                                  <div class="hero-stat-label">Brands</div>
-                              </div>
-                              <div class="hero-stat-divider"></div>
-                              <div>
-                                  <div class="hero-stat-value" data-count="30" data-suffix="d">30d</div>
-                                  <div class="hero-stat-label">Easy Returns</div>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="hero-right">
-                          <div class="hero-img-container">
-                              <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?w=900&q=80&auto=format"
-                                  alt="Home & Kitchen" />
-                              <div class="hero-img-overlay"></div>
-                          </div>
-                      </div>
-                  </div>
-
-                  <!-- Slide 6 : Cosmetics -->
+                  <!-- Slide 3 : Cosmetics -->
                   <div class="hero-slide" data-index="5">
                       <div class="hero-left">
                           <span class="hero-eyebrow">Beauty & Cosmetics</span>
@@ -2755,11 +2700,12 @@
                           <p class="hero-sub">Skincare, makeup and wellness — shop safe, cruelty-free beauty from
                               Nepal's own makers.</p>
                           <div class="hero-cta-group">
-                              <a href="{{ route('products', ['category' => 'health-beauty']) }}" class="btn-primary"><span>Shop Cosmetics</span></a>
+                              <a href="{{ route('products', ['category' => 'health-beauty']) }}"
+                                  class="btn-primary"><span>Shop Cosmetics</span></a>
                               <a href="{{ route('our-story') }}" class="btn-ghost">
                                   Our Story
-                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                      viewBox="0 0 24 24">
+                                  <svg width="16" height="16" fill="none" stroke="currentColor"
+                                      stroke-width="1.5" viewBox="0 0 24 24">
                                       <path d="M5 12h14M13 6l6 6-6 6" />
                                   </svg>
                               </a>
@@ -2795,38 +2741,23 @@
 
               <!-- Controls -->
               <button class="hero-arrow prev" onclick="moveHeroSlide(-1)" aria-label="Previous">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.5">
                       <path d="M19 12H5M12 19l-7-7 7-7" />
                   </svg>
               </button>
               <button class="hero-arrow next" onclick="moveHeroSlide(1)" aria-label="Next">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.5">
                       <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
               </button>
               <div class="hero-dots" id="heroDots"></div>
           </section>
 
-          <!-- ─── MARQUEE ─── -->
-          <div class="marquee-strip">
-              <div class="marquee-inner">
-                  <span class="marquee-item">Thousands of Products <span class="dot"></span></span>
-                  <span class="marquee-item">Trusted Local Sellers <span class="dot"></span></span>
-                  <span class="marquee-item">Secure Payments <span class="dot"></span></span>
-                  <span class="marquee-item">Fast Delivery <span class="dot"></span></span>
-                  <span class="marquee-item">Easy Returns <span class="dot"></span></span>
-                  <span class="marquee-item">Every Category Covered <span class="dot"></span></span>
-                  <span class="marquee-item">Thousands of Products <span class="dot"></span></span>
-                  <span class="marquee-item">Trusted Local Sellers <span class="dot"></span></span>
-                  <span class="marquee-item">Secure Payments <span class="dot"></span></span>
-                  <span class="marquee-item">Fast Delivery <span class="dot"></span></span>
-                  <span class="marquee-item">Easy Returns <span class="dot"></span></span>
-                  <span class="marquee-item">Every Category Covered <span class="dot"></span></span>
-              </div>
-          </div>
 
           {{-- ⚡ LIVE FLASH DROPS & FLASH SALES FROM VENDORS --}}
-          @if(isset($activeFlashSales) && $activeFlashSales->count() > 0)
+          @if (isset($activeFlashSales) && $activeFlashSales->count() > 0)
               @php
                   $earliestEnd = $activeFlashSales->min('end_time');
               @endphp
@@ -2835,12 +2766,15 @@
                       <span class="flash-live-pill"><span class="flash-live-dot"></span> ⚡ FLASH SALE LIVE</span>
                       <span>
                           <strong>Limited Time Offers!</strong>
-                          Special discounted prices from approved merchants. Next deal ends in: <strong class="global-flash-countdown" data-countdown="{{ $earliestEnd ? $earliestEnd->toIso8601String() : '' }}">Calculating...</strong>
+                          Special discounted prices from approved merchants. Next deal ends in: <strong
+                              class="global-flash-countdown"
+                              data-countdown="{{ $earliestEnd ? $earliestEnd->toIso8601String() : '' }}">Calculating...</strong>
                       </span>
                   </div>
                   <a href="#flash-deals" class="flash-ticker-link">
                       View All Deals
-                      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                          viewBox="0 0 24 24">
                           <path d="M5 12h14M13 6l6 6-6 6" />
                       </svg>
                   </a>
@@ -2856,25 +2790,31 @@
                               Exclusive <em>Flash Sales</em>
                           </h2>
                           <p style="font-size:0.85rem;color:#7a6858;" class="reveal reveal-delay-2">
-                              Special low prices directly from verified merchants. Prices automatically revert when timer expires!
+                              Special low prices directly from verified merchants. Prices automatically revert when
+                              timer expires!
                           </p>
                       </div>
                       <div class="flash-header-actions reveal reveal-delay-2">
                           <div class="flash-nav-controls">
-                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(-1)" aria-label="Scroll left">
-                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(-1)"
+                                  aria-label="Scroll left">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor"
+                                      stroke-width="2" viewBox="0 0 24 24">
                                       <path d="M15 18l-6-6 6-6" />
                                   </svg>
                               </button>
-                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(1)" aria-label="Scroll right">
-                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(1)"
+                                  aria-label="Scroll right">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor"
+                                      stroke-width="2" viewBox="0 0 24 24">
                                       <path d="M9 18l6-6-6-6" />
                                   </svg>
                               </button>
                           </div>
                           <a href="{{ route('products') }}" class="btn-ghost" style="margin-bottom:2px">
                               All Products
-                              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                              <svg width="16" height="16" fill="none" stroke="currentColor"
+                                  stroke-width="1.5" viewBox="0 0 24 24">
                                   <path d="M5 12h14M13 6l6 6-6 6" />
                               </svg>
                           </a>
@@ -2886,16 +2826,23 @@
                           @foreach ($activeFlashSales as $flashSale)
                               @php
                                   $item = $flashSale->product;
-                                  $pctSold = $flashSale->flash_stock > 0 ? min(100, round(($flashSale->sold_quantity / $flashSale->flash_stock) * 100)) : 0;
+                                  $pctSold =
+                                      $flashSale->flash_stock > 0
+                                          ? min(100, round(($flashSale->sold_quantity / $flashSale->flash_stock) * 100))
+                                          : 0;
                               @endphp
-                              <a href="{{ route('product', $item->id) }}" class="flash-card reveal product-card-link">
+                              <a href="{{ route('product', $item->id) }}"
+                                  class="flash-card reveal product-card-link">
                                   <div class="flash-img-container">
-                                      <img src="{{ $item->main_image_url }}" alt="{{ $item->name }}" loading="lazy" />
+                                      <img src="{{ $item->main_image_url }}" alt="{{ $item->name }}"
+                                          loading="lazy" />
                                       <div class="flash-tag-pill" style="background:#e63946;color:#fff;">
                                           ⚡ -{{ $flashSale->discount_percent }}% OFF
                                       </div>
-                                      <div class="flash-time-badge item-countdown" data-countdown="{{ $flashSale->end_time->toIso8601String() }}">
-                                          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                      <div class="flash-time-badge item-countdown"
+                                          data-countdown="{{ $flashSale->end_time->toIso8601String() }}">
+                                          <svg width="11" height="11" fill="none" stroke="currentColor"
+                                              stroke-width="2" viewBox="0 0 24 24">
                                               <circle cx="12" cy="12" r="10"></circle>
                                               <path d="M12 6v6l4 2"></path>
                                           </svg>
@@ -2906,32 +2853,42 @@
                                   <div class="flash-card-info">
                                       <div>
                                           <div class="flash-vendor-row">
-                                              <span class="flash-vendor-name" title="{{ $flashSale->seller->store_name ?? $flashSale->seller->name ?? 'Merchant' }}">
-                                                  <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                              <span class="flash-vendor-name"
+                                                  title="{{ $flashSale->seller->store_name ?? ($flashSale->seller->name ?? 'Merchant') }}">
+                                                  <svg width="12" height="12" fill="none"
+                                                      stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                                                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                                       <polyline points="9 22 9 12 15 12 15 22"></polyline>
                                                   </svg>
-                                                  {{ $flashSale->seller->store_name ?? $flashSale->seller->name ?? 'Merchant' }}
+                                                  {{ $flashSale->seller->store_name ?? ($flashSale->seller->name ?? 'Merchant') }}
                                               </span>
-                                              @if($item->category)
-                                                  <span style="font-size:0.68rem;opacity:0.85;">{{ $item->category->name }}</span>
+                                              @if ($item->category)
+                                                  <span
+                                                      style="font-size:0.68rem;opacity:0.85;">{{ $item->category->name }}</span>
                                               @endif
                                           </div>
 
                                           <div class="flash-card-title">{{ $item->name }}</div>
 
                                           <div class="flash-card-pricing">
-                                              <span class="flash-price-main">Rs. {{ number_format($flashSale->flash_price, 2) }}</span>
-                                              <span class="flash-price-old">Rs. {{ number_format($item->price, 2) }}</span>
+                                              <span class="flash-price-main">Rs.
+                                                  {{ number_format($flashSale->flash_price, 2) }}</span>
+                                              <span class="flash-price-old">Rs.
+                                                  {{ number_format($item->price, 2) }}</span>
                                           </div>
 
                                           <div style="margin-top:8px;">
-                                              <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:#7a6858; margin-bottom:3px;">
-                                                  <span>Sold: {{ $flashSale->sold_quantity }}/{{ $flashSale->flash_stock }}</span>
+                                              <div
+                                                  style="display:flex; justify-content:space-between; font-size:0.68rem; color:#7a6858; margin-bottom:3px;">
+                                                  <span>Sold:
+                                                      {{ $flashSale->sold_quantity }}/{{ $flashSale->flash_stock }}</span>
                                                   <span>{{ $flashSale->remaining_stock }} left</span>
                                               </div>
-                                              <div style="width:100%; height:4px; background:rgba(73,54,40,0.1); border-radius:2px; overflow:hidden;">
-                                                  <div style="width:{{ $pctSold }}%; height:100%; background:#e63946; border-radius:2px;"></div>
+                                              <div
+                                                  style="width:100%; height:4px; background:rgba(73,54,40,0.1); border-radius:2px; overflow:hidden;">
+                                                  <div
+                                                      style="width:{{ $pctSold }}%; height:100%; background:#e63946; border-radius:2px;">
+                                                  </div>
                                               </div>
                                           </div>
                                       </div>
@@ -2939,7 +2896,8 @@
                                       <div class="flash-card-bottom" style="margin-top:10px;">
                                           <div class="product-rating" style="margin-bottom:0;">
                                               <span class="stars" style="font-size:0.75rem;">★</span>
-                                              <span style="font-size:0.72rem;font-weight:600;">{{ number_format($item->reviews_avg_rating ?? 5.0, 1) }}</span>
+                                              <span
+                                                  style="font-size:0.72rem;font-weight:600;">{{ number_format($item->reviews_avg_rating ?? 5.0, 1) }}</span>
                                           </div>
                                           <span class="flash-btn-add">Grab Deal →</span>
                                       </div>
@@ -2950,7 +2908,6 @@
                   </div>
               </section>
           @elseif(isset($flashProducts) && $flashProducts->count() > 0)
-
               <section class="flash-section" id="flash-arrivals">
                   <div class="flash-section-header">
                       <div>
@@ -2966,20 +2923,25 @@
                       </div>
                       <div class="flash-header-actions reveal reveal-delay-2">
                           <div class="flash-nav-controls">
-                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(-1)" aria-label="Scroll left">
-                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(-1)"
+                                  aria-label="Scroll left">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor"
+                                      stroke-width="2" viewBox="0 0 24 24">
                                       <path d="M15 18l-6-6 6-6" />
                                   </svg>
                               </button>
-                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(1)" aria-label="Scroll right">
-                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                              <button type="button" class="flash-nav-btn" onclick="scrollFlashFlow(1)"
+                                  aria-label="Scroll right">
+                                  <svg width="14" height="14" fill="none" stroke="currentColor"
+                                      stroke-width="2" viewBox="0 0 24 24">
                                       <path d="M9 18l6-6-6-6" />
                                   </svg>
                               </button>
                           </div>
                           <a href="{{ route('products') }}" class="btn-ghost" style="margin-bottom:2px">
                               Explore All
-                              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                              <svg width="16" height="16" fill="none" stroke="currentColor"
+                                  stroke-width="1.5" viewBox="0 0 24 24">
                                   <path d="M5 12h14M13 6l6 6-6 6" />
                               </svg>
                           </a>
@@ -2989,14 +2951,17 @@
                   <div class="flash-flow-wrapper" id="flashFlowWrapper">
                       <div class="flash-flow-track" id="flashFlowTrack">
                           @foreach ($flashProducts as $flashItem)
-                              <a href="{{ route('product', $flashItem->id) }}" class="flash-card reveal product-card-link">
+                              <a href="{{ route('product', $flashItem->id) }}"
+                                  class="flash-card reveal product-card-link">
                                   <div class="flash-img-container">
-                                      <img src="{{ $flashItem->main_image_url }}" alt="{{ $flashItem->name }}" loading="lazy" />
+                                      <img src="{{ $flashItem->main_image_url }}" alt="{{ $flashItem->name }}"
+                                          loading="lazy" />
                                       <div class="flash-tag-pill">
                                           ⚡ Fresh Drop
                                       </div>
                                       <div class="flash-time-badge">
-                                          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                          <svg width="11" height="11" fill="none" stroke="currentColor"
+                                              stroke-width="2" viewBox="0 0 24 24">
                                               <circle cx="12" cy="12" r="10"></circle>
                                               <path d="M12 6v6l4 2"></path>
                                           </svg>
@@ -3007,24 +2972,29 @@
                                   <div class="flash-card-info">
                                       <div>
                                           <div class="flash-vendor-row">
-                                              <span class="flash-vendor-name" title="{{ $flashItem->seller->store_name ?? $flashItem->seller->name ?? 'Vendor' }}">
-                                                  <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                              <span class="flash-vendor-name"
+                                                  title="{{ $flashItem->seller->store_name ?? ($flashItem->seller->name ?? 'Vendor') }}">
+                                                  <svg width="12" height="12" fill="none"
+                                                      stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                                                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                                       <polyline points="9 22 9 12 15 12 15 22"></polyline>
                                                   </svg>
-                                                  {{ $flashItem->seller->store_name ?? $flashItem->seller->name ?? 'Vendor' }}
+                                                  {{ $flashItem->seller->store_name ?? ($flashItem->seller->name ?? 'Vendor') }}
                                               </span>
-                                              @if($flashItem->category)
-                                                  <span style="font-size:0.68rem;opacity:0.85;">{{ $flashItem->category->name }}</span>
+                                              @if ($flashItem->category)
+                                                  <span
+                                                      style="font-size:0.68rem;opacity:0.85;">{{ $flashItem->category->name }}</span>
                                               @endif
                                           </div>
 
                                           <div class="flash-card-title">{{ $flashItem->name }}</div>
 
                                           <div class="flash-card-pricing">
-                                              <span class="flash-price-main">Rs. {{ number_format($flashItem->effective_price, 2) }}</span>
+                                              <span class="flash-price-main">Rs.
+                                                  {{ number_format($flashItem->effective_price, 2) }}</span>
                                               @if ($flashItem->is_discounted)
-                                                  <span class="flash-price-old">Rs. {{ number_format($flashItem->price, 2) }}</span>
+                                                  <span class="flash-price-old">Rs.
+                                                      {{ number_format($flashItem->price, 2) }}</span>
                                               @endif
                                           </div>
                                       </div>
@@ -3032,7 +3002,8 @@
                                       <div class="flash-card-bottom">
                                           <div class="product-rating" style="margin-bottom:0;">
                                               <span class="stars" style="font-size:0.75rem;">★</span>
-                                              <span style="font-size:0.72rem;font-weight:600;">{{ number_format($flashItem->reviews_avg_rating ?? 5.0, 1) }}</span>
+                                              <span
+                                                  style="font-size:0.72rem;font-weight:600;">{{ number_format($flashItem->reviews_avg_rating ?? 5.0, 1) }}</span>
                                           </div>
                                           <span class="flash-btn-add">View Item →</span>
                                       </div>
@@ -3049,7 +3020,8 @@
               <div class="section-label reveal">Shop by Category</div>
               <div class="flex justify-between items-end">
                   <h2 class="section-title reveal reveal-delay-1">Explore Our<br><em>Curated World</em></h2>
-                  <a href="{{ route('categories') }}" class="btn-ghost reveal reveal-delay-2" style="margin-bottom:4px">
+                  <a href="{{ route('categories') }}" class="btn-ghost reveal reveal-delay-2"
+                      style="margin-bottom:4px">
                       All Categories
                       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
                           viewBox="0 0 24 24">
@@ -3061,7 +3033,8 @@
               <div class="categories-grid reveal reveal-delay-1">
                   @forelse ($categories->take(5) as $category)
                       <a href="{{ route('products', ['category' => $category->slug]) }}" class="cat-card">
-                          <img src="{{ $category->image_url }}" alt="{{ $category->name }}" loading="lazy" onerror="this.onerror=null; this.src='{{ $category->fallback_image_url }}';" />
+                          <img src="{{ $category->image_url }}" alt="{{ $category->name }}" loading="lazy"
+                              onerror="this.onerror=null; this.src='{{ $category->fallback_image_url }}';" />
                           <div class="cat-card-overlay">
                               <div class="cat-name">{{ $category->name }}</div>
                               <div class="cat-count">{{ $category->products_count ?? 0 }} products</div>
@@ -3133,7 +3106,8 @@
                                           <span
                                               class="star{{ $i <= (int) round($product->reviews_avg_rating ?? 0) ? ' is-fill' : '' }}">&starf;</span>
                                       @endfor
-                                      <span style="font-size:0.72rem;color:#7a6858;margin-left:4px">{{ $product->reviews_count ? '(' . $product->reviews_count . ')' : 'No reviews yet' }}</span>
+                                      <span
+                                          style="font-size:0.72rem;color:#7a6858;margin-left:4px">{{ $product->reviews_count ? '(' . $product->reviews_count . ')' : 'No reviews yet' }}</span>
                                   </div>
                               </div>
                           </div>
@@ -3211,7 +3185,7 @@
           @endforeach
 
 
-          <!-- ─── NEWSLETTER ─── -->
+          {{-- <!-- ─── NEWSLETTER ─── -->
           <section class="newsletter">
               <div class="section-label reveal" style="justify-content:center;color:var(--secondary)">Stay Connected
               </div>
@@ -3226,7 +3200,7 @@
               </div>
               <p style="font-size:0.68rem;color:rgba(214,192,179,0.3);margin-top:14px;letter-spacing:0.08em"
                   class="reveal reveal-delay-4">No spam, ever. Unsubscribe at any time.</p>
-          </section>
+          </section> --}}
           <!-- ─── SCRIPTS ─── -->
           <script>
               // ── NAVBAR SCROLL
@@ -3272,10 +3246,12 @@
                   currentSlide = (index + heroSlides.length) % heroSlides.length;
                   heroSlides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
                   heroDots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
-                  setTimeout(() => { slideLock = false; }, 950);
+                  setTimeout(() => {
+                      slideLock = false;
+                  }, 950);
               }
 
-              window.moveHeroSlide = function (dir) {
+              window.moveHeroSlide = function(dir) {
                   goToSlide(currentSlide + dir);
                   restartHeroTimer();
               };
@@ -3291,6 +3267,29 @@
                   });
                   heroWrap.addEventListener('mouseleave', restartHeroTimer);
                   restartHeroTimer();
+              }
+
+              // ── HERO TOUCH SWIPE (mobile)
+              if (heroWrap) {
+                  let heroTouchX = 0;
+                  let heroTouchY = 0;
+
+                  heroWrap.addEventListener('touchstart', (e) => {
+                      heroTouchX = e.changedTouches[0].clientX;
+                      heroTouchY = e.changedTouches[0].clientY;
+                  }, {
+                      passive: true
+                  });
+
+                  heroWrap.addEventListener('touchend', (e) => {
+                      const dx = e.changedTouches[0].clientX - heroTouchX;
+                      const dy = e.changedTouches[0].clientY - heroTouchY;
+                      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                          moveHeroSlide(dx < 0 ? 1 : -1);
+                      }
+                  }, {
+                      passive: true
+                  });
               }
 
               // ── HERO STAT COUNTER (per-slide)
@@ -3320,7 +3319,10 @@
                   if (active) runSlideCounters(active);
               });
               if (heroSlides.length) {
-                  heroSlideObs.observe(document.getElementById('heroSlides'), { attributes: true, attributeFilter: ['class'] });
+                  heroSlideObs.observe(document.getElementById('heroSlides'), {
+                      attributes: true,
+                      attributeFilter: ['class']
+                  });
               }
 
               // ── MOBILE MENU
@@ -3373,7 +3375,7 @@
               function submitAddToCart(productId) {
                   const form = document.createElement('form');
                   form.method = 'POST';
-                  form.action = '{{ route("cart.store") }}';
+                  form.action = '{{ route('cart.store') }}';
 
                   const csrf = document.createElement('input');
                   csrf.type = 'hidden';
@@ -3523,9 +3525,15 @@
                   function autoFlow() {
                       const maxScroll = flowWrapper.scrollWidth - flowWrapper.clientWidth;
                       if (flowWrapper.scrollLeft >= maxScroll - 10) {
-                          flowWrapper.scrollTo({ left: 0, behavior: 'smooth' });
+                          flowWrapper.scrollTo({
+                              left: 0,
+                              behavior: 'smooth'
+                          });
                       } else {
-                          flowWrapper.scrollBy({ left: scrollStep, behavior: 'smooth' });
+                          flowWrapper.scrollBy({
+                              left: scrollStep,
+                              behavior: 'smooth'
+                          });
                       }
                   }
 
@@ -3565,7 +3573,8 @@
                           const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                           const secs = Math.floor((diff % (1000 * 60)) / 1000);
 
-                          const formatted = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                          const formatted =
+                              `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
                           const span = el.querySelector('span') || el;
                           span.textContent = formatted;
                       });

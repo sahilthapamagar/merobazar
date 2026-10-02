@@ -108,6 +108,11 @@ class PageController extends Controller
         return view('frontend.faq');
     }
 
+    public function contact()
+    {
+        return view('frontend.contact');
+    }
+
     public function product($id)
     {
         $product = Product::with([

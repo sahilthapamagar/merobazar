@@ -450,7 +450,7 @@
         <div class="faq-contact">
             <div class="faq-contact-title">Still have questions?</div>
             <p class="faq-contact-text">Can't find the answer you're looking for? We're happy to help.</p>
-            <a href="{{ route('seller.index') }}" class="faq-contact-btn">Contact Us</a>
+            <a href="{{ route('contact') }}" class="faq-contact-btn">Contact Us</a>
         </div>
     </div>
 
