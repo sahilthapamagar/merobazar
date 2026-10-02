@@ -130,11 +130,20 @@ class CheckoutController extends Controller
         $order = Order::findOrFail($id);
 
         $status = $request->input('status', 'pending');
+        $isSuccess = strtolower((string) $status) === 'completed';
+
         $order->payment_status = $status;
+
+        // Payment was cancelled / expired / failed in Khalti: cancel the order so it
+        // is never treated as a real order (hidden from Buying History & seller orders).
+        if (! $isSuccess) {
+            $order->status = 'cancelled';
+        }
+
         $order->save();
 
         // Only confirm (email) the order once the Khalti payment is completed.
-        if (strtolower((string) $status) === 'completed' && $order->user) {
+        if ($isSuccess && $order->user) {
             try {
                 Mail::to($order->user->email)->send(new OrderPlacementMail($order, 'Khalti'));
             } catch (\Throwable $e) {
@@ -142,9 +151,15 @@ class CheckoutController extends Controller
             }
         }
 
-        $isSuccess = strtolower((string) $status) === 'completed';
-        $message = $isSuccess ? 'Payment completed & Order placed successfully!' : 'Payment '.$status;
+        $message = $isSuccess
+            ? 'Payment completed & Order placed successfully!'
+            : 'Payment '.$status.' — your order was not placed.';
         toast($message, $isSuccess ? 'success' : 'info');
+
+        // A cancelled payment must not open the (now hidden) order detail page.
+        if (! $isSuccess) {
+            return redirect()->route('buying-history');
+        }
 
         return redirect()->route('buying-history.show', $order->id)->with('success', $message);
     }

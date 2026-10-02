@@ -254,10 +254,8 @@
             <div class="footer-col-title">Customer Service</div>
             <ul class="footer-links">
                 <li><a href="{{ route('faq') }}">FAQ</a></li>
-                <li><a href="#">Shipping & Returns</a></li>
-                <li><a href="#">Track Order</a></li>
-                <li><a href="#">Sell on MeroBazar</a></li>
-                <li><a href="#">Gift Cards</a></li>
+                <li><a href="{{ route('seller.index') }}">Become a Vendor</a></li>
+
             </ul>
         </div>
     </div>

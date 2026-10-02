@@ -24,7 +24,9 @@ class OrderResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('seller_id', Auth::guard('vendor')->id());
+        return parent::getEloquentQuery()
+            ->where('seller_id', Auth::guard('vendor')->id())
+            ->notAbandonedPayment();
     }
 
     protected static ?int $navigationSort = 3;

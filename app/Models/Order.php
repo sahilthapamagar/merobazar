@@ -57,4 +57,28 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    /**
+     * Orders whose Khalti payment was cancelled / expired / failed before completion.
+     * These are never real orders, so they are hidden from customers and sellers
+     * (the admin panel still sees them).
+     */
+    public function scopeAbandonedPayment($query)
+    {
+        $query->where('payment_method', 'khalti')
+            ->where('status', 'cancelled')
+            ->where('payment_status', '!=', 'Completed');
+    }
+
+    /**
+     * The inverse of scopeAbandonedPayment(): every legitimate order.
+     */
+    public function scopeNotAbandonedPayment($query)
+    {
+        $query->where(function ($q) {
+            $q->where('payment_method', '!=', 'khalti')
+                ->orWhere('status', '!=', 'cancelled')
+                ->orWhere('payment_status', 'Completed');
+        });
+    }
 }

@@ -12,6 +12,7 @@ class BuyingHistoryController extends Controller
     {
         $orders = Order::with(['seller', 'orderItems.product'])
             ->where('user_id', Auth::guard('web')->id())
+            ->notAbandonedPayment()
             ->latest()
             ->get();
 
@@ -28,6 +29,7 @@ class BuyingHistoryController extends Controller
     {
         $order = Order::with(['seller', 'orderItems.product', 'orderItems.review', 'user.deliveryAddresses'])
             ->where('user_id', Auth::guard('web')->id())
+            ->notAbandonedPayment()
             ->findOrFail($id);
 
         return view('frontend.order-detail', compact('order'));
