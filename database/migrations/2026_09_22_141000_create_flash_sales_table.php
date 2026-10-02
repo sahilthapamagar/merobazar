@@ -20,11 +20,9 @@ return new class extends Migration
             $table->unsignedInteger('sold_quantity')->default(0);
             $table->dateTime('start_time');
             $table->dateTime('end_time');
-            $table->string('status')->default('pending'); // pending, approved, rejected
-            $table->text('rejection_reason')->nullable();
             $table->timestamps();
 
-            $table->index(['status', 'start_time', 'end_time']);
+            $table->index(['start_time', 'end_time']);
         });
     }
 

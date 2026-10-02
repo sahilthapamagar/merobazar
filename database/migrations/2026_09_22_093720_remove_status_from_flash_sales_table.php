@@ -13,6 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // This migration sorts before the create migration (093720 < 141000),
+        // so on a fresh database the table does not exist yet and the status
+        // columns are never created at all — skip instead of failing.
+        if (! Schema::hasTable('flash_sales')) {
+            return;
+        }
+
         Schema::table('flash_sales', function (Blueprint $table) {
             $table->dropIndex('flash_sales_status_start_time_end_time_index');
             $table->dropColumn(['status', 'rejection_reason']);
