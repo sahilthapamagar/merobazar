@@ -2771,7 +2771,7 @@
                               data-countdown="{{ $earliestEnd ? $earliestEnd->toIso8601String() : '' }}">Calculating...</strong>
                       </span>
                   </div>
-                  <a href="#flash-deals" class="flash-ticker-link">
+                  <a href="{{ route('flash-sales') }}" class="flash-ticker-link">
                       View All Deals
                       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
                           viewBox="0 0 24 24">
@@ -2811,7 +2811,7 @@
                                   </svg>
                               </button>
                           </div>
-                          <a href="{{ route('products') }}" class="btn-ghost" style="margin-bottom:2px">
+                          <a href="{{ route('flash-sales') }}" class="btn-ghost" style="margin-bottom:2px">
                               All Products
                               <svg width="16" height="16" fill="none" stroke="currentColor"
                                   stroke-width="1.5" viewBox="0 0 24 24">
@@ -2854,13 +2854,13 @@
                                       <div>
                                           <div class="flash-vendor-row">
                                               <span class="flash-vendor-name"
-                                                  title="{{ $flashSale->seller->store_name ?? ($flashSale->seller->name ?? 'Merchant') }}">
+                                                  title="{{ $flashSale->seller->shop_name ?? ($flashSale->seller->name ?? 'Merchant') }}">
                                                   <svg width="12" height="12" fill="none"
                                                       stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                                                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                                       <polyline points="9 22 9 12 15 12 15 22"></polyline>
                                                   </svg>
-                                                  {{ $flashSale->seller->store_name ?? ($flashSale->seller->name ?? 'Merchant') }}
+                                                  {{ $flashSale->seller->shop_name ?? ($flashSale->seller->name ?? 'Merchant') }}
                                               </span>
                                               @if ($item->category)
                                                   <span
@@ -2973,13 +2973,13 @@
                                       <div>
                                           <div class="flash-vendor-row">
                                               <span class="flash-vendor-name"
-                                                  title="{{ $flashItem->seller->store_name ?? ($flashItem->seller->name ?? 'Vendor') }}">
+                                                  title="{{ $flashItem->seller->shop_name ?? ($flashItem->seller->name ?? 'Vendor') }}">
                                                   <svg width="12" height="12" fill="none"
                                                       stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                                                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                                       <polyline points="9 22 9 12 15 12 15 22"></polyline>
                                                   </svg>
-                                                  {{ $flashItem->seller->store_name ?? ($flashItem->seller->name ?? 'Vendor') }}
+                                                  {{ $flashItem->seller->shop_name ?? ($flashItem->seller->name ?? 'Vendor') }}
                                               </span>
                                               @if ($flashItem->category)
                                                   <span

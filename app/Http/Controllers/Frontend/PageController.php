@@ -92,7 +92,20 @@ class PageController extends Controller
             });
         }
 
-        $products = $query->withAvg('reviews', 'rating')->withCount('reviews')->latest()->paginate(20);
+        // Keyword search across product name, title, description, category and seller store name
+        if ($search = trim((string) request('search'))) {
+            $term = '%' . str_replace('%', '\\%', $search) . '%';
+
+            $query->where(function ($q) use ($term) {
+                $q->where('name', 'like', $term)
+                    ->orWhere('title', 'like', $term)
+                    ->orWhere('description', 'like', $term)
+                    ->orWhereHas('category', fn ($c) => $c->where('name', 'like', $term))
+                    ->orWhereHas('seller', fn ($s) => $s->where('shop_name', 'like', $term));
+            });
+        }
+
+        $products = $query->withAvg('reviews', 'rating')->withCount('reviews')->latest()->paginate(20)->appends(request()->query());
         $categories = Category::withCount('products')->get();
 
         return view('frontend.products', compact('products', 'categories'));
@@ -111,6 +124,19 @@ class PageController extends Controller
     public function contact()
     {
         return view('frontend.contact');
+    }
+
+    public function flashSales()
+    {
+        $activeFlashSales = FlashSale::active()
+            ->whereHas('product.seller', fn ($s) => $s->where('status', 'active'))
+            ->with(['product.seller', 'product.category', 'product' => fn ($q) => $q->withAvg('reviews', 'rating')->withCount('reviews')])
+            ->orderBy('end_time', 'asc')
+            ->get();
+
+        $earliestEnd = $activeFlashSales->min('end_time');
+
+        return view('frontend.flash-sales', compact('activeFlashSales', 'earliestEnd'));
     }
 
     public function product($id)

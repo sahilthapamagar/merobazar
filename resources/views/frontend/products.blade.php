@@ -444,19 +444,40 @@
             <div class="products-header">
                 <div>
                     <div class="section-label">Shop Collection</div>
-                    <h1 class="section-title">All <em>Products</em></h1>
+                    @if (request('search'))
+                        <h1 class="section-title">Results for
+                            <em>"{{ request('search') }}"</em>
+                        </h1>
+                        <p style="font-size:0.85rem;color:#7a6858;margin-top:6px;">
+                            {{ $products->total() }}
+                            {{ $products->total() === 1 ? 'product' : 'products' }} found
+                            &middot; <a href="{{ route('products') }}"
+                                style="color:var(--secondary);font-weight:600;">Clear search</a>
+                        </p>
+                    @else
+                        <h1 class="section-title">All <em>Products</em></h1>
+                    @endif
                 </div>
-                <div class="product-filter">
-                    <a href="{{ route('products') }}" class="filter-btn {{ !request('category') ? 'active' : '' }} product-interactive">All</a>
-                    @foreach ($categories as $cat)
-                        <a href="{{ route('products', ['category' => $cat->slug]) }}" class="filter-btn {{ request('category') === $cat->slug ? 'active' : '' }} product-interactive">{{ $cat->name }}</a>
-                    @endforeach
-                </div>
+                @if (!request('search'))
+                    <div class="product-filter">
+                        <a href="{{ route('products') }}" class="filter-btn {{ !request('category') ? 'active' : '' }} product-interactive">All</a>
+                        @foreach ($categories as $cat)
+                            <a href="{{ route('products', ['category' => $cat->slug]) }}" class="filter-btn {{ request('category') === $cat->slug ? 'active' : '' }} product-interactive">{{ $cat->name }}</a>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
             @if ($products->isEmpty())
                 <div class="products-empty">
-                    <p>No products available at the moment.</p>
+                    @if (request('search'))
+                        <p style="font-size:1.4rem;font-family:'Cormorant Garamond',serif;color:var(--primary);margin-bottom:8px;">
+                            No products found for "{{ request('search') }}"</p>
+                        <p style="margin-bottom:20px;">Try a different keyword or browse the full collection.</p>
+                        <a href="{{ route('products') }}" class="filter-btn active" style="display:inline-block;text-decoration:none;">Clear Search</a>
+                    @else
+                        <p>No products available at the moment.</p>
+                    @endif
                 </div>
             @else
                 <div class="products-grid" id="productsGrid">

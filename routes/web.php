@@ -22,6 +22,8 @@ Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
+Route::get('/flash-sales', [PageController::class, 'flashSales'])->name('flash-sales');
+
 Route::get('/product/{id}', [PageController::class, 'product'])->name('product');
 
 Route::get('/seller-form', [SellerController::class, 'index'])->name('seller.index');

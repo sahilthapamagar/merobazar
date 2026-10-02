@@ -555,12 +555,16 @@
 
     <!-- ─── SEARCH BAR ─── -->
     <div id="searchBar">
-        <svg width="18" height="18" fill="none" stroke="var(--secondary)" stroke-width="1.6"
-            viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="7" />
-            <path d="M16.5 16.5L22 22" />
-        </svg>
-        <input type="text" placeholder="Search for products, brands..." id="searchInput">
+        <form action="{{ route('products') }}" method="GET" id="searchForm" style="display:flex;align-items:center;gap:16px;flex:1;">
+            <svg width="18" height="18" fill="none" stroke="var(--secondary)" stroke-width="1.6"
+                viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M16.5 16.5L22 22" />
+            </svg>
+            <input type="text" name="search" placeholder="Search for products, brands..." id="searchInput"
+                value="{{ request('search') }}" autocomplete="off">
+            <button type="submit" class="search-close-btn" style="color:var(--primary);">Search</button>
+        </form>
         <button type="button" class="search-close-btn" onclick="toggleSearch()">Close</button>
     </div>
 
@@ -651,8 +655,28 @@
 
             if (searchOpen && input) {
                 input.focus();
+                input.select();
             }
         };
+
+        // ── SEARCH SUBMIT ──
+        const searchForm = document.getElementById('searchForm');
+        const searchInputEl = document.getElementById('searchInput');
+
+        if (searchForm && searchInputEl) {
+            searchForm.addEventListener('submit', (event) => {
+                if (!searchInputEl.value.trim()) {
+                    event.preventDefault();
+                    searchInputEl.focus();
+                }
+            });
+
+            searchInputEl.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    window.toggleSearch();
+                }
+            });
+        }
 
         const navbar = document.getElementById('navbar');
         if (navbar) {
