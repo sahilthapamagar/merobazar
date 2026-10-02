@@ -503,6 +503,177 @@
               }
           }
 
+          /* ─── HERO SLIDESHOW ─── */
+          .hero-slides {
+              position: absolute;
+              inset: 0;
+              grid-column: 1 / -1;
+          }
+
+          .hero-slide {
+              position: absolute;
+              inset: 0;
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              opacity: 0;
+              visibility: hidden;
+              pointer-events: none;
+              transition: opacity 0.9s ease, visibility 0.9s ease;
+          }
+
+          .hero-slide.active {
+              opacity: 1;
+              visibility: visible;
+              pointer-events: auto;
+              z-index: 2;
+          }
+
+          .hero-slide .hero-left {
+              transition: opacity 0.8s ease, transform 0.8s ease;
+              opacity: 0;
+              transform: translateY(24px);
+          }
+
+          .hero-slide.active .hero-left {
+              opacity: 1;
+              transform: translateY(0);
+          }
+
+          .hero-slide .hero-img-container img {
+              transform: scale(1.15);
+              opacity: 0;
+              transition: transform 7s ease, opacity 1.2s ease;
+          }
+
+          .hero-slide.active .hero-img-container img {
+              opacity: 1;
+              transform: scale(1.08);
+          }
+
+          .hero-slide.active .hero-img-container:hover img {
+              transform: scale(1.0);
+          }
+
+          .hero-slide .hero-eyebrow,
+          .hero-slide .hero-headline,
+          .hero-slide .hero-sub,
+          .hero-slide .hero-cta-group,
+          .hero-slide .hero-stats {
+              opacity: 0;
+              transform: translateY(20px);
+          }
+
+          .hero-slide.active .hero-eyebrow {
+              opacity: 1;
+              transform: translateY(0);
+              transition: all 0.7s ease 0.15s;
+          }
+
+          .hero-slide.active .hero-headline {
+              opacity: 1;
+              transform: translateY(0);
+              transition: all 0.7s ease 0.3s;
+          }
+
+          .hero-slide.active .hero-sub {
+              opacity: 1;
+              transform: translateY(0);
+              transition: all 0.7s ease 0.45s;
+          }
+
+          .hero-slide.active .hero-cta-group {
+              opacity: 1;
+              transform: translateY(0);
+              transition: all 0.7s ease 0.6s;
+          }
+
+          .hero-slide.active .hero-stats {
+              opacity: 1;
+              transform: translateY(0);
+              transition: all 0.7s ease 0.75s;
+          }
+
+          .hero-arrow {
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+              z-index: 20;
+              width: 44px;
+              height: 44px;
+              border: 1px solid rgba(171, 136, 109, 0.5);
+              background: rgba(255, 255, 255, 0.7);
+              backdrop-filter: blur(6px);
+              color: var(--primary);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: all 0.3s ease;
+          }
+
+          .hero-arrow:hover {
+              background: var(--primary);
+              color: var(--accent);
+          }
+
+          .hero-arrow.prev {
+              left: 20px;
+          }
+
+          .hero-arrow.next {
+              right: 20px;
+          }
+
+          .hero-dots {
+              position: absolute;
+              bottom: 28px;
+              left: 50%;
+              transform: translateX(-50%);
+              display: flex;
+              gap: 10px;
+              z-index: 20;
+          }
+
+          .hero-dot {
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              border: none;
+              background: rgba(73, 54, 40, 0.25);
+              cursor: pointer;
+              padding: 0;
+              transition: all 0.3s ease;
+          }
+
+          .hero-dot.active {
+              width: 28px;
+              border-radius: 6px;
+              background: var(--secondary);
+          }
+
+          @media (max-width: 768px) {
+              .hero-slide {
+                  grid-template-columns: 1fr;
+              }
+
+              .hero-arrow {
+                  width: 36px;
+                  height: 36px;
+              }
+
+              .hero-arrow.prev {
+                  left: 10px;
+              }
+
+              .hero-arrow.next {
+                  right: 10px;
+              }
+
+              .hero-dots {
+                  bottom: 12px;
+              }
+          }
+
           /* ─── MARQUEE STRIP ─── */
           .marquee-strip {
               background: var(--primary);
@@ -2337,137 +2508,320 @@
           <div class="cursor-ring" id="cursorRing"></div> --}}
           <!-- ─── HERO ─── -->
           <section class="hero" id="hero">
-              <div class="hero-left">
-                  <span class="hero-eyebrow" id="heroEyebrow">SS 2025 Collection</span>
-                  <h1 class="hero-headline reveal" id="heroHead">
-                      Wear <em>Your</em><br>Story With<br>Elegance
-                  </h1>
-                  <p class="hero-sub reveal reveal-delay-1">Discover curated pieces that blend timeless craftsmanship
-                      with
-                      modern sensibility. Every stitch tells a story.</p>
-                  <div class="hero-cta-group reveal reveal-delay-2">
-                      <a href="{{ route('products') }}" class="btn-primary"><span>Explore Collection</span></a>
-                      <a href="#" class="btn-ghost">
-                          Our Story
-                          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                              viewBox="0 0 24 24">
-                              <path d="M5 12h14M13 6l6 6-6 6" />
-                          </svg>
-                      </a>
-                  </div>
+              <div class="hero-slides" id="heroSlides">
 
-                  <div class="hero-stats reveal reveal-delay-3">
-                      <div>
-                          <div class="hero-stat-value">4.8k<span>+</span></div>
-                          <div class="hero-stat-label">Happy Clients</div>
-                      </div>
-                      <div class="hero-stat-divider"></div>
-                      <div>
-                          <div class="hero-stat-value">{{ $products->count() }}<span>+</span></div>
-                          <div class="hero-stat-label">Products</div>
-                      </div>
-                      <div class="hero-stat-divider"></div>
-                      <div>
-                          <div class="hero-stat-value">{{ $sellercount }}<span>+</span></div>
-                          <div class="hero-stat-label">Seller</div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="hero-right">
-                  <div class="hero-slider-container" id="heroSlider">
-                      @php
-                          $slidesToUse = (isset($heroSlides) && $heroSlides->count() > 0) ? $heroSlides : ((isset($flashProducts) && $flashProducts->count() > 0) ? $flashProducts : null);
-                      @endphp
-
-                      @if($slidesToUse && $slidesToUse->count() > 0)
-                          <div class="hero-slider-dots">
-                              @foreach ($slidesToUse as $index => $slide)
-                                  <div class="hero-dot {{ $index === 0 ? 'active' : '' }}" onclick="goToHeroSlide({{ $index }})">
-                                      <div class="hero-dot-progress"></div>
-                                  </div>
-                              @endforeach
-                          </div>
-
-                          <div class="hero-slider-nav">
-                              <button type="button" class="hero-nav-btn" onclick="prevHeroSlide()" aria-label="Previous slide">
-                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                      <path d="M15 18l-6-6 6-6" />
+                  <!-- Slide 1 : Marketplace Intro -->
+                  <div class="hero-slide active" data-index="0">
+                      <div class="hero-left">
+                          <span class="hero-eyebrow">Nepal's Multi-Vendor Marketplace</span>
+                          <h1 class="hero-headline">
+                              Everything <em>You</em><br>Need, All in<br>One Place
+                          </h1>
+                          <p class="hero-sub">From electronics and fashion to food, home essentials and
+                              more — discover thousands of products from trusted local sellers.</p>
+                          <div class="hero-cta-group">
+                              <a href="{{ route('products') }}" class="btn-primary"><span>Explore Collection</span></a>
+                              <a href="{{ route('our-story') }}" class="btn-ghost">
+                                  Our Story
+                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                      viewBox="0 0 24 24">
+                                      <path d="M5 12h14M13 6l6 6-6 6" />
                                   </svg>
-                              </button>
-                              <button type="button" class="hero-nav-btn" onclick="nextHeroSlide()" aria-label="Next slide">
-                                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                      <path d="M9 18l6-6-6-6" />
-                                  </svg>
-                              </button>
+                              </a>
                           </div>
 
-                          <div class="hero-slider-track" id="heroSliderTrack">
-                              @foreach ($slidesToUse as $index => $slide)
-                                  <div class="hero-slide {{ $index === 0 ? 'active' : '' }}" data-slide-index="{{ $index }}">
-                                      <img src="{{ $slide->main_image_url }}" alt="{{ $slide->name }}" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" />
-                                      <div class="hero-slide-overlay"></div>
-                                      <div class="hero-slide-card">
-                                           <div>
-                                               <div class="hero-slide-header">
-                                                   <span class="hero-slide-tag">⚡ Flash Sale • Live</span>
-                                                   @if ($slide->is_discounted)
-                                                       <span class="hero-slide-discount-badge">-{{ $slide->discount_percent }}% OFF</span>
-                                                   @endif
-                                               </div>
-                                               <div class="hero-slide-title" title="{{ $slide->name }}">{{ $slide->name }}</div>
-                                               <div class="hero-slide-vendor">
-                                                   <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                                       <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                                   </svg>
-                                                   By <strong>{{ $slide->seller->shop_name ?? $slide->seller->name ?? 'Verified Merchant' }}</strong>
-                                               </div>
-                                               <div class="hero-slide-pricing">
-                                                   <span class="hero-slide-price">Rs. {{ number_format($slide->effective_price, 2) }}</span>
-                                                   @if ($slide->is_discounted)
-                                                       <span class="hero-slide-oldprice">Rs. {{ number_format($slide->price, 2) }}</span>
-                                                   @endif
-                                               </div>
-                                           </div>
-                                           <div class="hero-slide-action">
-                                               <a href="{{ route('product', $slide->id) }}" class="hero-slide-btn">
-                                                   View Drop
-                                                   <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                       <path d="M5 12h14M13 6l6 6-6 6" />
-                                                   </svg>
-                                               </a>
-                                           </div>
-                                       </div>
-                                  </div>
-                              @endforeach
+                          <div class="hero-stats">
+                              <div>
+                                  <div class="hero-stat-value" data-count="4800" data-suffix="k+">4.8k+</div>
+                                  <div class="hero-stat-label">Happy Clients</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="{{ $products->count() }}" data-suffix="+">{{ $products->count() }}+</div>
+                                  <div class="hero-stat-label">Products</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="{{ $sellercount }}" data-suffix="+">{{ $sellercount }}+</div>
+                                  <div class="hero-stat-label">Seller</div>
+                              </div>
                           </div>
-                      @else
+                      </div>
+
+                      <div class="hero-right">
                           <div class="hero-img-container">
-                              <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&q=80&auto=format"
-                                  alt="Hero fashion" />
+                              <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=900&q=80&auto=format"
+                                  alt="Marketplace" />
                               <div class="hero-img-overlay"></div>
                           </div>
-                      @endif
+                      </div>
+                  </div>
+
+                  <!-- Slide 2 : Electronics -->
+                  <div class="hero-slide" data-index="1">
+                      <div class="hero-left">
+                          <span class="hero-eyebrow">Electronics</span>
+                          <h1 class="hero-headline">
+                              Smart Living,<br>Easy <em>Shopping</em>
+                          </h1>
+                          <p class="hero-sub">Phones, laptops, audio and gadgets — discover the latest tech from
+                              verified local sellers at the best prices.</p>
+                          <div class="hero-cta-group">
+                              <a href="{{ route('products') }}" class="btn-primary"><span>Shop Electronics</span></a>
+                              <a href="{{ route('categories') }}" class="btn-ghost">
+                                  All Categories
+                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                      viewBox="0 0 24 24">
+                                      <path d="M5 12h14M13 6l6 6-6 6" />
+                                  </svg>
+                              </a>
+                          </div>
+
+                          <div class="hero-stats">
+                              <div>
+                                  <div class="hero-stat-value" data-count="300" data-suffix="+">300+</div>
+                                  <div class="hero-stat-label">Gadgets</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="40" data-suffix="+">40+</div>
+                                  <div class="hero-stat-label">Brands</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="24" data-suffix="h">24h</div>
+                                  <div class="hero-stat-label">Express Delivery</div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="hero-right">
+                          <div class="hero-img-container">
+                              <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=900&q=80&auto=format"
+                                  alt="Electronics" />
+                              <div class="hero-img-overlay"></div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- Slide 3 : Fashion -->
+                  <div class="hero-slide" data-index="2">
+                      <div class="hero-left">
+                          <span class="hero-eyebrow">Fashion</span>
+                          <h1 class="hero-headline">
+                              Style That<br>Tells Your <em>Story</em>
+                          </h1>
+                          <p class="hero-sub">Men's and women's wear, shoes and accessories — curated looks from
+                              fashion brands you can trust.</p>
+                          <div class="hero-cta-group">
+                              <a href="{{ route('products', ['category' => 'mens-wear']) }}" class="btn-primary"><span>Shop Fashion</span></a>
+                              <a href="{{ route('products', ['category' => 'accessories']) }}" class="btn-ghost">
+                                  Accessories
+                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                      viewBox="0 0 24 24">
+                                      <path d="M5 12h14M13 6l6 6-6 6" />
+                                  </svg>
+                              </a>
+                          </div>
+
+                          <div class="hero-stats">
+                              <div>
+                                  <div class="hero-stat-value" data-count="500" data-suffix="+">500+</div>
+                                  <div class="hero-stat-label">Styles</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="80" data-suffix="+">80+</div>
+                                  <div class="hero-stat-label">Brands</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="7" data-suffix="d">7d</div>
+                                  <div class="hero-stat-label">New Drops</div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="hero-right">
+                          <div class="hero-img-container">
+                              <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&q=80&auto=format"
+                                  alt="Fashion" />
+                              <div class="hero-img-overlay"></div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- Slide 4 : Packaged Food -->
+                  <div class="hero-slide" data-index="3">
+                      <div class="hero-left">
+                          <span class="hero-eyebrow">Packaged Food</span>
+                          <h1 class="hero-headline">
+                              Packaged Goodness,<br>Ready to <em>Go</em>
+                          </h1>
+                          <p class="hero-sub">Snacks, instant meals, beverages and pantry staples — long-lasting
+                              packaged food from trusted brands, delivered to your door.</p>
+                          <div class="hero-cta-group">
+                              <a href="{{ route('products') }}" class="btn-primary"><span>Shop Packaged Food</span></a>
+                              <a href="{{ route('our-story') }}" class="btn-ghost">
+                                  Our Story
+                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                      viewBox="0 0 24 24">
+                                      <path d="M5 12h14M13 6l6 6-6 6" />
+                                  </svg>
+                              </a>
+                          </div>
+
+                          <div class="hero-stats">
+                              <div>
+                                  <div class="hero-stat-value" data-count="800" data-suffix="+">800+</div>
+                                  <div class="hero-stat-label">Items</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="60" data-suffix="+">60+</div>
+                                  <div class="hero-stat-label">Brands</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="24" data-suffix="h">24h</div>
+                                  <div class="hero-stat-label">Fast Delivery</div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="hero-right">
+                          <div class="hero-img-container">
+                              <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=900&q=80&auto=format"
+                                  alt="Packaged Food" />
+                              <div class="hero-img-overlay"></div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- Slide 5 : Home & Kitchen -->
+                  <div class="hero-slide" data-index="4">
+                      <div class="hero-left">
+                          <span class="hero-eyebrow">Home & Kitchen</span>
+                          <h1 class="hero-headline">
+                              Make Every<br>Corner <em>Count</em>
+                          </h1>
+                          <p class="hero-sub">Cookware, decor and appliances — everything you need to make your home
+                              feel like you.</p>
+                          <div class="hero-cta-group">
+                              <a href="{{ route('products') }}" class="btn-primary"><span>Shop Home & Kitchen</span></a>
+                              <a href="{{ route('categories') }}" class="btn-ghost">
+                                  All Categories
+                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                      viewBox="0 0 24 24">
+                                      <path d="M5 12h14M13 6l6 6-6 6" />
+                                  </svg>
+                              </a>
+                          </div>
+
+                          <div class="hero-stats">
+                              <div>
+                                  <div class="hero-stat-value" data-count="400" data-suffix="+">400+</div>
+                                  <div class="hero-stat-label">Items</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="30" data-suffix="+">30+</div>
+                                  <div class="hero-stat-label">Brands</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="30" data-suffix="d">30d</div>
+                                  <div class="hero-stat-label">Easy Returns</div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="hero-right">
+                          <div class="hero-img-container">
+                              <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?w=900&q=80&auto=format"
+                                  alt="Home & Kitchen" />
+                              <div class="hero-img-overlay"></div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- Slide 6 : Cosmetics -->
+                  <div class="hero-slide" data-index="5">
+                      <div class="hero-left">
+                          <span class="hero-eyebrow">Beauty & Cosmetics</span>
+                          <h1 class="hero-headline">
+                              Beauty From<br>Local <em>Brands</em>
+                          </h1>
+                          <p class="hero-sub">Skincare, makeup and wellness — shop safe, cruelty-free beauty from
+                              Nepal's own makers.</p>
+                          <div class="hero-cta-group">
+                              <a href="{{ route('products', ['category' => 'health-beauty']) }}" class="btn-primary"><span>Shop Cosmetics</span></a>
+                              <a href="{{ route('our-story') }}" class="btn-ghost">
+                                  Our Story
+                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                      viewBox="0 0 24 24">
+                                      <path d="M5 12h14M13 6l6 6-6 6" />
+                                  </svg>
+                              </a>
+                          </div>
+
+                          <div class="hero-stats">
+                              <div>
+                                  <div class="hero-stat-value" data-count="200" data-suffix="+">200+</div>
+                                  <div class="hero-stat-label">Products</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="25" data-suffix="+">25+</div>
+                                  <div class="hero-stat-label">Brands</div>
+                              </div>
+                              <div class="hero-stat-divider"></div>
+                              <div>
+                                  <div class="hero-stat-value" data-count="100" data-suffix="%">100%</div>
+                                  <div class="hero-stat-label">Cruelty-free</div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="hero-right">
+                          <div class="hero-img-container">
+                              <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=900&q=80&auto=format"
+                                  alt="Beauty & Cosmetics" />
+                              <div class="hero-img-overlay"></div>
+                          </div>
+                      </div>
                   </div>
               </div>
+
+              <!-- Controls -->
+              <button class="hero-arrow prev" onclick="moveHeroSlide(-1)" aria-label="Previous">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+              </button>
+              <button class="hero-arrow next" onclick="moveHeroSlide(1)" aria-label="Next">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+              </button>
+              <div class="hero-dots" id="heroDots"></div>
           </section>
 
           <!-- ─── MARQUEE ─── -->
           <div class="marquee-strip">
               <div class="marquee-inner">
-                  <span class="marquee-item">Sustainable Fashion <span class="dot"></span></span>
-                  <span class="marquee-item">Artisan Crafted <span class="dot"></span></span>
-                  <span class="marquee-item">Timeless Design <span class="dot"></span></span>
-                  <span class="marquee-item">Conscious Living <span class="dot"></span></span>
-                  <span class="marquee-item">Curated Selections <span class="dot"></span></span>
-                  <span class="marquee-item">Free Returns <span class="dot"></span></span>
-                  <span class="marquee-item">Sustainable Fashion <span class="dot"></span></span>
-                  <span class="marquee-item">Artisan Crafted <span class="dot"></span></span>
-                  <span class="marquee-item">Timeless Design <span class="dot"></span></span>
-                  <span class="marquee-item">Conscious Living <span class="dot"></span></span>
-                  <span class="marquee-item">Curated Selections <span class="dot"></span></span>
-                  <span class="marquee-item">Free Returns <span class="dot"></span></span>
+                  <span class="marquee-item">Thousands of Products <span class="dot"></span></span>
+                  <span class="marquee-item">Trusted Local Sellers <span class="dot"></span></span>
+                  <span class="marquee-item">Secure Payments <span class="dot"></span></span>
+                  <span class="marquee-item">Fast Delivery <span class="dot"></span></span>
+                  <span class="marquee-item">Easy Returns <span class="dot"></span></span>
+                  <span class="marquee-item">Every Category Covered <span class="dot"></span></span>
+                  <span class="marquee-item">Thousands of Products <span class="dot"></span></span>
+                  <span class="marquee-item">Trusted Local Sellers <span class="dot"></span></span>
+                  <span class="marquee-item">Secure Payments <span class="dot"></span></span>
+                  <span class="marquee-item">Fast Delivery <span class="dot"></span></span>
+                  <span class="marquee-item">Easy Returns <span class="dot"></span></span>
+                  <span class="marquee-item">Every Category Covered <span class="dot"></span></span>
               </div>
           </div>
 
@@ -2894,26 +3248,80 @@
               });
               reveals.forEach(r => revealObs.observe(r));
 
-              // ── HERO ENTRANCE
-              window.addEventListener('load', () => {
-                  const eyebrow = document.getElementById('heroEyebrow');
-                  setTimeout(() => {
-                      eyebrow.style.opacity = '1';
-                      eyebrow.style.transform = 'translateY(0)';
-                      eyebrow.style.transition = 'all 0.7s ease';
-                  }, 300);
-                  document.querySelectorAll('.hero .reveal').forEach((el, i) => {
-                      setTimeout(() => el.classList.add('visible'), 500 + i * 180);
-                  });
-                  const card = document.getElementById('heroCard');
-                  if (card) {
-                      setTimeout(() => {
-                          card.style.opacity = '1';
-                          card.style.transform = 'translateX(0)';
-                          card.style.transition = 'all 0.7s cubic-bezier(0.25,0.46,0.45,0.94)';
-                      }, 1100);
-                  }
+              // ── HERO SLIDESHOW
+              const heroSlides = document.querySelectorAll('.hero-slide');
+              const heroDotsWrap = document.getElementById('heroDots');
+              const heroWrap = document.getElementById('hero');
+              let currentSlide = 0;
+              let heroTimer = null;
+              let slideLock = false;
+
+              heroSlides.forEach((_, i) => {
+                  const dot = document.createElement('button');
+                  dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
+                  dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+                  dot.onclick = () => goToSlide(i);
+                  heroDotsWrap.appendChild(dot);
               });
+
+              const heroDots = heroDotsWrap.querySelectorAll('.hero-dot');
+
+              function goToSlide(index) {
+                  if (slideLock) return;
+                  slideLock = true;
+                  currentSlide = (index + heroSlides.length) % heroSlides.length;
+                  heroSlides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+                  heroDots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+                  setTimeout(() => { slideLock = false; }, 950);
+              }
+
+              window.moveHeroSlide = function (dir) {
+                  goToSlide(currentSlide + dir);
+                  restartHeroTimer();
+              };
+
+              function restartHeroTimer() {
+                  if (heroTimer) clearInterval(heroTimer);
+                  heroTimer = setInterval(() => goToSlide(currentSlide + 1), 6000);
+              }
+
+              if (heroWrap && heroSlides.length > 1) {
+                  heroWrap.addEventListener('mouseenter', () => {
+                      if (heroTimer) clearInterval(heroTimer);
+                  });
+                  heroWrap.addEventListener('mouseleave', restartHeroTimer);
+                  restartHeroTimer();
+              }
+
+              // ── HERO STAT COUNTER (per-slide)
+              function animateCount(el, target, suffix = '') {
+                  let start = 0;
+                  const step = Math.max(target / 40, 1);
+                  const timer = setInterval(() => {
+                      start = Math.min(start + step, target);
+                      el.textContent = Math.round(start) + suffix;
+                      if (start >= target) clearInterval(timer);
+                  }, 28);
+              }
+
+              function runSlideCounters(slide) {
+                  slide.querySelectorAll('.hero-stat-value[data-count]').forEach((el, i) => {
+                      const target = parseInt(el.dataset.count, 10) || 0;
+                      const suffix = el.dataset.suffix || '+';
+                      setTimeout(() => animateCount(el, target, suffix), 200 + i * 120);
+                  });
+              }
+
+              window.addEventListener('load', () => {
+                  runSlideCounters(heroSlides[0]);
+              });
+              const heroSlideObs = new MutationObserver(() => {
+                  const active = document.querySelector('.hero-slide.active');
+                  if (active) runSlideCounters(active);
+              });
+              if (heroSlides.length) {
+                  heroSlideObs.observe(document.getElementById('heroSlides'), { attributes: true, attributeFilter: ['class'] });
+              }
 
               // ── MOBILE MENU
               let menuOpen = false;
@@ -3029,35 +3437,6 @@
               });
               document.querySelector('.countdown-section') && barObs.observe(document.querySelector('.countdown-section'));
 
-              // ── COUNTER ANIMATION (stats)
-              function animateCount(el, target, suffix = '') {
-                  let start = 0;
-                  const step = target / 60;
-                  const timer = setInterval(() => {
-                      start = Math.min(start + step, target);
-                      el.textContent = Math.round(start) + suffix;
-                      if (start >= target) clearInterval(timer);
-                  }, 24);
-              }
-              const statObs = new IntersectionObserver(entries => {
-                  entries.forEach(e => {
-                      if (e.isIntersecting) {
-                          const hero = document.querySelector('.hero');
-                          if (hero) {
-                              const nums = hero.querySelectorAll('.font-display');
-                              if (nums[0]) animateCount(nums[0], 4800, '+');
-                              if (nums[1]) animateCount(nums[1], 360, '+');
-                              if (nums[2]) animateCount(nums[2], 12, '+');
-                          }
-                          statObs.disconnect();
-                      }
-                  });
-              }, {
-                  threshold: 0.6
-              });
-              const heroStats = document.querySelector('.hero .font-display');
-              if (heroStats) statObs.observe(heroStats.closest('.flex') || heroStats);
-
               // ── seller CARD HOVER GLOW
               document.querySelectorAll('.seller-card').forEach(card => {
                   card.addEventListener('mousemove', e => {
@@ -3124,130 +3503,6 @@
               document.querySelectorAll('.reco-chip').forEach(chip => {
                   chip.addEventListener('click', () => addToCart(chip));
               });
-
-              // ── HERO 2-SECOND HORIZONTAL SLIDING FLOW ──
-              (function() {
-                  let currentHeroSlide = 0;
-                  const track = document.getElementById('heroSliderTrack');
-                  const heroSlides = document.querySelectorAll('.hero-slide');
-                  const heroDots = document.querySelectorAll('.hero-dot');
-                  const totalHeroSlides = heroSlides.length;
-                  let heroSlideTimer = null;
-
-                  if (totalHeroSlides <= 1) return;
-
-                  function updateHeroDots() {
-                      heroDots.forEach((dot, idx) => {
-                          const bar = dot.querySelector('.hero-dot-progress');
-                          if (bar) {
-                              bar.style.transition = 'none';
-                              bar.style.width = '0%';
-                          }
-                          dot.classList.toggle('active', idx === currentHeroSlide);
-                      });
-
-                      const activeDot = heroDots[currentHeroSlide];
-                      if (activeDot) {
-                          const activeBar = activeDot.querySelector('.hero-dot-progress');
-                          if (activeBar) {
-                              void activeBar.offsetWidth; // Force reflow
-                              activeBar.style.transition = 'width 2s linear';
-                              activeBar.style.width = '100%';
-                          }
-                      }
-                  }
-
-                  function showHeroSlide(index) {
-                      currentHeroSlide = (index + totalHeroSlides) % totalHeroSlides;
-                      if (track) {
-                          track.style.transform = `translateX(-${currentHeroSlide * 100}%)`;
-                      }
-                      heroSlides.forEach((slide, idx) => {
-                          slide.classList.toggle('active', idx === currentHeroSlide);
-                      });
-                      updateHeroDots();
-                  }
-
-                  window.nextHeroSlide = function() {
-                      showHeroSlide(currentHeroSlide + 1);
-                      startHeroAutoTimer();
-                  };
-
-                  window.prevHeroSlide = function() {
-                      showHeroSlide(currentHeroSlide - 1);
-                      startHeroAutoTimer();
-                  };
-
-                  window.goToHeroSlide = function(index) {
-                      showHeroSlide(index);
-                      startHeroAutoTimer();
-                  };
-
-                  function startHeroAutoTimer() {
-                      if (heroSlideTimer) clearInterval(heroSlideTimer);
-                      heroSlideTimer = setInterval(() => {
-                          showHeroSlide(currentHeroSlide + 1);
-                      }, 2000); // ⚡ Auto-slides horizontally every 2 seconds in infinite loop
-                  }
-
-                  // Initial setup
-                  showHeroSlide(0);
-                  startHeroAutoTimer();
-
-                  // Pause on hover
-                  const sliderWrap = document.getElementById('heroSlider');
-                  if (sliderWrap) {
-                      sliderWrap.addEventListener('mouseenter', () => {
-                          if (heroSlideTimer) clearInterval(heroSlideTimer);
-                          const activeDot = heroDots[currentHeroSlide];
-                          if (activeDot) {
-                              const activeBar = activeDot.querySelector('.hero-dot-progress');
-                              if (activeBar) {
-                                  const computedWidth = window.getComputedStyle(activeBar).width;
-                                  activeBar.style.transition = 'none';
-                                  activeBar.style.width = computedWidth;
-                              }
-                          }
-                      });
-                      sliderWrap.addEventListener('mouseleave', () => {
-                          startHeroAutoTimer();
-                          const activeDot = heroDots[currentHeroSlide];
-                          if (activeDot) {
-                              const activeBar = activeDot.querySelector('.hero-dot-progress');
-                              if (activeBar) {
-                                  activeBar.style.transition = 'width 2s linear';
-                                  activeBar.style.width = '100%';
-                              }
-                          }
-                      });
-
-                      // Touch swipe support for mobile
-                      let touchStartX = 0;
-                      let touchEndX = 0;
-
-                      sliderWrap.addEventListener('touchstart', (e) => {
-                          touchStartX = e.changedTouches[0].screenX;
-                      }, { passive: true });
-
-                      sliderWrap.addEventListener('touchend', (e) => {
-                          touchEndX = e.changedTouches[0].screenX;
-                          if (touchStartX - touchEndX > 45) {
-                              nextHeroSlide();
-                          } else if (touchEndX - touchStartX > 45) {
-                              prevHeroSlide();
-                          }
-                      }, { passive: true });
-                  }
-
-                  // Pause when tab is not visible
-                  document.addEventListener('visibilitychange', () => {
-                      if (document.hidden) {
-                          if (heroSlideTimer) clearInterval(heroSlideTimer);
-                      } else {
-                          startHeroAutoTimer();
-                      }
-                  });
-              })();
 
               // ── VENDOR FRESH DROPS FLOWING CAROUSEL ──
               (function() {

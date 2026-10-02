@@ -98,6 +98,16 @@ class PageController extends Controller
         return view('frontend.products', compact('products', 'categories'));
     }
 
+    public function ourStory()
+    {
+        return view('frontend.our-story');
+    }
+
+    public function faq()
+    {
+        return view('frontend.faq');
+    }
+
     public function product($id)
     {
         $product = Product::with([

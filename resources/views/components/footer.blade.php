@@ -245,22 +245,19 @@
         <div>
             <div class="footer-col-title">Company</div>
             <ul class="footer-links">
-                <li><a href="#">Our Story</a></li>
+                <li><a href="{{ route('our-story') }}">Our Story</a></li>
                 <li><a href="#">Contact</a></li>
-                <li><a href="{{ route('seller.index') }}">Become a Vendor</a></li>
-
             </ul>
         </div>
 
         <div>
             <div class="footer-col-title">Customer Service</div>
             <ul class="footer-links">
-                <li><a href="#">FAQ</a></li>
+                <li><a href="{{ route('faq') }}">FAQ</a></li>
                 <li><a href="#">Shipping & Returns</a></li>
-                <li><a href="#">Size Guide</a></li>
                 <li><a href="#">Track Order</a></li>
+                <li><a href="#">Sell on MeroBazar</a></li>
                 <li><a href="#">Gift Cards</a></li>
-                <li><a href="#">Loyalty Program</a></li>
             </ul>
         </div>
     </div>

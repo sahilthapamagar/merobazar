@@ -99,15 +99,10 @@
     }
 
     .nav-logo-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        background: linear-gradient(135deg, var(--primary) 0%, #2B1F14 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--accent);
-        box-shadow: 0 4px 12px rgba(73, 54, 40, 0.2);
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        border-radius: 4px;
         transition: transform 0.3s ease;
     }
 
@@ -121,22 +116,20 @@
     }
 
     .nav-logo-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.65rem;
-        font-weight: 600;
-        letter-spacing: 0.22em;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
         color: var(--primary);
-        text-transform: uppercase;
         line-height: 1;
     }
 
-    .nav-logo-subtitle {
-        font-size: 0.58rem;
-        letter-spacing: 0.28em;
-        text-transform: uppercase;
-        color: var(--secondary);
-        font-weight: 600;
-        margin-top: 2px;
+    .logo-mero {
+        color: #1a2538;
+    }
+
+    .logo-bazar {
+        color: #f47920;
     }
 
     /* ─── NAVIGATION LINKS ─── */
@@ -644,17 +637,8 @@
     <nav id="navbar">
         <!-- Brand Logo -->
         <a href="{{ route('home') }}" class="nav-brand" aria-label="MeroBazar Home">
-            <div class="nav-logo-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                    <polyline points="2 17 12 22 22 17"></polyline>
-                    <polyline points="2 12 12 17 22 12"></polyline>
-                </svg>
-            </div>
-            <div class="nav-logo-text">
-                <span class="nav-logo-title">MeroBazar</span>
-                <span class="nav-logo-subtitle">Curated Nepal</span>
-            </div>
+            <img src="/images/logo.png" class="nav-logo-icon" alt="MeroBazar icon">
+            <span class="nav-logo-title"><span class="logo-mero">Mero</span><span class="logo-bazar">Bazar</span></span>
         </a>
 
         <!-- Central Nav Links -->
@@ -804,12 +788,8 @@
     <div class="mobile-menu-panel">
         <div class="mobile-menu-header">
             <div class="nav-brand">
-                <div class="nav-logo-icon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                    </svg>
-                </div>
-                <span class="nav-logo-title" style="font-size:1.35rem">MeroBazar</span>
+                <img src="/images/logo.png" class="nav-logo-icon" alt="MeroBazar icon" style="width:34px;height:34px">
+                <span class="nav-logo-title" style="font-size:1.35rem"><span class="logo-mero">Mero</span><span class="logo-bazar">Bazar</span></span>
             </div>
             <button type="button" class="nav-btn-icon" onclick="toggleMobileDrawer()" aria-label="Close Menu">
                 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

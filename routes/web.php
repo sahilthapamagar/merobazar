@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Frontend\AddToCart;
 use App\Http\Controllers\Frontend\BuyingHistoryController;
 use App\Http\Controllers\Frontend\CartController;
@@ -14,6 +15,10 @@ Route::get('/', [PageController::class, 'index'])->name('home');
 Route::get('/categories', [PageController::class, 'categories'])->name('categories');
 
 Route::get('/products', [PageController::class, 'products'])->name('products');
+
+Route::get('/our-story', [PageController::class, 'ourStory'])->name('our-story');
+
+Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 
 Route::get('/product/{id}', [PageController::class, 'product'])->name('product');
 
@@ -37,6 +42,11 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/order/{order}/item/{orderItem}/review', [ReviewController::class, 'store'])->name('review.store');
 });
+
+Route::post('/chat/session', [ChatController::class, 'startSession'])->name('chat.session');
+Route::post('/chat/message', [ChatController::class, 'sendMessage'])->name('chat.message');
+Route::post('/chat/escalate', [ChatController::class, 'escalateToHuman'])->name('chat.escalate');
+Route::get('/chat/messages/{id}', [ChatController::class, 'getMessages'])->name('chat.messages');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -19,27 +19,27 @@ class CategorySeeder extends Seeder
             [
                 'name' => "Men's Wear",
                 'slug' => 'mens-wear',
-                'image' => 'category/mens-wear.jpg',
+                'image' => 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=700&q=80&auto=format',
             ],
             [
                 'name' => "Women's Wear",
                 'slug' => 'womens-wear',
-                'image' => 'category/womens-wear.jpg',
+                'image' => 'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=700&q=80&auto=format',
             ],
             [
                 'name' => 'Shoes',
                 'slug' => 'shoes',
-                'image' => 'category/shoes.jpg',
+                'image' => 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=700&q=80&auto=format',
             ],
             [
                 'name' => 'Accessories',
                 'slug' => 'accessories',
-                'image' => 'category/accessories.jpg',
+                'image' => 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&q=80&auto=format',
             ],
             [
                 'name' => 'Health & Beauty',
                 'slug' => 'health-beauty',
-                'image' => 'category/health-beauty.jpg',
+                'image' => 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=700&q=80&auto=format',
             ],
         ];
 
