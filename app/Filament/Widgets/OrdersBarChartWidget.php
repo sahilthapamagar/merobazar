@@ -23,6 +23,7 @@ class OrdersBarChartWidget extends ChartWidget
     protected array $statusStyles = [
         'pending' => ['Pending', '#F59E0B'],
         'processing' => ['Processing', '#3B82F6'],
+        'shipped' => ['Shipped', '#6366F1'],
         'delivered' => ['Delivered', '#10B981'],
         'cancelled' => ['Cancelled', '#EF4444'],
     ];
@@ -55,7 +56,7 @@ class OrdersBarChartWidget extends ChartWidget
         $counts = Order::query()
             ->where('created_at', '>=', $start)
             ->get(['created_at', 'status'])
-            ->countBy(fn (Order $order) => $order->created_at->format('Y-m') . '|' . $order->status);
+            ->countBy(fn (Order $order) => $order->created_at->format('Y-m').'|'.$order->status);
 
         $labels = [];
         $months = [];
@@ -74,7 +75,7 @@ class OrdersBarChartWidget extends ChartWidget
                 'backgroundColor' => $color,
                 'borderWidth' => 0,
                 'data' => array_map(
-                    fn (string $month): int => (int) $counts->get($month . '|' . $status, 0),
+                    fn (string $month): int => (int) $counts->get($month.'|'.$status, 0),
                     $months,
                 ),
             ];

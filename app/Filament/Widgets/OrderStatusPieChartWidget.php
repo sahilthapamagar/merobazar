@@ -30,6 +30,7 @@ class OrderStatusPieChartWidget extends ChartWidget
         $statuses = [
             'pending' => 'Pending',
             'processing' => 'Processing',
+            'shipped' => 'Shipped',
             'delivered' => 'Delivered',
             'cancelled' => 'Cancelled',
         ];
@@ -49,6 +50,7 @@ class OrderStatusPieChartWidget extends ChartWidget
                     'backgroundColor' => [
                         '#F59E0B', // pending
                         '#3B82F6', // processing
+                        '#6366F1', // shipped
                         '#10B981', // delivered
                         '#EF4444', // cancelled
                     ],

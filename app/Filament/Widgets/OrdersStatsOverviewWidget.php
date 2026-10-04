@@ -30,7 +30,7 @@ class OrdersStatsOverviewWidget extends StatsOverviewWidget
                 ->description('All sellers, all time')
                 ->icon(Heroicon::ShoppingBag)
                 ->color('primary'),
-            Stat::make('Total Revenue', 'Rs ' . number_format($revenue, 2))
+            Stat::make('Total Revenue', 'Rs '.number_format($revenue, 2))
                 ->description('Across all orders')
                 ->icon(Heroicon::Banknotes)
                 ->color('success'),
@@ -39,7 +39,7 @@ class OrdersStatsOverviewWidget extends StatsOverviewWidget
                 ->icon(Heroicon::Clock)
                 ->color('warning'),
             Stat::make('Delivered', $delivered)
-                ->description($cancelled . ' cancelled')
+                ->description($cancelled.' cancelled')
                 ->icon(Heroicon::CheckCircle)
                 ->color('success'),
         ];

@@ -15,7 +15,7 @@ class RecentContactMessagesWidget extends TableWidget
 
     protected static bool $isLazy = true;
 
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
 
     public function table(Table $table): Table
     {
