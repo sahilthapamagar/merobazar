@@ -376,6 +376,7 @@ function chatWidget() {
                 });
                 const data = await res.json();
                 this.sessionId = data.session_id;
+                this.status = data.status || 'bot';
                 await this.loadMessages();
                 this.startPolling();
             } catch (e) {
@@ -393,10 +394,16 @@ function chatWidget() {
                 const res = await fetch(url, {
                     headers: { 'Accept': 'application/json' },
                 });
+                if (!res.ok) return;
                 const data = await res.json();
-                if (data.length) {
-                    this.messages.push(...data);
-                    this.lastMessageId = data[data.length - 1].id;
+                if (data.status) {
+                    this.status = data.status;
+                    if (data.status === 'live') this.escalated = true;
+                }
+                const incoming = Array.isArray(data) ? data : (data.messages || []);
+                if (incoming.length) {
+                    this.messages.push(...incoming);
+                    this.lastMessageId = incoming[incoming.length - 1].id;
                     this.$nextTick(() => this.scrollToBottom());
                 }
             } catch (e) {
@@ -435,11 +442,11 @@ function chatWidget() {
                     }),
                 });
                 const data = await res.json();
-                await this.loadMessages();
-
-                if (data.sender_type === 'bot' && text.toLowerCase().includes('human')) {
-                    await this.escalateToHuman();
+                if (data.status === 'live') {
+                    this.status = 'live';
+                    this.escalated = true;
                 }
+                await this.loadMessages();
             } catch (e) {
                 console.error('Failed to send message', e);
                 this.errorMsg = 'Failed to send. Please try again.';
@@ -482,9 +489,20 @@ function chatWidget() {
         handleScroll() {
         },
 
+        escapeHtml(text) {
+            return String(text).replace(/[&<>"']/g, (ch) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
+            }[ch]));
+        },
+
         formatMessage(text) {
+            text = this.escapeHtml(text);
             text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+            text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
             return text;
         },
 

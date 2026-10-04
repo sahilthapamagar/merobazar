@@ -255,7 +255,7 @@
                 </div>
                 <div class="contact-card-title">Call Us</div>
                 <p class="contact-card-text">
-                    <a href="tel:+9779800000000">+977 980-000-0000</a><br>
+                    <a href="tel:+9779811982070">+977 9811982070</a><br>
                     Sun – Fri, 9AM – 6PM NPT
                 </p>
             </div>
