@@ -95,15 +95,12 @@ class Order extends Model
         // Keep the delivery timestamps in step with the status so the customer
         // tracking timeline never has to be filled in by hand.
         static::saved(function (Order $order) {
-            if ($order->status === 'processing' && $order->shipped_at === null) {
+            if (in_array($order->status, ['shipped', 'delivered'], true) && $order->shipped_at === null) {
                 $order->forceFill(['shipped_at' => now()])->saveQuietly();
             }
 
             if ($order->status === 'delivered' && $order->delivered_at === null) {
-                $order->forceFill([
-                    'delivered_at' => now(),
-                    'shipped_at' => $order->shipped_at ?? now(),
-                ])->saveQuietly();
+                $order->forceFill(['delivered_at' => now()])->saveQuietly();
             }
         });
     }

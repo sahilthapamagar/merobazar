@@ -98,8 +98,12 @@ class OrderSeeder extends Seeder
             return 'pending';
         }
 
-        if ($roll <= 92) {
+        if ($roll <= 90) {
             return 'processing';
+        }
+
+        if ($roll <= 96) {
+            return 'shipped';
         }
 
         return 'cancelled';

@@ -4,32 +4,36 @@ use App\Models\Order;
 use App\Models\Seller;
 use App\Models\User;
 
-it('stamps shipped_at the first time an order moves to processing', function () {
-    $order = Order::create([
+function newOrder(array $attributes = []): Order
+{
+    return Order::create(array_merge([
         'user_id' => User::factory()->create()->id,
         'seller_id' => Seller::factory()->create()->id,
         'status' => 'pending',
         'payment_status' => 'pending',
         'total_amount' => 1000,
         'payment_method' => 'cod',
-    ]);
+    ], $attributes));
+}
 
-    expect($order->shipped_at)->toBeNull();
+it('does not stamp shipped_at while an order is only being processed', function () {
+    $order = newOrder();
 
     $order->update(['status' => 'processing']);
+
+    expect($order->fresh()->shipped_at)->toBeNull();
+});
+
+it('stamps shipped_at when an order moves to shipped', function () {
+    $order = newOrder();
+
+    $order->update(['status' => 'shipped']);
 
     expect($order->fresh()->shipped_at)->not->toBeNull();
 });
 
 it('stamps delivered_at when an order is marked delivered', function () {
-    $order = Order::create([
-        'user_id' => User::factory()->create()->id,
-        'seller_id' => Seller::factory()->create()->id,
-        'status' => 'pending',
-        'payment_status' => 'pending',
-        'total_amount' => 1000,
-        'payment_method' => 'cod',
-    ]);
+    $order = newOrder();
 
     $order->update(['status' => 'delivered']);
 
@@ -40,17 +44,12 @@ it('stamps delivered_at when an order is marked delivered', function () {
 });
 
 it('keeps the original shipped_at on later status changes', function () {
-    $order = Order::create([
-        'user_id' => User::factory()->create()->id,
-        'seller_id' => Seller::factory()->create()->id,
-        'status' => 'pending',
-        'payment_status' => 'pending',
-        'total_amount' => 1000,
-        'payment_method' => 'cod',
-    ]);
+    $order = newOrder();
 
-    $order->update(['status' => 'processing']);
+    $order->update(['status' => 'shipped']);
     $firstShippedAt = $order->fresh()->shipped_at;
+
+    expect($firstShippedAt)->not->toBeNull();
 
     $order->update(['status' => 'delivered']);
 
@@ -58,14 +57,7 @@ it('keeps the original shipped_at on later status changes', function () {
 });
 
 it('leaves the timestamps alone for a cancelled order', function () {
-    $order = Order::create([
-        'user_id' => User::factory()->create()->id,
-        'seller_id' => Seller::factory()->create()->id,
-        'status' => 'pending',
-        'payment_status' => 'pending',
-        'total_amount' => 1000,
-        'payment_method' => 'cod',
-    ]);
+    $order = newOrder();
 
     $order->update(['status' => 'cancelled']);
 
@@ -74,13 +66,9 @@ it('leaves the timestamps alone for a cancelled order', function () {
 });
 
 it('exposes the delivery address for a guest order', function () {
-    $order = Order::create([
+    $order = newOrder([
         'user_id' => null,
-        'seller_id' => Seller::factory()->create()->id,
-        'status' => 'pending',
-        'payment_status' => 'pending',
         'total_amount' => 2500,
-        'payment_method' => 'cod',
         'billing_name' => 'Guest Shopper',
         'billing_phone' => '9812345678',
         'billing_address' => 'Balkhu, Ward 4',
@@ -93,15 +81,10 @@ it('exposes the delivery address for a guest order', function () {
 });
 
 it('stores the discount breakdown on the order', function () {
-    $order = Order::create([
-        'user_id' => User::factory()->create()->id,
-        'seller_id' => Seller::factory()->create()->id,
-        'status' => 'pending',
-        'payment_status' => 'pending',
+    $order = newOrder([
         'subtotal_amount' => 2000,
         'discount_amount' => 250,
         'total_amount' => 1750,
-        'payment_method' => 'cod',
     ]);
 
     expect((float) $order->discount_amount)->toBe(250.0)
