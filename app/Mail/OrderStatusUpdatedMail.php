@@ -33,7 +33,8 @@ class OrderStatusUpdatedMail extends Mailable
         $subject = match ($this->status) {
             'cancelled' => "MeroBazar - Order #{$this->order->id} Has Been Cancelled",
             'delivered' => "MeroBazar - Order #{$this->order->id} Has Been Delivered",
-            'processing' => "MeroBazar - Order #{$this->order->id} is Now Processing & On The Way",
+            'processing' => "MeroBazar - Order #{$this->order->id} is Now Processing",
+            'shipped' => "MeroBazar - Order #{$this->order->id} Has Shipped & Is On The Way",
             default => "MeroBazar - Order #{$this->order->id} Status: Pending (Order Placed)",
         };
 

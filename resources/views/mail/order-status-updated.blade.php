@@ -36,6 +36,10 @@
             background: linear-gradient(135deg, #1e3a8a, #2563eb);
         }
 
+        .header.bg-shipped {
+            background: linear-gradient(135deg, #3730a3, #4f46e5);
+        }
+
         .header.bg-delivered {
             background: linear-gradient(135deg, #065f46, #059669);
         }
@@ -84,6 +88,12 @@
             background: #eff6ff;
             color: #1d4ed8;
             border: 1px solid #bfdbfe;
+        }
+
+        .status-shipped {
+            background: #eef2ff;
+            color: #4338ca;
+            border: 1px solid #c7d2fe;
         }
 
         .status-delivered {
@@ -265,14 +275,16 @@
         
         $headerTitle = match($st) {
             'cancelled' => 'Order Cancelled',
-            'processing' => 'Order Processing & On The Way',
+            'processing' => 'Order Being Processed',
+            'shipped' => 'Order Shipped & On The Way',
             'delivered' => 'Order Delivered Successfully',
             default => 'Order Status Update'
         };
 
         $headerSubtitle = match($st) {
             'cancelled' => "Your order #{$order->id} from {$seller->shop_name} has been cancelled",
-            'processing' => "Your order #{$order->id} from {$seller->shop_name} is being processed & on the way",
+            'processing' => "Your order #{$order->id} from {$seller->shop_name} is being prepared",
+            'shipped' => "Your order #{$order->id} from {$seller->shop_name} is on its way to you",
             'delivered' => "Your order #{$order->id} from {$seller->shop_name} has arrived",
             default => "Your order #{$order->id} from {$seller->shop_name} is pending review"
         };
@@ -280,6 +292,7 @@
         $badgeClass = match($st) {
             'cancelled' => 'status-cancelled',
             'processing' => 'status-processing',
+            'shipped' => 'status-shipped',
             'delivered' => 'status-delivered',
             default => 'status-pending'
         };
@@ -287,27 +300,31 @@
         $headerBgClass = match($st) {
             'cancelled' => 'bg-cancelled',
             'processing' => 'bg-processing',
+            'shipped' => 'bg-shipped',
             'delivered' => 'bg-delivered',
             default => 'bg-pending'
         };
 
         $statusIcon = match($st) {
             'cancelled' => '❌',
-            'processing' => '📦',
+            'processing' => '📋',
+            'shipped' => '🚚',
             'delivered' => '✅',
             default => '⏳'
         };
 
         $statusLabel = match($st) {
             'cancelled' => 'Order Cancelled',
-            'processing' => 'Processing & On The Way',
+            'processing' => 'Processing',
+            'shipped' => 'Shipped & On The Way',
             'delivered' => 'Delivered',
             default => 'Pending (Order Placed)'
         };
 
         $messageText = match($st) {
             'cancelled' => "We are writing to notify you that your Order #{$order->id} from {$seller->shop_name} has been cancelled by the seller. If you have already made payment or have questions, please reach out directly to the seller or support.",
-            'processing' => "Great news! Your Order #{$order->id} from {$seller->shop_name} is being processed and is currently on its way to your delivery address.",
+            'processing' => "Great news! Your Order #{$order->id} from {$seller->shop_name} is being prepared and will be dispatched shortly.",
+            'shipped' => "Great news! Your Order #{$order->id} from {$seller->shop_name} has shipped and is on its way to your delivery address.",
             'delivered' => "Your Order #{$order->id} from {$seller->shop_name} has been marked as Delivered! Thank you for shopping with MeroBazar. We hope you enjoy your purchase.",
             default => "Your Order #{$order->id} from {$seller->shop_name} is currently pending confirmation from the seller."
         };
@@ -328,7 +345,7 @@
                 </span>
             </div>
 
-            <h2 class="welcome-title">Hello {{ $user->name ?? 'Customer' }},</h2>
+            <h2 class="welcome-title">Hello {{ $user->name ?? $order->billing_name ?? 'Customer' }},</h2>
             <p class="welcome-text">
                 {{ $messageText }}
             </p>
@@ -356,7 +373,7 @@
                 </div>
                 <div class="order-row">
                     <span class="label">Current Status</span>
-                    <span class="value" style="color: {{ $st === 'cancelled' ? '#b91c1c' : ($st === 'delivered' ? '#047857' : ($st === 'processing' ? '#1d4ed8' : '#a16207')) }};">
+                    <span class="value" style="color: {{ $st === 'cancelled' ? '#b91c1c' : ($st === 'delivered' ? '#047857' : ($st === 'processing' ? '#1d4ed8' : ($st === 'shipped' ? '#4338ca' : '#a16207'))) }};">
                         {{ $statusLabel }}
                     </span>
                 </div>
@@ -364,10 +381,17 @@
                     <span class="label">Payment Method</span>
                     <span class="value">{{ strtoupper($order->payment_method ?? 'COD') }}</span>
                 </div>
-                @if($order->user?->deliveryAddresses)
+                @php
+                    $deliveryAddress = $order->user?->deliveryAddresses?->address_detail
+                        ?? $order->shipping_address
+                        ?? $order->billing_address;
+                    $deliveryContact = $order->user?->deliveryAddresses?->contact
+                        ?? $order->billing_phone;
+                @endphp
+                @if($deliveryAddress)
                 <div class="order-row">
                     <span class="label">Delivery Address</span>
-                    <span class="value">{{ $order->user->deliveryAddresses->address_detail }} ({{ $order->user->deliveryAddresses->contact }})</span>
+                    <span class="value">{{ $deliveryAddress }}@if($deliveryContact) ({{ $deliveryContact }})@endif</span>
                 </div>
                 @endif
             </div>

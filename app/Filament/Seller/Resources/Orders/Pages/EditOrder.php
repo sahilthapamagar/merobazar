@@ -25,25 +25,31 @@ class EditOrder extends EditRecord
     {
         $order = $this->record;
 
+        // Guest checkouts have no account, so they are emailed the address they
+        // gave at checkout instead.
+        $recipient = $order->user?->email ?: $order->billing_email;
+
         // Automatically email the buyer whenever save changes is clicked
-        if ($order->user && ! empty($order->user->email)) {
-            try {
-                Mail::to($order->user->email)->send(new OrderStatusUpdatedMail($order, null, $order->status));
+        if (! $recipient) {
+            return;
+        }
 
-                Notification::make()
-                    ->title('Order Saved & Customer Notified')
-                    ->body("Order status set to '{$order->status}'. Status email sent automatically to {$order->user->email}.")
-                    ->success()
-                    ->send();
-            } catch (\Throwable $e) {
-                Log::error('Order status update mail error: '.$e->getMessage());
+        try {
+            Mail::to($recipient)->send(new OrderStatusUpdatedMail($order, null, $order->status));
 
-                Notification::make()
-                    ->title('Order Saved (Email Failed)')
-                    ->body("Order saved, but email could not be delivered: ".$e->getMessage())
-                    ->warning()
-                    ->send();
-            }
+            Notification::make()
+                ->title('Order Saved & Customer Notified')
+                ->body("Order status set to '{$order->status}'. Status email sent automatically to {$recipient}.")
+                ->success()
+                ->send();
+        } catch (\Throwable $e) {
+            Log::error('Order status update mail error: '.$e->getMessage());
+
+            Notification::make()
+                ->title('Order Saved (Email Failed)')
+                ->body('Order saved, but email could not be delivered: '.$e->getMessage())
+                ->warning()
+                ->send();
         }
     }
 }
