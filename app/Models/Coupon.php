@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Coupon extends Model
 {
@@ -54,7 +55,32 @@ class Coupon extends Model
             return false;
         }
 
+        if ($this->per_user_limit !== null && $this->userHasReachedLimit()) {
+            return false;
+        }
+
         return $amount >= (float) $this->min_spend;
+    }
+
+    /**
+     * Has this shopper already spent the per-customer allowance?
+     */
+    public function userHasReachedLimit(?User $user = null): bool
+    {
+        if ($this->per_user_limit === null) {
+            return false;
+        }
+
+        $user ??= Auth::user();
+
+        if (! $user) {
+            return false;
+        }
+
+        return $user->orders()
+            ->where('coupon_id', $this->id)
+            ->where('status', '!=', 'cancelled')
+            ->count() >= $this->per_user_limit;
     }
 
     public function discountFor(float $amount): float

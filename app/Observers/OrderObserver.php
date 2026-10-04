@@ -22,6 +22,12 @@ class OrderObserver
      */
     public function created(Order $order): void
     {
+        // Cash on delivery is a committed order the moment it is placed, so the
+        // coupon is spent straight away. Khalti waits for the payment callback.
+        if ($order->payment_method === 'cod' || $this->isPaid($order)) {
+            $this->consumeCoupon($order);
+        }
+
         if ($order->payment_method === 'khalti' && ! $this->isPaid($order)) {
             return;
         }
@@ -36,8 +42,20 @@ class OrderObserver
     {
         // A Khalti order only becomes a real purchase once the payment completes.
         if ($order->payment_method === 'khalti' && $order->wasChanged('payment_status') && $this->isPaid($order)) {
+            $this->consumeCoupon($order);
             $this->notifyOrderPlaced($order);
         }
+    }
+
+    /**
+     * Spend the coupon once, when the order it was applied to becomes real.
+     *
+     * An abandoned or failed Khalti checkout never reaches here, so it leaves
+     * the coupon available for the shopper to try again.
+     */
+    protected function consumeCoupon(Order $order): void
+    {
+        $order->coupon?->increment('uses_count');
     }
 
     protected function isPaid(Order $order): bool
