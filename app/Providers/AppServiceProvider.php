@@ -2,13 +2,16 @@
 
 namespace App\Providers;
 
+use App\Listeners\MergeGuestCartOnLogin;
 use App\Models\FlashSale;
 use App\Models\Order;
 use App\Models\Seller;
 use App\Observers\OrderObserver;
 use App\Observers\SellerObserver;
 use Carbon\Carbon;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Seller::observe(SellerObserver::class);
         Order::observe(OrderObserver::class);
+
+        Event::listen(Login::class, MergeGuestCartOnLogin::class);
 
         Model::unguard();
 
