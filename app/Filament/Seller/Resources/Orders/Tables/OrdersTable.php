@@ -39,6 +39,7 @@ class OrdersTable
                     ->colors([
                         'warning' => 'pending',
                         'info' => 'processing',
+                        'primary' => 'shipped',
                         'success' => 'delivered',
                         'danger' => 'cancelled',
                     ]),
@@ -89,6 +90,7 @@ class OrdersTable
                             ->options([
                                 'pending' => 'Pending (Order Placed)',
                                 'processing' => 'Processing (Order is being processed & On the way)',
+                                'shipped' => 'Shipped (Order is on its way to the customer)',
                                 'delivered' => 'Delivered (Order has been delivered)',
                                 'cancelled' => 'Cancelled (Order has been cancelled)',
                             ])
