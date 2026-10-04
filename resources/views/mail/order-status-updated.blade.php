@@ -398,10 +398,7 @@
                 <span class="amount">Rs. {{ number_format((float) $order->total_amount, 2) }}</span>
             </div>
 
-            <!-- Action Button -->
-            <a href="{{ route('buying-history.show', $order->id) }}" class="btn-track" target="_blank">
-                View Live Order Tracking &rarr;
-            </a>
+           
         </div>
 
         <!-- Footer -->
