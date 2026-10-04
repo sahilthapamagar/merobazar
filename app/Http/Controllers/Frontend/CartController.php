@@ -4,34 +4,20 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Support\GuestCartMerger;
+use App\Support\GuestCartSession;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class CartController extends Controller
 {
     public function index(): View|RedirectResponse
     {
-        $user = Auth::guard('web')->user();
-
-        $cartItems = Cart::with(['product', 'seller'])
-            ->when($user, function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }, function ($query) {
-                $query->where(function ($q) {
-                    if (session()->has('guest_cart_session_id')) {
-                        $q->where('user_id', null)
-                            ->where('guest_session_id', session('guest_cart_session_id'));
-                    } else {
-                        $sessionId = Str::uuid()->toString();
-                        session(['guest_cart_session_id' => $sessionId]);
-                        $q->where('user_id', null)
-                            ->where('guest_session_id', $sessionId);
-                    }
-                });
-            })
+        $cartItems = GuestCartSession::scope(
+            Cart::with(['product', 'seller'])
+        )
             ->latest()
             ->get();
 
@@ -92,40 +78,12 @@ class CartController extends Controller
      * Move anything the visitor added before signing in onto their account cart,
      * so a guest cart is never silently abandoned at login.
      */
-    public function mergeGuestCart(): RedirectResponse
+    public function mergeGuestCart(GuestCartMerger $merger): RedirectResponse
     {
         $user = Auth::guard('web')->user();
         abort_if(! $user, 403);
 
-        $guestSessionId = session('guest_cart_session_id');
-
-        if ($guestSessionId) {
-            Cart::whereNull('user_id')
-                ->where('guest_session_id', $guestSessionId)
-                ->get()
-                ->each(function (Cart $guestCart) use ($user) {
-                    $existing = Cart::where('user_id', $user->id)
-                        ->where('product_id', $guestCart->product_id)
-                        ->first();
-
-                    if ($existing) {
-                        $quantity = $existing->quantity + $guestCart->quantity;
-                        $existing->quantity = $quantity;
-                        $existing->amount = ($existing->product?->effective_price ?? 0) * $quantity;
-                        $existing->save();
-
-                        $guestCart->delete();
-
-                        return;
-                    }
-
-                    $guestCart->user_id = $user->id;
-                    $guestCart->guest_session_id = null;
-                    $guestCart->save();
-                });
-
-            session()->forget('guest_cart_session_id');
-        }
+        $merger->handle($user);
 
         return redirect()->route('cart.index');
     }

@@ -10,6 +10,7 @@ use App\Models\DeliveryAddress;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Seller;
+use App\Support\GuestCartSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -22,24 +23,8 @@ class CheckoutController extends Controller
     public function checkout($id)
     {
         $seller = Seller::findOrFail($id);
-        $user = Auth::guard('web')->user();
 
-        $carts = Cart::with('product')
-            ->when($user, function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }, function ($query) {
-                $query->where(function ($q) {
-                    if (session()->has('guest_cart_session_id')) {
-                        $q->where('user_id', null)
-                            ->where('guest_session_id', session('guest_cart_session_id'));
-                    } else {
-                        $sessionId = Str::uuid()->toString();
-                        session(['guest_cart_session_id' => $sessionId]);
-                        $q->where('user_id', null)
-                            ->where('guest_session_id', $sessionId);
-                    }
-                });
-            })
+        $carts = GuestCartSession::scope(Cart::with('product'))
             ->where('seller_id', $id)
             ->get();
 
@@ -68,22 +53,7 @@ class CheckoutController extends Controller
         $seller = Seller::findOrFail($id);
         $user = Auth::guard('web')->user();
 
-        $carts = Cart::with('product')
-            ->when($user, function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }, function ($query) {
-                $query->where(function ($q) {
-                    if (session()->has('guest_cart_session_id')) {
-                        $q->where('user_id', null)
-                            ->where('guest_session_id', session('guest_cart_session_id'));
-                    } else {
-                        $sessionId = Str::uuid()->toString();
-                        session(['guest_cart_session_id' => $sessionId]);
-                        $q->where('user_id', null)
-                            ->where('guest_session_id', $sessionId);
-                    }
-                });
-            })
+        $carts = GuestCartSession::scope(Cart::with('product'))
             ->where('seller_id', $id)
             ->get();
 
@@ -147,8 +117,9 @@ class CheckoutController extends Controller
 
         $order->save();
 
+        // uses_count is incremented by the OrderObserver once the payment is
+        // actually confirmed, so an abandoned Khalti checkout keeps the coupon.
         if ($coupon) {
-            $coupon->increment('uses_count');
             session()->forget('coupon_code');
         }
 
@@ -218,7 +189,9 @@ class CheckoutController extends Controller
         // $id is now the order ID (passed correctly from store method)
         $order = Order::findOrFail($id);
 
-        $status = $request->input('status', 'pending');
+        // Khalti returns the result as "Status" (capitalised); "status" is accepted so
+        // the callback can also be driven by a plain lowercase query string.
+        $status = $request->input('Status', $request->input('status', 'pending'));
         $isSuccess = strtolower((string) $status) === 'completed';
 
         $order->payment_status = $status;

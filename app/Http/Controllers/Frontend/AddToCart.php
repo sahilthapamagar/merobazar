@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Product;
+use App\Support\GuestCartSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class AddToCart extends Controller
 {
@@ -36,26 +36,18 @@ class AddToCart extends Controller
 
         $quantity = (int) $request->input('quantity', 1);
 
-        $guestSessionId = null;
-        if (! $user) {
-            if (session()->has('guest_cart_session_id')) {
-                $guestSessionId = session('guest_cart_session_id');
-            } else {
-                $guestSessionId = Str::uuid()->toString();
-                session(['guest_cart_session_id' => $guestSessionId]);
-            }
-        }
+        $guestSessionId = $user ? null : GuestCartSession::id(create: true);
 
         // Find an existing cart entry for this user + product, or create a new one
         $cartQuery = [
             'product_id' => $product->id,
+            'user_id' => $user?->id,
         ];
-        if ($user) {
-            $cartQuery['user_id'] = $user->id;
-        } else {
-            $cartQuery['user_id'] = null;
+
+        if ($guestSessionId !== null) {
             $cartQuery['guest_session_id'] = $guestSessionId;
         }
+
         $cart = Cart::firstOrNew($cartQuery);
 
         // If it already exists, accumulate the quantity; otherwise set seller_id for the new row
