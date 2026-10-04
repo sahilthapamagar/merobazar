@@ -508,11 +508,7 @@
                 <a href="{{ route('register') }}" class="nav-signup-btn">Sign Up</a>
             @endif
 @php
-                $cartCount = Auth::guard('web')->check()
-                    ? Auth::guard('web')->user()->carts()->count()
-                    : \App\Models\Cart::whereNull('user_id')
-                        ->where('guest_session_id', session('guest_cart_session_id'))
-                        ->count();
+                $cartCount = \App\Support\GuestCartSession::itemCount();
             @endphp
             <a href="{{ $cartCount > 0 ? route('cart.index') : route('products') }}" class="nav-icon cart-wrap"
                 aria-label="Cart">
