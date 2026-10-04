@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 
+Route::view('/offline', 'offline')->name('offline');
+
 Route::get('/categories', [PageController::class, 'categories'])->name('categories');
 
 Route::get('/products', [PageController::class, 'products'])->name('products');
