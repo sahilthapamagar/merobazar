@@ -3,8 +3,11 @@
 namespace App\Providers;
 
 use App\Models\FlashSale;
+use App\Models\Order;
 use App\Models\Seller;
+use App\Observers\OrderObserver;
 use App\Observers\SellerObserver;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Seller::observe(SellerObserver::class);
+        Order::observe(OrderObserver::class);
 
         Model::unguard();
 
@@ -33,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
             // min() is a raw SQL aggregate, so parse it into a Carbon instance.
             $end = FlashSale::active()->min('end_time');
 
-            return $end ? \Carbon\Carbon::parse($end) : null;
+            return $end ? Carbon::parse($end) : null;
         });
     }
 }

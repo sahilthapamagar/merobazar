@@ -8,14 +8,15 @@ use App\Filament\Seller\Resources\Orders\Pages\ListOrders;
 use App\Filament\Seller\Resources\Orders\Schemas\OrderForm;
 use App\Filament\Seller\Resources\Orders\Tables\OrdersTable;
 use App\Models\Order;
+use App\Notifications\OrderNotification;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class OrderResource extends Resource
 {
@@ -33,6 +34,25 @@ class OrderResource extends Resource
     }
 
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Auth::guard('vendor')->user()?->unreadNotifications()
+            ->where('type', OrderNotification::class)
+            ->count();
+
+        return $count ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'danger';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'New orders';
+    }
 
     public static function form(Schema $schema): Schema
     {

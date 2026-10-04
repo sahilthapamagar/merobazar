@@ -31,6 +31,7 @@ class SellerPanelProvider extends PanelProvider
             ->brandName('Welcome, Seller!')
             ->login()
             ->profile()
+            ->databaseNotifications()
             ->colors([
                 'primary' => Color::Green,
             ])
