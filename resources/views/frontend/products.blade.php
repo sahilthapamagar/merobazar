@@ -65,6 +65,104 @@
         border-color: var(--primary);
     }
 
+    .products-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.25rem;
+        background: #fff;
+        border: 1px solid rgba(171, 136, 109, 0.18);
+        margin-bottom: 2.5rem;
+    }
+
+    .toolbar-search {
+        flex: 1 1 260px;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        border: 1px solid rgba(171, 136, 109, 0.25);
+        padding: 0.55rem 0.9rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .toolbar-search:focus-within {
+        border-color: var(--primary);
+    }
+
+    .toolbar-search svg {
+        width: 15px;
+        height: 15px;
+        stroke: var(--primary);
+        opacity: 0.55;
+        flex-shrink: 0;
+    }
+
+    .toolbar-search input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 0.85rem;
+        color: var(--primary);
+    }
+
+    .toolbar-price {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .toolbar-price input {
+        width: 92px;
+        border: 1px solid rgba(171, 136, 109, 0.25);
+        padding: 0.55rem 0.7rem;
+        font-size: 0.8rem;
+        color: var(--primary);
+        outline: none;
+        background: transparent;
+        transition: border-color 0.3s ease;
+    }
+
+    .toolbar-price input:focus {
+        border-color: var(--primary);
+    }
+
+    .toolbar-sep {
+        color: var(--primary);
+        opacity: 0.5;
+    }
+
+    .toolbar-sort select {
+        border: 1px solid rgba(171, 136, 109, 0.25);
+        background: transparent;
+        padding: 0.55rem 0.8rem;
+        font-size: 0.75rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--primary);
+        outline: none;
+        cursor: pointer;
+    }
+
+    .toolbar-apply {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.73rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 500;
+        background: var(--primary);
+        border: 1px solid var(--primary);
+        color: var(--accent);
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+    }
+
+    .toolbar-apply:hover {
+        opacity: 0.88;
+    }
+
     .products-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -426,6 +524,15 @@
             align-items: flex-start;
         }
 
+        .products-toolbar {
+            gap: 0.6rem;
+            padding: 0.9rem;
+        }
+
+        .toolbar-price input {
+            width: 78px;
+        }
+
         .products-grid {
             grid-template-columns: repeat(2, 1fr);
             gap: 14px;
@@ -444,37 +551,73 @@
             <div class="products-header">
                 <div>
                     <div class="section-label">Shop Collection</div>
-                    @if (request('search'))
-                        <h1 class="section-title">Results for
-                            <em>"{{ request('search') }}"</em>
-                        </h1>
+                    @if ($searchTerm = trim((string) request('search')))
+                        <h1 class="section-title">Results for <em>&ldquo;{{ $searchTerm }}&rdquo;</em></h1>
                         <p style="font-size:0.85rem;color:#7a6858;margin-top:6px;">
                             {{ $products->total() }}
                             {{ $products->total() === 1 ? 'product' : 'products' }} found
                             &middot; <a href="{{ route('products') }}"
                                 style="color:var(--secondary);font-weight:600;">Clear search</a>
                         </p>
+                    @elseif ($activeCategory = $categories->firstWhere('slug', request('category')))
+                        <h1 class="section-title">{{ $activeCategory->name }}</h1>
                     @else
                         <h1 class="section-title">All <em>Products</em></h1>
                     @endif
                 </div>
-                @if (!request('search'))
-                    <div class="product-filter">
-                        <a href="{{ route('products') }}" class="filter-btn {{ !request('category') ? 'active' : '' }} product-interactive">All</a>
-                        @foreach ($categories as $cat)
-                            <a href="{{ route('products', ['category' => $cat->slug]) }}" class="filter-btn {{ request('category') === $cat->slug ? 'active' : '' }} product-interactive">{{ $cat->name }}</a>
-                        @endforeach
-                    </div>
-                @endif
+                @php
+                    $activeFilters = request()->query();
+                    unset($activeFilters['page']);
+                @endphp
+                <div class="product-filter">
+                    <a href="{{ route('products', collect($activeFilters)->except('category')->all()) }}" class="filter-btn {{ !request('category') ? 'active' : '' }} product-interactive">All</a>
+                    @foreach ($categories as $cat)
+                        <a href="{{ route('products', array_merge($activeFilters, ['category' => $cat->slug])) }}" class="filter-btn {{ request('category') === $cat->slug ? 'active' : '' }} product-interactive">{{ $cat->name }}</a>
+                    @endforeach
+                </div>
             </div>
+
+            {{-- Search, price filter and sorting toolbar --}}
+            <form method="GET" action="{{ route('products') }}" class="products-toolbar">
+                @if (request('category'))
+                    <input type="hidden" name="category" value="{{ request('category') }}">
+                @endif
+
+                <div class="toolbar-search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <input type="search" name="search" value="{{ request('search') }}" placeholder="Search products, categories or shops…" aria-label="Search products">
+                </div>
+
+                <div class="toolbar-price">
+                    <input type="number" name="min_price" value="{{ request('min_price') }}" min="0" step="1" placeholder="Min Rs." aria-label="Minimum price">
+                    <span class="toolbar-sep">–</span>
+                    <input type="number" name="max_price" value="{{ request('max_price') }}" min="0" step="1" placeholder="Max Rs." aria-label="Maximum price">
+                </div>
+
+                <div class="toolbar-sort">
+                    <select name="sort" aria-label="Sort products" onchange="this.form.submit()">
+                        <option value="latest" @selected(request('sort', 'latest') === 'latest')>Newest First</option>
+                        <option value="price_asc" @selected(request('sort') === 'price_asc')>Price: Low to High</option>
+                        <option value="price_desc" @selected(request('sort') === 'price_desc')>Price: High to Low</option>
+                        <option value="rating" @selected(request('sort') === 'rating')>Top Rated</option>
+                        <option value="name" @selected(request('sort') === 'name')>Name: A–Z</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="toolbar-apply">Apply</button>
+            </form>
 
             @if ($products->isEmpty())
                 <div class="products-empty">
-                    @if (request('search'))
+                    @if (trim((string) request('search')) || is_numeric(request('min_price')) || is_numeric(request('max_price')))
                         <p style="font-size:1.4rem;font-family:'Cormorant Garamond',serif;color:var(--primary);margin-bottom:8px;">
-                            No products found for "{{ request('search') }}"</p>
+                            @if (trim((string) request('search')))
+                                No products found for "{{ request('search') }}"
+                            @else
+                                No products match your price range
+                            @endif</p>
                         <p style="margin-bottom:20px;">Try a different keyword or browse the full collection.</p>
-                        <a href="{{ route('products') }}" class="filter-btn active" style="display:inline-block;text-decoration:none;">Clear Search</a>
+                        <a href="{{ route('products', request('category') ? ['category' => request('category')] : []) }}" class="filter-btn active" style="display:inline-block;text-decoration:none;">Clear Search</a>
                     @else
                         <p>No products available at the moment.</p>
                     @endif

@@ -92,20 +92,51 @@ class PageController extends Controller
             });
         }
 
-        // Keyword search across product name, title, description, category and seller store name
+        // Free-text search: every term must match the product name/title/description,
+        // the category name, or the seller's shop name.
         if ($search = trim((string) request('search'))) {
-            $term = '%' . str_replace('%', '\\%', $search) . '%';
+            foreach (preg_split('/\s+/', $search, -1, PREG_SPLIT_NO_EMPTY) as $term) {
+                $like = '%'.$term.'%';
 
-            $query->where(function ($q) use ($term) {
-                $q->where('name', 'like', $term)
-                    ->orWhere('title', 'like', $term)
-                    ->orWhere('description', 'like', $term)
-                    ->orWhereHas('category', fn ($c) => $c->where('name', 'like', $term))
-                    ->orWhereHas('seller', fn ($s) => $s->where('shop_name', 'like', $term));
-            });
+                $query->where(function ($q) use ($like) {
+                    $q->where('name', 'like', $like)
+                        ->orWhere('title', 'like', $like)
+                        ->orWhere('description', 'like', $like)
+                        ->orWhereHas('category', fn ($c) => $c->where('name', 'like', $like))
+                        ->orWhereHas('seller', fn ($s) => $s->where('shop_name', 'like', $like));
+                });
+            }
         }
 
-        $products = $query->withAvg('reviews', 'rating')->withCount('reviews')->latest()->paginate(20)->appends(request()->query());
+        // Price-range filter uses the effective price (discounted price when lower, else regular price).
+        // Values are validated with is_numeric() and inlined so the comparison stays numeric
+        // regardless of the database driver (a bound string breaks CASE comparisons on SQLite).
+        $effectivePrice = 'CASE WHEN discounted_price IS NOT NULL AND discounted_price > 0 AND discounted_price < price'
+            .' THEN discounted_price ELSE price END';
+
+        if (is_numeric(request('min_price'))) {
+            $query->whereRaw($effectivePrice.' >= '.(float) request('min_price'));
+        }
+
+        if (is_numeric(request('max_price'))) {
+            $query->whereRaw($effectivePrice.' <= '.(float) request('max_price'));
+        }
+
+        // Sorting (whitelisted keys; default = newest first)
+        match (request('sort')) {
+            'price_asc' => $query->orderByRaw($effectivePrice.' ASC'),
+            'price_desc' => $query->orderByRaw($effectivePrice.' DESC'),
+            'rating' => $query->orderByRaw('reviews_avg_rating DESC, reviews_count DESC'),
+            'name' => $query->orderBy('name'),
+            default => $query->latest(),
+        };
+
+        $products = $query
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->paginate(20)
+            ->withQueryString();
+
         $categories = Category::withCount('products')->get();
 
         return view('frontend.products', compact('products', 'categories'));
