@@ -262,7 +262,7 @@
     </div>
 
     <div class="footer-bottom">
-        <p class="footer-copyright">© 2026 MeroBazar. All rights reserved. <span> Verion: 0.1</span></p>
+        <p class="footer-copyright">© 2026 MeroBazar. All rights reserved. <span> Version: 0.2</span></p>
         <div class="footer-legal">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
