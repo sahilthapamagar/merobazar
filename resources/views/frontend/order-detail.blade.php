@@ -767,10 +767,15 @@
                 <ol class="track-steps">
                     @php
                         $isCancelled = $order->status === 'cancelled';
+                        $isShipped = $order->status === 'shipped' || $order->status === 'delivered';
+                        $isDelivered = $order->status === 'delivered';
+                        // There is no processing_at column, so that step shows its
+                        // state without inventing a timestamp.
                         $steps = [
                             ['label' => 'Order Placed', 'done' => true, 'at' => $order->created_at],
-                            ['label' => 'Shipped', 'done' => ! $isCancelled && ($order->status === 'processing' || $order->status === 'delivered'), 'at' => $order->shipped_at],
-                            ['label' => 'Delivered', 'done' => ! $isCancelled && $order->status === 'delivered', 'at' => $order->delivered_at],
+                            ['label' => 'Processing', 'done' => ! $isCancelled && $order->status !== 'pending', 'at' => null],
+                            ['label' => 'Shipped', 'done' => ! $isCancelled && $isShipped, 'at' => $order->shipped_at],
+                            ['label' => 'Delivered', 'done' => ! $isCancelled && $isDelivered, 'at' => $order->delivered_at],
                         ];
                     @endphp
 
