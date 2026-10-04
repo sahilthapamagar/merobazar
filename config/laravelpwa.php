@@ -5,7 +5,7 @@ return [
     'manifest' => [
         'name' => env('APP_NAME', 'My PWA App'),
         'short_name' => 'MeroBazar',
-        'start_url' => '/',
+        'start_url' => '/?source=pwa',
         'background_color' => '#ffffff',
         'theme_color' => '#000000',
         'display' => 'standalone',
