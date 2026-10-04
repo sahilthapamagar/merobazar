@@ -8,6 +8,7 @@ use App\Filament\Seller\Resources\Reviews\Schemas\ReviewForm;
 use App\Filament\Seller\Resources\Reviews\Tables\ReviewsTable;
 use App\Models\Review;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -23,7 +24,9 @@ class ReviewResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChatBubbleLeftRight;
 
-    protected static ?int $navigationSort = 4;
+    protected static string|UnitEnum|null $navigationGroup = 'My Store';
+
+    protected static ?int $navigationSort = 3;
 
     #[Override]
     public static function getEloquentQuery(): Builder

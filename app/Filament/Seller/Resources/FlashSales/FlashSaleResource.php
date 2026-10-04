@@ -9,6 +9,7 @@ use App\Filament\Seller\Resources\FlashSales\Schemas\FlashSaleForm;
 use App\Filament\Seller\Resources\FlashSales\Tables\FlashSalesTable;
 use App\Models\FlashSale;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -23,13 +24,15 @@ class FlashSaleResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Bolt;
 
+    protected static string|UnitEnum|null $navigationGroup = 'My Store';
+
     protected static ?string $navigationLabel = '⚡ Flash Sales';
 
     protected static ?string $modelLabel = 'Flash Sale';
 
     protected static ?string $pluralModelLabel = 'Flash Sales';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
 
     #[Override]
     public static function getEloquentQuery(): Builder

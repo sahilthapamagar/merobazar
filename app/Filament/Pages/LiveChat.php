@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\ChatMessage;
 use App\Models\ChatSession;
 use BackedEnum;
+use UnitEnum;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -17,6 +18,8 @@ class LiveChat extends Page implements HasForms
     use InteractsWithForms;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChatBubbleLeftRight;
+    protected static string|UnitEnum|null $navigationGroup = 'Communication';
+    protected static ?int $navigationSort = 1;
     protected static ?string $navigationLabel = 'Live Chat';
     protected static ?string $title = 'Live Chat Support';
     protected string $view = 'filament.pages.live-chat';

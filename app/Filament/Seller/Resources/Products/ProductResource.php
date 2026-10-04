@@ -9,6 +9,7 @@ use App\Filament\Seller\Resources\Products\Schemas\ProductForm;
 use App\Filament\Seller\Resources\Products\Tables\ProductsTable;
 use App\Models\Product;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -23,6 +24,8 @@ class ProductResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Gift;
 
+    protected static string|UnitEnum|null $navigationGroup = 'My Store';
+
     protected static ?string $recordTitleAttribute = 'name';
 
     #[Override]
@@ -36,7 +39,7 @@ class ProductResource extends Resource
         return ProductForm::configure($schema);
     }
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     public static function table(Table $table): Table
     {

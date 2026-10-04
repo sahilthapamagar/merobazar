@@ -9,6 +9,7 @@ use App\Filament\Resources\Sellers\Schemas\SellerForm;
 use App\Filament\Resources\Sellers\Tables\SellersTable;
 use App\Models\Seller;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -19,6 +20,10 @@ class SellerResource extends Resource
     protected static ?string $model = Seller::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
+
+    protected static string|UnitEnum|null $navigationGroup = 'People';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $recordTitleAttribute = 'name';
 

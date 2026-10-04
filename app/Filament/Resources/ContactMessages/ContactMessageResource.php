@@ -8,6 +8,7 @@ use App\Filament\Resources\ContactMessages\Schemas\ContactMessageForm;
 use App\Filament\Resources\ContactMessages\Tables\ContactMessagesTable;
 use App\Models\ContactMessage;
 use BackedEnum;
+use UnitEnum;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -19,6 +20,10 @@ class ContactMessageResource extends Resource
     protected static ?string $model = ContactMessage::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Envelope;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Communication';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationLabel = 'Contact Messages';
 

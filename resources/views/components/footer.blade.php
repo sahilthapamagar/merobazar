@@ -247,6 +247,7 @@
             <ul class="footer-links">
                 <li><a href="{{ route('our-story') }}">Our Story</a></li>
                 <li><a href="{{ route('contact') }}">Contact</a></li>
+                <li><a href="{{ url('/seller/login') }}">Login as Vendor</a></li>
             </ul>
         </div>
 
